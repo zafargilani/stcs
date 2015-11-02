@@ -7,13 +7,13 @@ Make sure to edit config.yml to set your tweeter account and storage details:
 
 ``` yaml  
 #tweeter credentials
-consumer_key: 'XXX'
-consumer_secret: 'XXX'
-oauth_token: 'XXX'
-oauth_token_secret: 'XXX'
+consumer_key: 'ABC'
+consumer_secret: 'DEF'
+oauth_token: 'GHI'
+oauth_token_secret: 'JKL'
 
 #storage properties
-storage_folder: 'XXX'
+storage_folder: 'MNO'
 ``` 
 
 Collecting tweets:
