@@ -1,0 +1,9 @@
+#tweeter credentials
+consumer_key: '9E0f7GpXu6ekRIqJZqxcU5KUU'
+consumer_secret: 'eHgIi5g1pos6infbGORkKr2bMvzY5olasUZDguqVHo600KdVIV'
+oauth_token: '3047040941-CJZHgHvhNLGxFjmO5Im8gewCqKTGQbutqiSTk9D'
+oauth_token_secret: 'Pk8SttdWIlCnymS40ENYm7pIujqWWJmjVudeGMoRB8eXE'
+
+#storage properties
+storage_folder: '/local/scratch/twitter-data'
+#storage_folder: '.'
