@@ -1,5 +1,7 @@
 require 'rest-client'
 require 'mechanize'
+require 'uri'
+require 'tree'
 
 class LinkScanResult
 	def initialize(urlformat, link)
@@ -43,24 +45,25 @@ class Scanner
 	def initialize(folder)
 		@results_folder = folder
 
-		#Just add scanners to this lines: "name","url_format"
+		#Just add scanners to this lines: "name","url_format",on_state
 		@toscanner = [
-			["avgthreatlabs","http://www.avgthreatlabs.com/ww-en/website-safety-reports/domain/%s/"], #false negatives, report based?
-			["cisco_senderbase", "http://www.senderbase.org/lookup/?search_string=%s"],
-			["fortiguard","http://www.fortiguard.com/iprep/index.php?data=%s&lookup=Lookup"],
-			["is_it_hacked","http://www.isithacked.com/check/%s"],
-			["norton_safeweb","https://safeweb.norton.com/report/show?url=%s"],
-			["mcafee_threat_intelligence","http://www.mcafee.com/threat-intelligence/domain/default.aspx?domain=%s"],
-			["malware_domain_list","http://www.malwaredomainlist.com/mdl.php?search=%s&colsearch=All&quantity=50"],
-			["mxtoolbox","http://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a%s&run=toolpage"],
-			["watchguard_reputation _authority","http://www.reputationauthority.org/domain_lookup.php?ip=%s&Submit.x=0&Submit.y=0"],
-			["sucuri","https://sitecheck.sucuri.net/results/%s"],
-			["url _void","http://www.urlvoid.com/scan/%s/"],
+			["avgthreatlabs","http://www.avgthreatlabs.com/ww-en/website-safety-reports/domain/%s/",true], #false negatives, report based?
+			["cisco_senderbase", "http://www.senderbase.org/lookup/?search_string=%s",true],
+			["fortiguard","http://www.fortiguard.com/iprep/index.php?data=%s&lookup=Lookup",true],
+			["is_it_hacked","http://www.isithacked.com/check/%s",true],
+			["norton_safeweb","https://safeweb.norton.com/report/show?url=%s",true],
+			["mcafee_threat_intelligence","http://www.mcafee.com/threat-intelligence/domain/default.aspx?domain=%s",true],
+			["malware_domain_list","http://www.malwaredomainlist.com/mdl.php?search=%s&colsearch=All&quantity=50",false],
+			["mxtoolbox","http://mxtoolbox.com/SuperTool.aspx?action=blacklist:%s&run=toolpage",true],
+			["watchguard_reputation _authority","http://www.reputationauthority.org/domain_lookup.php?ip=%s&Submit.x=0&Submit.y=0",true],
+			["sucuri","https://sitecheck.sucuri.net/results/%s",true],
+			["url _void","http://www.urlvoid.com/scan/%s/",true],
 		]
 	end
 
-	def scan_site(url)
+	def check_malware(url)
 		@toscanner.each { |toscan|
+			next unless toscan[2]
 			file = File.new("#{@results_folder}/#{url}-#{toscan[0]}.html", "w")
 			begin
 				
@@ -78,4 +81,75 @@ class Scanner
 			end
 		}
 	end
+
+	def self.get_urls_from_twitter(content)
+		urls = []
+		# You should not rely on the number of parentheses
+		content.scan(URI.regexp) do |*matches|
+			urls = $&
+			p $&
+		end
+		urls
+	end
+
+	def self.get_urls_from_page(url, current_url:nil, tree:nil, depth:0, levels:nil, max_depth:3, mechanize:nil)
+
+		if(depth >= max_depth)
+			#tree.print_tree
+			p "Reached depth!!"
+			return
+		end
+
+		if levels == nil
+			levels = []
+			for i in 0..max_depth-1
+				levels[i] = 0
+			end
+		end
+
+		mechanize = Mechanize.new if mechanize == nil
+		current_url = url if current_url == nil
+
+		current_url = URI("#{url.to_s}#{current_url.to_s}") if current_url.scheme == nil
+		p "---->#{current_url}"
+
+		link_node = Tree::TreeNode.new(current_url, current_url)
+		
+
+		if tree == nil
+			tree= link_node
+		else
+			begin
+				tree << link_node
+
+			rescue RuntimeError
+				p "Already had :  #{current_url}?"
+				#p e
+				return
+			end
+		end
+
+		levels[depth] += 1
+		p "#{levels} - #{current_url}"
+
+		begin
+		mechanize.get(current_url) do |page|
+			page.links.each do |link|
+				get_urls_from_page(url,current_url:link.uri,tree:link_node,depth:depth+1,levels:levels) unless depth +1 >= max_depth					
+			end
+		end
+		rescue Mechanize::ResponseCodeError
+			p "ERROR: ResponseCodeError"
+		rescue NoMethodError
+			p "ERROR: Page was not html?"
+		rescue Mechanize::*
+		end
+
+		if depth == 0
+			stdout.reopen("tree.txt", "w")
+			stdout.sync = true
+			tree.print_tree
+		end
+	end
 end
+
