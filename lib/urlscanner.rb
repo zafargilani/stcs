@@ -92,7 +92,7 @@ class Scanner
 		urls
 	end
 
-	def self.get_urls_from_page(url, current_url:nil, tree:nil, depth:0, levels:nil, max_depth:3, mechanize:nil)
+	def self.get_urls_from_page(url, current_url:nil, tree:nil, depth:0, levels:nil, max_depth:2, mechanize:nil)
 
 		if(depth >= max_depth)
 			#tree.print_tree
@@ -133,11 +133,11 @@ class Scanner
 		p "#{levels} - #{current_url}"
 
 		begin
-		mechanize.get(current_url) do |page|
-			page.links.each do |link|
-				get_urls_from_page(url,current_url:link.uri,tree:link_node,depth:depth+1,levels:levels) unless depth +1 >= max_depth					
+			mechanize.get(current_url) do |page|
+				page.links.each do |link|
+					get_urls_from_page(url,current_url:link.uri,tree:link_node,depth:depth+1,levels:levels) unless depth +1 >= max_depth					
+				end
 			end
-		end
 		rescue Mechanize::ResponseCodeError
 			p "ERROR: ResponseCodeError"
 		rescue NoMethodError
@@ -146,9 +146,13 @@ class Scanner
 		end
 
 		if depth == 0
-			stdout.reopen("tree.txt", "w")
-			stdout.sync = true
+			previous_stdout = $stdout.dup
+			#This stdout redirection is dangerous :)
+			$stdout.reopen("tree.txt", "w")
+			$stdout.sync = true
 			tree.print_tree
+			$stdout.reopen previous_stdout
+			p "done!"
 		end
 	end
 end

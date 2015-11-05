@@ -31,8 +31,8 @@ class MyCLI < Thor
 		Scanner.get_urls_from_twitter(content)
 	end
 
-	desc "get_urls_from_page content","Builds a tree of referenced URLs from the specified URL"
-	def get_urls_from_page(url)
+	desc "get_tree_from_page content","Builds a tree of referenced URLs from the specified URL"
+	def get_tree_from_page(url)
 		Scanner.get_urls_from_page(URI(url))
 	end
 end
