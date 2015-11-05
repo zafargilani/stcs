@@ -1,8 +1,12 @@
+require 'rubygems'
+require 'bundler/setup'
+
 require 'thor'
 require 'yaml'
 require 'uri'
 require_relative 'lib/collector'
 require_relative 'lib/urlscanner'
+require_relative 'lib/bot'
 
 class MyCLI < Thor
 
@@ -32,8 +36,23 @@ class MyCLI < Thor
 	end
 
 	desc "get_tree_from_page content","Builds a tree of referenced URLs from the specified URL"
+	option :depth, :type => :numeric, :default => 3
 	def get_tree_from_page(url)
-		Scanner.get_urls_from_page(URI(url))
+		Scanner.get_urls_from_page(URI(url), max_depth:options[:depth])
+	end
+
+	desc "launch_bot", "Launches a bot OMG OMG OMG"
+	def launch_bot
+		conf = YAML.load_file('config.yml')
+
+		bob = BobTheBot.new(
+			conf['consumer_key'], 
+			conf['consumer_secret'], 
+			conf['oauth_token'], 
+			conf['oauth_token_secret'])
+
+		bob.prepare
+		bob.start
 	end
 end
 
