@@ -1,5 +1,9 @@
-# stcs
-Streaming Tweet Collection System
+# stcs - Super Trully Cuning Stweeler!
+
+Functionalities:
+ * Streaming Tweet Collection System
+ * Bot Functionality
+ * URL analyzer
 
 Usage:
 
@@ -19,6 +23,11 @@ storage_folder: 'MNO'
 Collecting tweets:
 ``` bash  
 ruby stweeler.rb collect 
+``` 
+
+Running bot:
+``` bash  
+ruby stweeler.rb launch_bot
 ``` 
 
 Other commands:
