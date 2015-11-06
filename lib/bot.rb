@@ -98,6 +98,12 @@ class BobTheBot < Ebooks::Bot
   def on_startup
 
     begin
+      retweet(@collector.dump_sample_tweet)
+    rescue => e
+        p "twitter error : #{e}"
+    end
+
+    begin
       scheduler.every "1h" do
         retweet(@collector.dump_sample_tweet)
       end
@@ -148,12 +154,13 @@ class BobTheBot < Ebooks::Bot
   def on_message(dm)
     p "There was a message #{dm.inspect}"
     # Reply to a DM
-    reply(dm, "dolphins!")
+    #reply(dm, "dolphins!")
   end
 
   def on_follow(user)
     # Follow a user back
-    follow(user.screen_name)
+    p "New user following!! #{user.screen_name}"
+    #follow(user.screen_name)
   end
 
   def on_mention(tweet)
