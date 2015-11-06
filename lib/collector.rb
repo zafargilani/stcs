@@ -24,6 +24,27 @@ class Collector
     client = TweetStream::Client.new
   end
 
+  def dump_sample_tweet(min_retweets:100)
+    return if min_retweets <= 0
+
+    client = TweetStream::Client.new
+    tweet = nil
+
+    client.sample do |status|
+      #p status.attrs
+      print "#{status.retweeted_status.retweet_count}.."
+
+      if status.retweeted_status.retweet_count > min_retweets
+        max_retweet = status.retweet_count
+        tweet = status
+        break
+      end
+
+    end
+    tweet
+
+  end
+
   def dump_sample_users(number_of_users:10)
 
     return if number_of_users <= 0

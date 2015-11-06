@@ -96,6 +96,15 @@ class BobTheBot < Ebooks::Bot
   end
 
   def on_startup
+
+    begin
+      scheduler.every "1h" do
+        retweet(@collector.dump_sample_tweet)
+      end
+
+    rescue => e
+        p "twitter error : #{e}"
+    end
     
     if @follow_frequency > 0
 
