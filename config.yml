@@ -1,8 +1,8 @@
 #tweeter credentials
-consumer_key: '9E0f7GpXu6ekRIqJZqxcU5KUU'
-consumer_secret: 'eHgIi5g1pos6infbGORkKr2bMvzY5olasUZDguqVHo600KdVIV'
-oauth_token: '3047040941-CJZHgHvhNLGxFjmO5Im8gewCqKTGQbutqiSTk9D'
-oauth_token_secret: 'Pk8SttdWIlCnymS40ENYm7pIujqWWJmjVudeGMoRB8eXE'
+consumer_key: 'JPW5zRFRWWiJz74R9RTRw0DnD'
+consumer_secret: '3loS6buCjB6RzQ3xkg81nrgp7VYc7kgh93z9imyUfOFp2wYHYH'
+oauth_token: '3047040941-ilKIO4fy2mw0P5WzzvE1ngN7VZbthkbgDyKjWIH'
+oauth_token_secret: 'raxJIpqRGjXYYBA1rw7ePhyH84IjL975rAWdJVW3Apb1b'
 
 #storage properties
 storage_folder: '/local/scratch/twitter-data'
