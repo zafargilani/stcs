@@ -31,7 +31,15 @@ ruby stweeler.rb launch_bot
 ``` 
 
 Other commands:
+
 ``` bash  
-ruby stweeler.rb help 
+$ ruby stweeler.rb help
+Commands:
+  stweeler.rb check_malware url              # Scan an URL for malware
+  stweeler.rb collect                        # Collect and store tweets using Twitter Sample
+  stweeler.rb get_tree_from_page content     # Builds a tree of referenced URLs from the specified URL
+  stweeler.rb get_urls_from_twitter content  # Gets urls from text
+  stweeler.rb help [COMMAND]                 # Describe available commands or one specific command
+  stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
