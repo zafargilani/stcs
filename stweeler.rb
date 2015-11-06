@@ -45,11 +45,17 @@ class MyCLI < Thor
 	def launch_bot
 		conf = YAML.load_file('config.yml')
 
-		bob = BobTheBot.new(
+		collector = Collector.new(
 			conf['consumer_key'], 
 			conf['consumer_secret'], 
 			conf['oauth_token'], 
 			conf['oauth_token_secret'])
+
+		bob = BobTheBot.new(
+			conf['consumer_key'], 
+			conf['consumer_secret'], 
+			conf['oauth_token'], 
+			conf['oauth_token_secret'], collector:collector)
 
 		bob.prepare
 		bob.start

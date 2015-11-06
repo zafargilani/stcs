@@ -5,13 +5,14 @@ require 'twitter_ebooks'
 
 class BobTheBot < Ebooks::Bot
 
-  def initialize(consumer_key, consumer_secret, oauth_token, oauth_token_secret, bot_name:"gilhuss")
+  def initialize(consumer_key, consumer_secret, oauth_token, oauth_token_secret, collector:nil,bot_name:"gilhuss")
 
       @consumer_key       = consumer_key
       @consumer_secret    = consumer_secret
       @oauth_token        = oauth_token
       @oauth_token_secret = oauth_token_secret
       @auth_method        = :oauth
+      @collector = collector
 
     # Make a MyBot and attach it to an account
     super(bot_name) do |bot|
@@ -35,6 +36,9 @@ class BobTheBot < Ebooks::Bot
   end
 
   def on_startup
+
+    @collector.dump_sample_users
+
     scheduler.every '24h' do
       # Tweet something every 24 hours
       # See https://github.com/jmettraux/rufus-scheduler

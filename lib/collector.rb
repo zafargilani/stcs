@@ -20,6 +20,20 @@ class Collector
     end
   end
 
+  def dump_sample_users(number_of_users:10)
+    client = TweetStream::Client.new
+    i = 0
+    users = []
+    client.sample do |status|
+      #p status.attrs
+      users[i] = status.user.screen_name
+      p users[i]
+      i+=1
+      break if(i == number_of_users)
+    end
+    users
+  end
+
   def collect(output_folder)
       client = TweetStream::Client.new
 
