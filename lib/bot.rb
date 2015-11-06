@@ -5,7 +5,8 @@ require 'twitter_ebooks'
 
 class BobTheBot < Ebooks::Bot
 
-  def initialize(consumer_key, consumer_secret, oauth_token, oauth_token_secret, collector:nil,bot_name:"gilhuss")
+  def initialize(consumer_key, consumer_secret, oauth_token, oauth_token_secret, 
+    collector:nil, bot_name:"gilhuss", follow_number:0, follow_frequency:0, unfollow_number:0, unfollow_frequency:0)
 
       @consumer_key       = consumer_key
       @consumer_secret    = consumer_secret
@@ -13,6 +14,14 @@ class BobTheBot < Ebooks::Bot
       @oauth_token_secret = oauth_token_secret
       @auth_method        = :oauth
       @collector = collector
+
+      @follow_frequency = follow_frequency
+      @follow_number = follow_number
+
+      @unfollow_frequency = unfollow_frequency
+      @unfollow_number = unfollow_number
+
+      p "Bot configuration = (#{follow_frequency},#{follow_number},#{unfollow_frequency},#{unfollow_number})"
 
     # Make a MyBot and attach it to an account
     super(bot_name) do |bot|
@@ -35,22 +44,102 @@ class BobTheBot < Ebooks::Bot
     self.delay_range = 1..6
   end
 
-  def on_startup
+  def random_follow(number_of_users:10)
+    p "Following #{number_of_users} users..."
+    users = @collector.dump_sample_users(number_of_users:number_of_users)
 
-    @collector.dump_sample_users
+    return if users == nil
 
-    scheduler.every '24h' do
-      # Tweet something every 24 hours
-      # See https://github.com/jmettraux/rufus-scheduler
-      # tweet("hi")
-      # pictweet("hi", "cuteselfie.jpg")
+    users.each do |user|
+        follow(user)
     end
   end
 
+  def random_unfollow(number_of_users:10)
+    qfollowers = []
+    qfriend = []
+
+    p "followers: ----------------"
+
+    i = 0
+    twitter.followers.each do |follower|
+      qfollowers[i] = follower.screen_name
+      i+= 1
+    end
+
+    p qfollowers.inspect
+
+    p "friends: ----------------"
+    
+    i=0
+    twitter.friends.each do |friend|
+      qfriend[i] = friend.screen_name
+      i+= 1
+    end
+
+    p qfriend.inspect
+
+    p "difference: --------------"
+
+    non_followers = qfriend - qfollowers
+    p non_followers.inspect
+
+    p "Removing : --------------"
+    r = Random.new
+    for j in 0..number_of_users
+      break if non_followers.size == 0
+      pos = r.rand(0..non_followers.size-1)
+      unfollow(non_followers[j])
+      non_followers -= [non_followers[j]]
+    end
+
+  end
+
+  def on_startup
+    
+    if @follow_frequency > 0
+
+      begin
+        random_follow(number_of_users:@follow_number)
+      rescue => e
+        p "twitter error : #{e}"
+      end
+
+      scheduler.every "#{@follow_frequency}h" do
+        begin
+          random_follow(number_of_users:@follow_number)
+        rescue => e
+          p "twitter error : #{e}"
+        end
+        # Tweet something every 24 hours
+        # See https://github.com/jmettraux/rufus-scheduler
+        # tweet("hi")
+        # pictweet("hi", "cuteselfie.jpg")
+      end
+    end
+
+    if @unfollow_frequency > 0
+
+      scheduler.every "#{@unfollow_frequency}h" do
+
+        begin
+          random_unfollow(number_of_users:@unfollow_number)
+        rescue => e
+          p "twitter error : #{e}"
+        end
+        # Tweet something every 24 hours
+        # See https://github.com/jmettraux/rufus-scheduler
+        # tweet("hi")
+        # pictweet("hi", "cuteselfie.jpg")
+      end
+    end
+
+  end
+
   def on_message(dm)
-    p "There was a message #{tweet.inspect}"
+    p "There was a message #{dm.inspect}"
     # Reply to a DM
-    # reply(dm, "secret secrets")
+    reply(dm, "dolphins!")
   end
 
   def on_follow(user)
@@ -61,7 +150,7 @@ class BobTheBot < Ebooks::Bot
   def on_mention(tweet)
     p "There was a mention #{tweet.inspect}"
     # Reply to a mention
-    reply(tweet, "oh hullo")
+    #reply(tweet, "oh hullo")
   end
 
   def on_timeline(tweet)

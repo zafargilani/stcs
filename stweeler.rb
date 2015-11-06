@@ -55,7 +55,13 @@ class MyCLI < Thor
 			conf['consumer_key'], 
 			conf['consumer_secret'], 
 			conf['oauth_token'], 
-			conf['oauth_token_secret'], collector:collector)
+			conf['oauth_token_secret'], 
+			collector:collector,
+			follow_number:conf['follow_number'],
+			follow_frequency:conf['follow_frequency'],
+			unfollow_number:conf['unfollow_number'],
+			unfollow_frequency:conf['unfollow_frequency']
+			)
 
 		bob.prepare
 		bob.start

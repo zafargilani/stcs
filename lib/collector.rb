@@ -20,7 +20,14 @@ class Collector
     end
   end
 
+  def get_client
+    client = TweetStream::Client.new
+  end
+
   def dump_sample_users(number_of_users:10)
+
+    return if number_of_users <= 0
+
     client = TweetStream::Client.new
     i = 0
     users = []
