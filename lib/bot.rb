@@ -96,10 +96,9 @@ class BobTheBot < Ebooks::Bot
   end
 
   def on_startup
-
-    for i in 0..2
+    for i in 0..10
       begin
-        retweet(@collector.dump_topic_tweet(topic:"recruit",min_retweets:5000))
+        retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:10))
       rescue => e
           p "twitter error : #{e}"
       end
@@ -107,7 +106,7 @@ class BobTheBot < Ebooks::Bot
 
     begin
       scheduler.every "1h" do
-        retweet(@collector.dump_sample_tweet(min_retweets:100000))
+        retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:10))
       end
 
     rescue => e

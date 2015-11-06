@@ -44,7 +44,7 @@ class Collector
     tweet
   end
 
-    def dump_topic_tweet(topic:"recruit",min_retweets:100)
+    def dump_topic_tweet(topic:"job opportunity",min_retweets:100)
     return if min_retweets <= 0
 
     client = TweetStream::Client.new
@@ -52,7 +52,8 @@ class Collector
 
     client.track(topic) do |status|
       #p status.attrs
-      print "#{status.retweeted_status.retweet_count}.."
+      print "||#{status.retweeted_status.retweet_count}||"
+      print "#{status.text}"
 
       if status.retweeted_status.retweet_count > min_retweets
         max_retweet = status.retweet_count
