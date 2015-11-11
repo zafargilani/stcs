@@ -6,7 +6,7 @@ require 'twitter_ebooks'
 class BobTheBot < Ebooks::Bot
 
   def initialize(consumer_key, consumer_secret, oauth_token, oauth_token_secret, 
-    collector:nil, bot_name:"gilhuss", follow_number:0, follow_frequency:0, unfollow_number:0, unfollow_frequency:0)
+    collector:nil, bot_name:"gilhuss", follow_number:0, follow_frequency:0, unfollow_number:0, unfollow_frequency:0, follower_ratio:0)
 
       @consumer_key       = consumer_key
       @consumer_secret    = consumer_secret
@@ -17,6 +17,7 @@ class BobTheBot < Ebooks::Bot
 
       @follow_frequency = follow_frequency
       @follow_number = follow_number
+      @follower_ratio = follower_ratio
 
       @unfollow_frequency = unfollow_frequency
       @unfollow_number = unfollow_number
@@ -55,7 +56,7 @@ class BobTheBot < Ebooks::Bot
     end
   end
 
-  def random_unfollow(number_of_users:10)
+  def random_unfollow(follower_ratio:0.3)
     qfollowers = []
     qfriend = []
 
@@ -83,10 +84,11 @@ class BobTheBot < Ebooks::Bot
 
     non_followers = qfriend - qfollowers
     p non_followers.inspect
+    to_remove = non_followers.size * follower_ratio
 
     p "Removing : --------------"
     r = Random.new
-    for j in 0..number_of_users
+    for j in 0..to_remove.to_i
       break if non_followers.size == 0
       pos = r.rand(0..non_followers.size-1)
       unfollow(non_followers[j])
@@ -96,17 +98,19 @@ class BobTheBot < Ebooks::Bot
   end
 
   def on_startup
-    for i in 0..10
-      begin
-        retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:10))
-      rescue => e
-          p "twitter error : #{e}"
-      end
-    end
+    # for i in 0..10
+    #   begin
+    #     retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:5))
+    #   rescue => e
+    #       p "twitter error : #{e}"
+    #   end
+    # end
 
     begin
       scheduler.every "1h" do
-        retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:10))
+        for i in 0..1
+          retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:5))
+        end
       end
 
     rescue => e
@@ -115,38 +119,23 @@ class BobTheBot < Ebooks::Bot
     
     if @follow_frequency > 0
 
-      begin
-        random_follow(number_of_users:@follow_number)
-      rescue => e
-        p "twitter error : #{e}"
-      end
-
-      scheduler.every "#{@follow_frequency}h" do
+      scheduler.every "#{@follow_frequency}m" do
         begin
           random_follow(number_of_users:@follow_number)
         rescue => e
           p "twitter error : #{e}"
         end
-        # Tweet something every 24 hours
-        # See https://github.com/jmettraux/rufus-scheduler
-        # tweet("hi")
-        # pictweet("hi", "cuteselfie.jpg")
       end
     end
 
-    if @unfollow_frequency > 0
+    if @follower_ratio > 0
 
       scheduler.every "#{@unfollow_frequency}h" do
-
         begin
-          random_unfollow(number_of_users:@unfollow_number)
+          random_unfollow(number_of_users:@follower_ratio)
         rescue => e
           p "twitter error : #{e}"
         end
-        # Tweet something every 24 hours
-        # See https://github.com/jmettraux/rufus-scheduler
-        # tweet("hi")
-        # pictweet("hi", "cuteselfie.jpg")
       end
     end
 

@@ -21,10 +21,13 @@ storage_folder: '/local/scratch/twitter-data'
 #--------------------------------------------
 
 #bot options
-# 40 bots per hour, i.e. 1008 follows per day
-follow_number: 40
-follow_frequency: 1
+# 15 follows each 15 min. i.e., 1440 follows per day
+follow_number: 15
+#in minutes
+follow_frequency: 15
 
-unfollow_number: 100
-unfollow_frequency: 3
+#will unfollow until the follower ratio is: 
+follower_ratio: 0.3
+#unfollow will occur every N hours:
+unfollow_frequency: 48
 

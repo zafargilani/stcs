@@ -59,8 +59,8 @@ class MyCLI < Thor
 			collector:collector,
 			follow_number:conf['follow_number'],
 			follow_frequency:conf['follow_frequency'],
-			unfollow_number:conf['unfollow_number'],
-			unfollow_frequency:conf['unfollow_frequency']
+			unfollow_frequency:conf['unfollow_frequency'],
+			follower_ratio:conf['follower_ratio']
 			)
 
 		bob.prepare
