@@ -97,21 +97,46 @@ class BobTheBot < Ebooks::Bot
 
   end
 
+
+  def advanced_random_unfollow(follower_ratio:0.3,max_unfollow:100)
+    qfollowers = @collector.fetch_all_followers
+    qfriend = @collector.fetch_all_friends
+
+    p "difference: --------------"
+
+    non_followers = qfriend - qfollowers
+    p non_followers.inspect
+    to_remove = non_followers.size * follower_ratio
+
+    if to_remove > max_unfollow
+      to_remove = max_unfollow
+    end
+
+    p "Removing : --------------"
+    r = Random.new
+    for j in 0..to_remove.to_i
+      break if non_followers.size == 0
+      pos = r.rand(0..non_followers.size-1)
+      unfollow(non_followers[j])
+      non_followers -= [non_followers[j]]
+    end
+
+  end
+
+  def post_tweet_copy(topic:"job opportunity", min_retweets:0)
+    tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
+    tweet("#{tw.text} \#job \#recruiting")
+  end
+
   def on_startup
-    # for i in 0..10
-    #   begin
-    #     retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:5))
-    #   rescue => e
-    #       p "twitter error : #{e}"
-    #   end
-    # end
 
     begin
       scheduler.every "1h" do
         for i in 0..1
           retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:5))
         end
-      end
+        post_tweet_copy
+    end
 
     rescue => e
         p "twitter error : #{e}"
@@ -132,7 +157,7 @@ class BobTheBot < Ebooks::Bot
 
       scheduler.every "#{@unfollow_frequency}h" do
         begin
-          random_unfollow(number_of_users:@follower_ratio)
+          advanced_random_unfollow(follower_ratio:@follower_ratio, max_unfollow:100)
         rescue => e
           p "twitter error : #{e}"
         end

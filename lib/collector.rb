@@ -18,6 +18,21 @@ class Collector
       config.oauth_token_secret = oauth_token_secret
       config.auth_method        = :oauth
     end
+
+      @consumer_key       = consumer_key
+      @consumer_secret    = consumer_secret
+      @oauth_token        = oauth_token
+      @oauth_token_secret = oauth_token_secret
+  end
+
+  def get_twitter_client
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = @consumer_key
+      config.consumer_secret     = @consumer_secret
+      config.access_token        = @oauth_token 
+      config.access_token_secret = @oauth_token_secret
+    end
+    client
   end
 
   def get_client
@@ -45,7 +60,7 @@ class Collector
   end
 
     def dump_topic_tweet(topic:"job opportunity",min_retweets:100)
-    return if min_retweets <= 0
+    return if min_retweets < 0
 
     client = TweetStream::Client.new
     tweet = nil
@@ -55,7 +70,7 @@ class Collector
       print "||#{status.retweeted_status.retweet_count}||"
       print "#{status.text}"
 
-      if status.retweeted_status.retweet_count > min_retweets
+      if status.retweeted_status.retweet_count > min_retweets or min_retweets == 0
         max_retweet = status.retweet_count
         tweet = status
         break
@@ -63,6 +78,44 @@ class Collector
 
     end
     tweet
+  end
+
+  SLICE_SIZE = 100
+
+  def fetch_all_friends(user:"gilhuss")
+
+    @friends = []
+
+    client = get_twitter_client
+    #CSV.open("#{twitter_username}_friends_list.txt", 'w') do |csv|
+      client.friend_ids(user).each_slice(SLICE_SIZE).with_index do |slice, i|
+        client.users(slice).each_with_index do |f, j|
+          @friends << f.screen_name
+          #csv << [i * SLICE_SIZE + j + 1, f.name, f.screen_name, f.url, f.followers_count, f.location.gsub(/\n+/, ' '), f.created_at, f.description.gsub(/\n+/, ' '), f.lang, f.time_zone, f.verified, f.profile_image_url, f.website, f.statuses_count, f.profile_background_image_url, f.profile_banner_url]
+        end
+      end
+    #end
+    p "Friends : "
+    p @friends.inspect
+    @friends
+  end
+
+    def fetch_all_followers(user:"gilhuss")
+
+    @followers = []
+
+    client = get_twitter_client
+    #CSV.open("#{twitter_username}_friends_list.txt", 'w') do |csv|
+      client.follower_ids(user).each_slice(SLICE_SIZE).with_index do |slice, i|
+        client.users(slice).each_with_index do |f, j|
+          @followers << f.screen_name
+          #csv << [i * SLICE_SIZE + j + 1, f.name, f.screen_name, f.url, f.followers_count, f.location.gsub(/\n+/, ' '), f.created_at, f.description.gsub(/\n+/, ' '), f.lang, f.time_zone, f.verified, f.profile_image_url, f.website, f.statuses_count, f.profile_background_image_url, f.profile_banner_url]
+        end
+      end
+    #end
+    p "followers :"
+    p @followers.inspect
+    @followers
   end
 
   def dump_sample_users(number_of_users:10)
