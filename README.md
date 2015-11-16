@@ -47,7 +47,6 @@ Running shortener:
 cd shortener
 bundle install
 bin/rake db:migrate RAILS_ENV=development
-sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 bin/rails server
 ``` 
 
@@ -64,3 +63,16 @@ Commands:
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
+## Troubleshooting
+
+If your rake command gets stuck try:
+
+``` bash  
+spring stop
+``` 
+
+If your requests are not getting through to the shortener:
+
+``` bash  
+sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
+``` 
