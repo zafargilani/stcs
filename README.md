@@ -76,3 +76,9 @@ If your requests are not getting through to the shortener:
 ``` bash  
 sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 ``` 
+
+if on request you get "Cannot render console", try adding the following to the "config/application.rb":
+
+``` ruby  
+config.web_console.whiny_requests = false
+``` 
