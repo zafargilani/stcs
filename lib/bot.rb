@@ -171,7 +171,7 @@ class BobTheBot < Ebooks::Bot
 
   def on_startup
 
-    post_tweet_copy
+    #post_tweet_copy
 
     advanced_random_unfollow
 
@@ -180,7 +180,7 @@ class BobTheBot < Ebooks::Bot
         for i in 0..1
           retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:5))
         end
-        post_tweet_copy
+        #post_tweet_copy
     end
 
     rescue => e
@@ -230,7 +230,7 @@ class BobTheBot < Ebooks::Bot
   end
 
   def on_timeline(tweet)
-    p "There was a tweet on timeline #{tweet.inspect}"
+    #p "There was a tweet on timeline #{tweet.inspect}"
     # Reply to a tweet in the bot's timeline
     # reply(tweet, "nice tweet")
   end
