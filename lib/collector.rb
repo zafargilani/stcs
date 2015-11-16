@@ -95,8 +95,8 @@ class Collector
         end
       end
     #end
-    p "Friends : "
-    p @friends.inspect
+    #p "Friends : "
+    #p @friends.inspect
     @friends
   end
 
@@ -113,8 +113,8 @@ class Collector
         end
       end
     #end
-    p "followers :"
-    p @followers.inspect
+    #p "followers :"
+    #p @followers.inspect
     @followers
   end
 

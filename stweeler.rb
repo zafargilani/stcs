@@ -27,7 +27,7 @@ class MyCLI < Thor
 	option :folder, :type => :string, :default => '.'
 	def check_malware(url)
 		scanner = Scanner.new(options[:folder])
-		scanner.scan_site(url)
+		scanner.check_malware(url)
 	end
 
 	desc "get_urls_from_twitter content","Gets urls from text"

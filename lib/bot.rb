@@ -98,19 +98,26 @@ class BobTheBot < Ebooks::Bot
   end
 
 
-  def advanced_random_unfollow(follower_ratio:0.3,max_unfollow:100)
+  def advanced_random_unfollow(follower_ratio:0.3,max_unfollow:1000)
     qfollowers = @collector.fetch_all_followers
     qfriend = @collector.fetch_all_friends
 
-    p "difference: --------------"
+    p "friends #{qfriend.size} followers #{qfollowers.size}"
+
+    #p "difference: --------------"
 
     non_followers = qfriend - qfollowers
-    p non_followers.inspect
-    to_remove = non_followers.size * follower_ratio
+    #p non_followers.inspect
+    to_remove = qfriend.size - qfollowers.size / follower_ratio
+    to_remove = to_remove.to_i
+
+    p "After ratio, number of followers to remove is #{to_remove}"
 
     if to_remove > max_unfollow
       to_remove = max_unfollow
     end
+
+    p "Capped to #{to_remove}"
 
     p "Removing : --------------"
     r = Random.new
@@ -120,7 +127,6 @@ class BobTheBot < Ebooks::Bot
       unfollow(non_followers[j])
       non_followers -= [non_followers[j]]
     end
-
   end
 
   def post_tweet_copy(topic:"job opportunity", min_retweets:0)
@@ -129,6 +135,8 @@ class BobTheBot < Ebooks::Bot
   end
 
   def on_startup
+
+    advanced_random_unfollow
 
     begin
       scheduler.every "1h" do
