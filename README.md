@@ -47,6 +47,7 @@ Running shortener:
 cd shortener
 bundle install
 bin/rake db:migrate RAILS_ENV=development
+sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 bin/rails server
 ``` 
 
