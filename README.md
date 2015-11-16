@@ -46,6 +46,7 @@ Running shortener:
 ``` bash  
 cd shortener
 bundle install
+bin/rake db:migrate RAILS_ENV=development
 bin/rails server
 ``` 
 
