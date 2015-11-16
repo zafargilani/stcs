@@ -1,4 +1,5 @@
 require 'twitter_ebooks'
+require 'rest-client'
 
 # This is an example bot definition with event handlers commented out
 # You can define and instantiate as many bots as you like
@@ -131,10 +132,46 @@ class BobTheBot < Ebooks::Bot
 
   def post_tweet_copy(topic:"job opportunity", min_retweets:0)
     tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
-    tweet("#{tw.text} \#job \#recruiting")
+
+    replacements = []
+
+    p "get urls preview"
+    p Scanner.get_urls_from_twitter(tw.text).inspect
+
+    p "running each"
+    Scanner.get_urls_from_twitter(tw.text).each do |url|
+      p "RestClient.get http://localhost:3000/gen/id?pixa=#{url}"
+      response = RestClient.get "http://localhost:3000/gen/id?pixa=#{url}"
+      p response.inspect
+      json = JSON.parse(response)
+      key= json["unique_key"]
+      p key
+      replacements << [url, "http://localhost:3000/#{key}"]
+    end
+
+    txt = tw.text.dup
+
+    p txt
+    p replacements.inspect
+
+    replacements.each do |rep|
+      txt.gsub! rep[0], rep[1]
+    end 
+
+    p txt
+
+    # if tw.text.size < 140 - "\#job \#recruiting".size
+    #   tweet("#{tw.text} \#job \#recruiting")
+    # elsif tw.text.size < 140 - " \#job".size
+    #   tweet("#{tw.text} \#job")
+    # else
+    #   tweet("#{tw.text} \#job")
+    # end
   end
 
   def on_startup
+
+    post_tweet_copy
 
     advanced_random_unfollow
 

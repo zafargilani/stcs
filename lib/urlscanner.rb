@@ -85,9 +85,9 @@ class Scanner
 	def self.get_urls_from_twitter(content)
 		urls = []
 		# You should not rely on the number of parentheses
-		content.scan(URI.regexp) do |*matches|
-			urls = $&
-			p $&
+		content.scan(URI.regexp(['http','https'])) do |*matches|
+			urls << $&
+			#p $&
 		end
 		urls
 	end
