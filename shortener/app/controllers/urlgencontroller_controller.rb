@@ -1,3 +1,6 @@
+require 'user_agent_parser'
+require 'shortener'
+
 class UrlgencontrollerController < ApplicationController
   def generate
 	#Best security ever lulz
@@ -7,5 +10,9 @@ class UrlgencontrollerController < ApplicationController
 	end
   	short = Shortener::ShortenedUrl.generate(params[:u])
   	render json: short
+  end
+
+  def show
+  	redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
   end
 end

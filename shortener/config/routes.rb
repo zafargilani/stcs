@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
 
   #get 'urlgencontroller/generate'
-  get '/:id' => "shortener/shortened_urls#show"
-  
+  get '/u/:id' => "shortener/shortened_urls#show"
+  get '/:id' => "urlgencontroller#show"
   get '/gen/:id' => "urlgencontroller#generate"
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
