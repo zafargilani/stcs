@@ -1,11 +1,23 @@
 # stcs - Super Trully Cuning Stweeler!
 
+STCS is a tweeter bot that auto scales in terms of followers/friends with a ratio of 30%.
+In the process it is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags.
+
 Functionalities:
  * Streaming Tweet Collection System
  * Bot Functionality
  * URL analyzer
+ * URL shortener
 
-Usage:
+## Getting started
+
+You should be using ruby >= 2.2 and run bundle install: 
+
+``` bash  
+git clone https://github.com/zafargilani/stcs.git stcs
+cd stcs
+bundle install 
+``` 
 
 Make sure to edit config.yml to set your tweeter account and storage details:
 
@@ -30,6 +42,14 @@ Running bot:
 ruby stweeler.rb launch_bot
 ``` 
 
+Running shortener:
+``` bash  
+cd shortener
+bundle install
+bin/rake db:migrate RAILS_ENV=development
+bin/rails server
+``` 
+
 Other commands:
 
 ``` bash  
@@ -43,3 +63,22 @@ Commands:
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
+## Troubleshooting
+
+If your rake command gets stuck try:
+
+``` bash  
+spring stop
+``` 
+
+If your requests are not getting through to the shortener:
+
+``` bash  
+sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
+``` 
+
+if on request you get "Cannot render console", try adding the following to the "config/application.rb":
+
+``` ruby  
+config.web_console.whiny_requests = false
+``` 
