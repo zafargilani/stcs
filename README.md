@@ -65,6 +65,19 @@ Commands:
 
 ## Troubleshooting
 
+If sqlite3 is not installed by bundle install, try (might need sudo):
+
+``` bash
+apt-get install sqlite3
+apt-get install libsqlite3-dev
+```
+
+If you see 'Could not find a JavaScript runtime', try (might need sudo):
+
+``` bash
+apt-get install nodejs
+```
+
 If your rake command gets stuck try:
 
 ``` bash  
@@ -77,7 +90,13 @@ If your requests are not getting through to the shortener:
 sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 ``` 
 
-if on request you get "Cannot render console", try adding the following to the "config/application.rb":
+If you want to use the default port 80 (might need sudo):
+
+``` bash
+bin/rails server -p 80
+```
+
+If on request you get "Cannot render console", try adding the following to the "config/application.rb":
 
 ``` ruby  
 config.web_console.whiny_requests = false
