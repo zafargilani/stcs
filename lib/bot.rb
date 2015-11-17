@@ -131,54 +131,62 @@ class BobTheBot < Ebooks::Bot
   end
 
   def post_tweet_copy(topic:"job opportunity", min_retweets:0)
-    tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
 
-    replacements = []
+    begin
+      tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
 
-    p "get urls preview"
-    p Scanner.get_urls_from_twitter(tw.text).inspect
+      replacements = []
 
-    p "running each"
-    Scanner.get_urls_from_twitter(tw.text).each do |url|
-      p "RestClient.get http://localhost:3000/gen/id?pixa=#{url}"
-      response = RestClient.get "http://localhost:3000/gen/id?pixa=#{url}"
-      p response.inspect
-      json = JSON.parse(response)
-      key= json["unique_key"]
-      p key
-      replacements << [url, "http://localhost:3000/#{key}"]
+      p "get urls preview"
+      p Scanner.get_urls_from_twitter(tw.text).inspect
+
+      p "running each"
+      Scanner.get_urls_from_twitter(tw.text).each do |url|
+        p "RestClient.get http://tnyurl.uk:3000/gen/i?k=666&u=#{url}"
+        response = RestClient.get "http://tnyurl.uk:3000/gen/i?k=666&u=#{url}"
+        p response.inspect
+        json = JSON.parse(response)
+        key= json["unique_key"]
+        p key
+        replacements << [url, "http://tnyurl.uk:3000/#{key}"]
+      end
+
+      txt = tw.text.dup
+
+      p txt
+      p replacements.inspect
+
+      replacements.each do |rep|
+        txt.gsub! rep[0], rep[1]
+      end 
+
+      p txt
+
+      if txt.size < 140 - "\#job \#recruiting".size
+        tweet("#{txt} \#job \#recruiting")
+      elsif tw.text.size < 140 - " \#job".size
+        tweet("#{txt} \#job")
+      else
+        tweet("#{txt} \#job")
+      end
+
+    rescue
+      #this happens if the tweet goes over 140 chars
+      post_tweet_copy(topic:topic, min_retweets:min_retweets)
     end
-
-    txt = tw.text.dup
-
-    p txt
-    p replacements.inspect
-
-    replacements.each do |rep|
-      txt.gsub! rep[0], rep[1]
-    end 
-
-    p txt
-
-    # if tw.text.size < 140 - "\#job \#recruiting".size
-    #   tweet("#{tw.text} \#job \#recruiting")
-    # elsif tw.text.size < 140 - " \#job".size
-    #   tweet("#{tw.text} \#job")
-    # else
-    #   tweet("#{tw.text} \#job")
-    # end
   end
 
   def on_startup
 
+    retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
     #post_tweet_copy
 
-    advanced_random_unfollow
+    #advanced_random_unfollow
 
     begin
       scheduler.every "1h" do
         for i in 0..1
-          retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:5))
+          retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
         end
         #post_tweet_copy
     end
