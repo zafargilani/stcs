@@ -65,19 +65,16 @@ Commands:
 
 ## Troubleshooting of rails server
 
-If sqlite3 is not installed by bundle install, try (might need sudo):
+If sqlite3 is not installed by bundle install, try:
 
 ``` bash
-apt-get update
-apt-get install sqlite3
-apt-get install libsqlite3-dev
+sudo apt-get install sqlite3 libsqlite3-dev
 ```
 
-If you see "Could not find a JavaScript runtime", try (might need sudo):
+If you see "Could not find a JavaScript runtime", try:
 
 ``` bash
-apt-get update
-apt-get install nodejs
+sudo apt-get install nodejs
 ```
 
 If your rake command gets stuck try:
@@ -86,13 +83,13 @@ If your rake command gets stuck try:
 spring stop
 ``` 
 
-If your requests are not getting through to the shortener:
+If your requests are not getting through to the shortener (assumes port 3000):
 
 ``` bash  
 sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 ``` 
 
-If you want to use the default port 80 (might need sudo):
+If you want to use the default port 80 and dont want to integrate with apache (might need sudo):
 
 ``` bash
 bin/rails server -p 80
@@ -114,13 +111,15 @@ config.web_console.whiny_requests = false
 
 Permissions:
 
+Note that although db folder is writable, access to it is rejected except for localhost:
+
 ``` bash
 cd stcs/shortener/
 sudo chmod -R 777 db/
 sudo chmod -R 755 public/
 ```
 
-use .htaccess (requires Apache2 version >= 2.4)
+Additionallly .htaccess can be used to limit the access to the db folder.
 
 ## Installing Ruby, RVM and bundler
 
@@ -131,7 +130,7 @@ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB8
 \curl -sSL https://get.rvm.io | bash -s stable --ruby
 source /home/cloud-user/.rvm/scripts/rvm
 rvm install 2.2
-rvm --default 2.2
+rvm use 2.2
 ruby -v
 ```
 
