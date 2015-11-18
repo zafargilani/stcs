@@ -142,8 +142,8 @@ class BobTheBot < Ebooks::Bot
 
       p "running each"
       Scanner.get_urls_from_twitter(tw.text).each do |url|
-        p "RestClient.get http://tnyurl.uk/gen/i?u=#{url}"
-        response = RestClient.get "http://tnyurl.uk/gen/i?u=#{url}"
+        p "RestClient.get http://localhost/gen/i?u=#{url}"
+        response = RestClient.get "http://localhost/gen/i?u=#{url}"
         p response.inspect
         json = JSON.parse(response)
         key= json["unique_key"]
