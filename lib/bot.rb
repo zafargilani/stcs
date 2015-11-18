@@ -142,13 +142,13 @@ class BobTheBot < Ebooks::Bot
 
       p "running each"
       Scanner.get_urls_from_twitter(tw.text).each do |url|
-        p "RestClient.get http://tnyurl.uk:3000/gen/i?k=666&u=#{url}"
-        response = RestClient.get "http://tnyurl.uk:3000/gen/i?k=666&u=#{url}"
+        p "RestClient.get http://tnyurl.uk/gen/i?u=#{url}"
+        response = RestClient.get "http://tnyurl.uk/gen/i?u=#{url}"
         p response.inspect
         json = JSON.parse(response)
         key= json["unique_key"]
         p key
-        replacements << [url, "http://tnyurl.uk:3000/#{key}"]
+        replacements << [url, "http://tnyurl.uk/#{key}"]
       end
 
       txt = tw.text.dup
@@ -178,8 +178,8 @@ class BobTheBot < Ebooks::Bot
 
   def on_startup
 
-    retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
-    #post_tweet_copy
+    #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
+    post_tweet_copy
 
     #advanced_random_unfollow
 
