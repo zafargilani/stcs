@@ -112,15 +112,15 @@ config.web_console.whiny_requests = false
 
 [Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
 
-Permissions (recommended): use .htaccess (requires Apache2 version >= 2.4)
-
-Permissions (backup):
+Permissions:
 
 ``` bash
 cd stcs/shortener/
 sudo chmod -R 777 db/
 sudo chmod -R 755 public/
 ```
+
+use .htaccess (requires Apache2 version >= 2.4)
 
 ## Installing Ruby, RVM and bundler
 
