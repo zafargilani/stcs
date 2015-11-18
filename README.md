@@ -104,15 +104,23 @@ If on request you get "Cannot render console", try adding the following to the "
 config.web_console.whiny_requests = false
 ``` 
 
-## Installation steps for Ruby, RVM and bundler (ignore if you have Ruby2.2 and bundler installed)
+## Deploying Rails on Apache2
 
-Install Ruby2.2 if you are running an older version (might need sudo):
+[How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
+
+[How to setup a Rails app with Apache and Passenger](https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6)
+
+[Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
+
+Permissions:
 
 ``` bash
-apt-get update
-apt-get install ruby2.2
-apt-get install ruby2.2-dev
+cd stcs/shortener/
+sudo chmod -R 777 db/
+sudo chmod -R 755 public/
 ```
+
+## Installing Ruby, RVM and bundler
 
 Install RVM and set default Ruby to version 2.2 (https://rvm.io/rvm/install):
 
@@ -120,15 +128,9 @@ Install RVM and set default Ruby to version 2.2 (https://rvm.io/rvm/install):
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 \curl -sSL https://get.rvm.io | bash -s stable --ruby
 source /home/cloud-user/.rvm/scripts/rvm
+rvm install 2.2
 rvm --default 2.2
 ruby -v
-```
-
-Install bundler (might need sudo):
-
-``` bash
-apt-get update
-apt-get install bundler
 ```
 
 If you see "Could not find 'bundler'" upon "bundle install", try: 
