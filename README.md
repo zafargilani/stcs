@@ -63,7 +63,22 @@ Commands:
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
-## Troubleshooting
+## Troubleshooting of rails server
+
+If sqlite3 is not installed by bundle install, try (might need sudo):
+
+``` bash
+apt-get update
+apt-get install sqlite3
+apt-get install libsqlite3-dev
+```
+
+If you see "Could not find a JavaScript runtime", try (might need sudo):
+
+``` bash
+apt-get update
+apt-get install nodejs
+```
 
 If your rake command gets stuck try:
 
@@ -77,8 +92,52 @@ If your requests are not getting through to the shortener:
 sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 ``` 
 
-if on request you get "Cannot render console", try adding the following to the "config/application.rb":
+If you want to use the default port 80 (might need sudo):
+
+``` bash
+bin/rails server -p 80
+```
+
+If on request you get "Cannot render console", try adding the following to the "config/application.rb":
 
 ``` ruby  
 config.web_console.whiny_requests = false
 ``` 
+
+## Deploying Rails on Apache2
+
+[How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
+
+[How to setup a Rails app with Apache and Passenger](https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6)
+
+[Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
+
+Permissions:
+
+``` bash
+cd stcs/shortener/
+sudo chmod -R 777 db/
+sudo chmod -R 755 public/
+```
+
+use .htaccess (requires Apache2 version >= 2.4)
+
+## Installing Ruby, RVM and bundler
+
+Install RVM and set default Ruby to version 2.2 (https://rvm.io/rvm/install):
+
+``` bash
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl -sSL https://get.rvm.io | bash -s stable --ruby
+source /home/cloud-user/.rvm/scripts/rvm
+rvm install 2.2
+rvm --default 2.2
+ruby -v
+```
+
+If you see "Could not find 'bundler'" upon "bundle install", try: 
+
+``` bash
+gem install bundle
+bundle update
+```
