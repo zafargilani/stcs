@@ -68,6 +68,7 @@ Commands:
 If sqlite3 is not installed by bundle install, try (might need sudo):
 
 ``` bash
+apt-get update
 apt-get install sqlite3
 apt-get install libsqlite3-dev
 ```
@@ -75,6 +76,7 @@ apt-get install libsqlite3-dev
 If you see "Could not find a JavaScript runtime", try (might need sudo):
 
 ``` bash
+apt-get update
 apt-get install nodejs
 ```
 
@@ -107,11 +109,12 @@ config.web_console.whiny_requests = false
 Install Ruby2.2 if you are running an older version (might need sudo):
 
 ``` bash
+apt-get update
 apt-get install ruby2.2
 apt-get install ruby2.2-dev
 ```
 
-Install RVM and set default Ruby to version 2.2:
+Install RVM and set default Ruby to version 2.2 (https://rvm.io/rvm/install):
 
 ``` bash
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
@@ -121,10 +124,11 @@ rvm --default 2.2
 ruby -v
 ```
 
-Install bundler:
+Install bundler (might need sudo):
 
 ``` bash
-sudo apt-get install bundler
+apt-get update
+apt-get install bundler
 ```
 
 If you see "Could not find 'bundler'" upon "bundle install", try: 
