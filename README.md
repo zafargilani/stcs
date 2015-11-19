@@ -19,7 +19,13 @@ cd stcs
 bundle install 
 ``` 
 
-Make sure to edit config.yml to set your tweeter account and storage details:
+To get started you should create a config.yml file. You can do it by copying our template:
+
+``` bash  
+cp config.yml.template config.yml
+``` 
+
+You should modify the config.yml to include your tweeter account and storage details:
 
 ``` yaml  
 #tweeter credentials
@@ -40,6 +46,21 @@ ruby stweeler.rb collect
 Running bot:
 ``` bash  
 ruby stweeler.rb launch_bot
+``` 
+
+The bot can be configured from the config.yml as well:
+
+``` yaml  
+# 15 follows each 15 min. i.e., 1440 follows per day
+follow_number: 15
+#in minutes
+follow_frequency: 15
+
+#will unfollow until the follower ratio is: 
+follower_ratio: 0.3
+#unfollow will occur every N hours:
+unfollow_frequency: 48
+
 ``` 
 
 Running shortener:
@@ -63,7 +84,7 @@ Commands:
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
-## Troubleshooting of rails server
+## Troubleshooting
 
 If sqlite3 is not installed by bundle install, try:
 
