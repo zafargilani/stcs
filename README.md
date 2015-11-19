@@ -1,9 +1,13 @@
 # stcs - Super Trully Cuning Stweeler!
 
 STCS is a tweeter bot platform for analysis.
+
 Its bots are able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%).
+
 It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags.
+
 Url redirection is useful to retrieve http header information, such as user agents, as well as to manage cookies.
+
 It can potentially be extended to work as a proxy, in order to inject functionality into linked pages.
 
 Functionalities:
