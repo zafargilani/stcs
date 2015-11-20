@@ -77,14 +77,10 @@ GEM
       bloomfilter-rb (>= 2.1.1)
       whatlanguage (>= 1.0.0)
     htmlentities (4.3.4)
-    http (0.9.8)
-      addressable (~> 2.3)
-      http-cookie (~> 1.0)
-      http-form_data (~> 1.0.1)
+    http (0.6.4)
       http_parser.rb (~> 0.6.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
-    http-form_data (1.0.1)
     http_parser.rb (0.6.0)
     i18n (0.7.0)
     json (1.8.3)
@@ -174,18 +170,18 @@ GEM
       em-twitter (~> 0.3)
       multi_json (~> 1.3)
       twitter (~> 5.5)
-    twitter (5.15.0)
+    twitter (5.14.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
-      equalizer (= 0.0.10)
+      equalizer (~> 0.0.9)
       faraday (~> 0.9.0)
-      http (>= 0.4, < 0.10)
+      http (~> 0.6.0)
       http_parser.rb (~> 0.6.0)
       json (~> 1.8)
       memoizable (~> 0.4.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    twitter_ebooks (3.1.1)
+    twitter_ebooks (3.1.2)
       engtagger
       fast-stemmer
       gingerice
@@ -194,7 +190,7 @@ GEM
       oauth
       pry
       rufus-scheduler
-      twitter (~> 5.15)
+      twitter (= 5.14)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unf (0.1.4)

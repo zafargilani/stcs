@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
 
   def log_agent
   	p cookies[:penis]
-  	p cookies[:penis].size
 
   	cookies[:penis] = {
 	   :value => '8====> !THE OWNER OF THIS COOKIE IS A FUCKIN DICK! <=====8',
