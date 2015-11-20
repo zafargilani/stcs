@@ -129,6 +129,29 @@ If on request you get "Cannot render console", try adding the following to the "
 config.web_console.whiny_requests = false
 ``` 
 
+If you get a connection timeout error from the use of the twitter gem, e.g.: 
+
+``` bash
+<...> "connection.rb:16:in `initialize': Connection timed out - connect(2) for "199.59.148.139" port  (Errno::ETIMEDOUT)"
+```
+
+Either try updating this project to a more recent version of twitter by switching the twitter version in the Gemfile or in case version 6 didnt come out yet, try the following (remember to switch <YOUR_STCS_FOLDER> by your stcs folder):
+
+``` bash
+git clone https://github.com/sferik/twitter.git twitter
+cd twitter
+vi lib/twitter/streaming/connection.rb
+# change this line : client = @tcp_socket_class.new(Resolv.getaddress(request.uri.host), request.uri.port)
+# to this: client = @tcp_socket_class.new(Resolv.getaddress(request.uri.host), 443)
+gem build twitter.gemspec
+gem install twitter-5.15.0.gem
+cd <YOUR_STCS_FOLDER>
+vi Gemfile
+#change the twitter version to 5.15.0
+bundle install
+```
+And now you should be able to execute stcs without the connection timeout error. 
+
 ## Deploying Rails on Apache2
 
 [How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
