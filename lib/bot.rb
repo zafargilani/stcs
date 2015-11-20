@@ -170,7 +170,7 @@ class BobTheBot < Ebooks::Bot
         txt = "#{txt} \#recruiting" if txt.size < 140 - " \#recruiting".size
       end
 
-      tweet(txt)
+      p tweet(txt).attrs
 
     rescue => e
       p "twitter error : #{e}"
@@ -182,7 +182,7 @@ class BobTheBot < Ebooks::Bot
   def on_startup
 
     #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
-    #post_tweet_copy
+    post_tweet_copy
 
     advanced_random_unfollow
 
