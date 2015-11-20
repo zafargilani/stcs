@@ -5,10 +5,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def log_agent
-  	p cookies[:penis]
+  	p cookies[:revisit]
 
-  	cookies[:penis] = {
-	   :value => '8====> !THE OWNER OF THIS COOKIE IS A FUCKIN DICK! <=====8',
+  	cookies[:revisit] = {
+	   :value => 'revisiting',
 	   :expires => 100.year.from_now
 	 }
 
