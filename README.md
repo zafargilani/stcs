@@ -168,6 +168,7 @@ Note that although db folder is writable, access to it is rejected except for lo
 cd stcs/shortener/
 sudo chmod -R 777 db/
 sudo chmod -R 755 public/
+sudo chmod -R 0664 log/
 ```
 
 Additionallly .htaccess can be used to limit the access to the db folder.
