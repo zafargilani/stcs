@@ -170,7 +170,7 @@ class BobTheBot < Ebooks::Bot
         txt = "#{txt} \#recruiting" if txt.size < 140 - " \#recruiting".size
       end
 
-      p tweet(txt).attrs
+      p tweet(txt)[:id]
 
     rescue => e
       p "twitter error : #{e}"
