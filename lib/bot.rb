@@ -162,15 +162,18 @@ class BobTheBot < Ebooks::Bot
 
       p txt
 
-      if txt.size < 140 - "\#job \#recruiting".size
-        tweet("#{txt} \#job \#recruiting")
-      elsif tw.text.size < 140 - " \#job".size
-        tweet("#{txt} \#job")
-      else
-        tweet("#{txt} \#job")
+      if not txt.include? '#job'
+        txt = "#{txt} \#job" if txt.size < 140 - " \#job".size
       end
 
-    rescue
+      if not txt.include? '#recruiting'
+        txt = "#{txt} \#recruiting" if txt.size < 140 - " \#recruiting".size
+      end
+
+      tweet(txt)
+
+    rescue => e
+      p "twitter error : #{e}"
       #this happens if the tweet goes over 140 chars
       post_tweet_copy(topic:topic, min_retweets:min_retweets)
     end
@@ -178,10 +181,10 @@ class BobTheBot < Ebooks::Bot
 
   def on_startup
 
-    #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
-    post_tweet_copy
+    retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
+    #post_tweet_copy
 
-    #advanced_random_unfollow
+    advanced_random_unfollow
 
     begin
       scheduler.every "1h" do

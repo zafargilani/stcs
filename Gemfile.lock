@@ -215,5 +215,8 @@ DEPENDENCIES
   thor
   tree
   tweetstream
-  twitter (~> 5.14)
+  twitter (~> 5.15)
   twitter_ebooks
+
+BUNDLED WITH
+   1.10.6
