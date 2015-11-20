@@ -129,7 +129,7 @@ If on request you get "Cannot render console", try adding the following to the "
 config.web_console.whiny_requests = false
 ``` 
 
-If you get a connection timeout error from the use of the twitter gem, e.g.: 
+If you get a [connection timeout error](https://github.com/sferik/twitter/issues/709) from the use of the twitter gem, e.g.: 
 
 ``` bash
 <...> "connection.rb:16:in `initialize': Connection timed out - connect(2) for "199.59.148.139" port  (Errno::ETIMEDOUT)"
