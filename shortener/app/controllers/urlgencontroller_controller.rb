@@ -3,11 +3,12 @@ require 'shortener'
 
 class UrlgencontrollerController < ApplicationController
   def generate
-	#Best security ever lulz
-	if params[:k].to_i != 666
-		render json: "Access Denied"
+
+	if request.remote_ip != "127.0.0.1"
+		render json: "fuck you #{request.remote_ip}"
 		return
 	end
+
   	short = Shortener::ShortenedUrl.generate(params[:u])
   	render json: short
   end
