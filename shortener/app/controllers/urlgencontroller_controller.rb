@@ -15,10 +15,14 @@ class UrlgencontrollerController < ApplicationController
 
   def show
 
+      begin
       #log tweet ids and url token for each copied tweet
       open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
         f.puts "#{id},#{key},#{txt}"
       }
+      rescue => e
+        p e
+      end
 
   	redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
   end
