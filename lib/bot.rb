@@ -181,7 +181,7 @@ class BobTheBot < Ebooks::Bot
 
   def on_startup
 
-    retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
+    #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
     #post_tweet_copy
 
     advanced_random_unfollow
@@ -191,7 +191,7 @@ class BobTheBot < Ebooks::Bot
         for i in 0..1
           retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
         end
-        #post_tweet_copy
+        post_tweet_copy
     end
 
     rescue => e
