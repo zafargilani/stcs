@@ -142,13 +142,13 @@ class BobTheBot < Ebooks::Bot
 
       p "running each"
       Scanner.get_urls_from_twitter(tw.text).each do |url|
-        p "RestClient.get http://tnyurl.uk:3000/gen/i?k=666&u=#{url}"
-        response = RestClient.get "http://tnyurl.uk:3000/gen/i?k=666&u=#{url}"
+        p "RestClient.get http://localhost/gen/i?u=#{url}"
+        response = RestClient.get "http://localhost/gen/i?u=#{url}"
         p response.inspect
         json = JSON.parse(response)
         key= json["unique_key"]
         p key
-        replacements << [url, "http://tnyurl.uk:3000/#{key}"]
+        replacements << [url, "http://tnyurl.uk/#{key}"]
       end
 
       txt = tw.text.dup
@@ -162,15 +162,18 @@ class BobTheBot < Ebooks::Bot
 
       p txt
 
-      if txt.size < 140 - "\#job \#recruiting".size
-        tweet("#{txt} \#job \#recruiting")
-      elsif tw.text.size < 140 - " \#job".size
-        tweet("#{txt} \#job")
-      else
-        tweet("#{txt} \#job")
+      if not txt.include? '#job'
+        txt = "#{txt} \#job" if txt.size < 140 - " \#job".size
       end
 
-    rescue
+      if not txt.include? '#recruiting'
+        txt = "#{txt} \#recruiting" if txt.size < 140 - " \#recruiting".size
+      end
+
+      p tweet(txt)[:id]
+
+    rescue => e
+      p "twitter error : #{e}"
       #this happens if the tweet goes over 140 chars
       post_tweet_copy(topic:topic, min_retweets:min_retweets)
     end
@@ -178,17 +181,17 @@ class BobTheBot < Ebooks::Bot
 
   def on_startup
 
-    retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
-    #post_tweet_copy
+    #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
+    post_tweet_copy
 
-    #advanced_random_unfollow
+    advanced_random_unfollow
 
     begin
       scheduler.every "1h" do
         for i in 0..1
           retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
         end
-        #post_tweet_copy
+        post_tweet_copy
     end
 
     rescue => e

@@ -1,13 +1,20 @@
 # stcs - Super Trully Cuning Stweeler!
 
-STCS is a tweeter bot that auto scales in terms of followers/friends with a ratio of 30%.
-In the process it is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags.
+STCS is a tweeter bot platform for analysis.
+
+Its bots are able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%).
+
+It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags.
+
+Url redirection is useful to retrieve http header information, such as user agents, as well as to manage cookies.
+
+It can potentially be extended to work as a proxy, in order to inject functionality into linked pages.
 
 Functionalities:
- * Streaming Tweet Collection System
- * Bot Functionality
- * URL analyzer
- * URL shortener
+ * Streaming Tweet Collection System - uses the stream apis to collect and dump user tweets
+ * Bot Functionality - manages a twitter account, following, retweeting, etc
+ * URL analyzer - provides algorithms to retrieve urls and currently some pocs of malware detection
+ * URL shortener - rails project to generate shortened urls and interact with the bot
 
 ## Getting started
 
@@ -19,7 +26,13 @@ cd stcs
 bundle install 
 ``` 
 
-Make sure to edit config.yml to set your tweeter account and storage details:
+To get started you should create a config.yml file. You can do it by copying our template:
+
+``` bash  
+cp config.yml.template config.yml
+``` 
+
+You should modify the config.yml to include your tweeter account and storage details:
 
 ``` yaml  
 #tweeter credentials
@@ -40,6 +53,21 @@ ruby stweeler.rb collect
 Running bot:
 ``` bash  
 ruby stweeler.rb launch_bot
+``` 
+
+The bot can be configured from the config.yml as well:
+
+``` yaml  
+# 15 follows each 15 min. i.e., 1440 follows per day
+follow_number: 15
+#in minutes
+follow_frequency: 15
+
+#will unfollow until the follower ratio is: 
+follower_ratio: 0.3
+#unfollow will occur every N hours:
+unfollow_frequency: 48
+
 ``` 
 
 Running shortener:
@@ -63,21 +91,18 @@ Commands:
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
-## Troubleshooting of rails server
+## Troubleshooting
 
-If sqlite3 is not installed by bundle install, try (might need sudo):
+If sqlite3 is not installed by bundle install, try:
 
 ``` bash
-apt-get update
-apt-get install sqlite3
-apt-get install libsqlite3-dev
+sudo apt-get install sqlite3 libsqlite3-dev
 ```
 
-If you see "Could not find a JavaScript runtime", try (might need sudo):
+If you see "Could not find a JavaScript runtime", try:
 
 ``` bash
-apt-get update
-apt-get install nodejs
+sudo apt-get install nodejs
 ```
 
 If your rake command gets stuck try:
@@ -86,13 +111,13 @@ If your rake command gets stuck try:
 spring stop
 ``` 
 
-If your requests are not getting through to the shortener:
+If your requests are not getting through to the shortener (assumes port 3000):
 
 ``` bash  
 sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 ``` 
 
-If you want to use the default port 80 (might need sudo):
+If you want to use the default port 80 and dont want to integrate with apache (might need sudo):
 
 ``` bash
 bin/rails server -p 80
@@ -104,6 +129,29 @@ If on request you get "Cannot render console", try adding the following to the "
 config.web_console.whiny_requests = false
 ``` 
 
+If you get a connection timeout error from the use of the twitter gem, e.g.: 
+
+``` bash
+<...> "connection.rb:16:in `initialize': Connection timed out - connect(2) for "199.59.148.139" port  (Errno::ETIMEDOUT)"
+```
+
+Either try updating this project to a more recent version of twitter by switching the twitter version in the Gemfile or in case version 6 didnt come out yet, try the following (remember to switch <YOUR_STCS_FOLDER> by your stcs folder):
+
+``` bash
+git clone https://github.com/sferik/twitter.git twitter
+cd twitter
+vi lib/twitter/streaming/connection.rb
+# change this line : client = @tcp_socket_class.new(Resolv.getaddress(request.uri.host), request.uri.port)
+# to this: client = @tcp_socket_class.new(Resolv.getaddress(request.uri.host), 443)
+gem build twitter.gemspec
+gem install twitter-5.15.0.gem
+cd <YOUR_STCS_FOLDER>
+vi Gemfile
+#change the twitter version to 5.15.0
+bundle install
+```
+And now you should be able to execute stcs without the connection timeout error. 
+
 ## Deploying Rails on Apache2
 
 [How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
@@ -114,11 +162,15 @@ config.web_console.whiny_requests = false
 
 Permissions:
 
+Note that although db folder is writable, access to it is rejected except for localhost:
+
 ``` bash
 cd stcs/shortener/
 sudo chmod -R 777 db/
 sudo chmod -R 755 public/
 ```
+
+Additionallly .htaccess can be used to limit the access to the db folder.
 
 ## Installing Ruby, RVM and bundler
 
@@ -129,7 +181,7 @@ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB8
 \curl -sSL https://get.rvm.io | bash -s stable --ruby
 source /home/cloud-user/.rvm/scripts/rvm
 rvm install 2.2
-rvm --default 2.2
+rvm use 2.2
 ruby -v
 ```
 
