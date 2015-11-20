@@ -3,16 +3,17 @@ require 'shortener'
 
 class UrlgencontrollerController < ApplicationController
   def generate
-	#Best security ever lulz
-	if params[:k].to_i != 666
-		render json: "Access Denied"
-		return
-	end
   	short = Shortener::ShortenedUrl.generate(params[:u])
   	render json: short
   end
 
   def show
+
+      #log tweet ids and url token for each copied tweet
+      open('clicks.txt', 'a') { |f|
+        f.puts "#{id},#{key},#{txt}"
+      }
+
   	redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
   end
 end

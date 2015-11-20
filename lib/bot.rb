@@ -170,7 +170,13 @@ class BobTheBot < Ebooks::Bot
         txt = "#{txt} \#recruiting" if txt.size < 140 - " \#recruiting".size
       end
 
-      p tweet(txt)[:id]
+      #note that this tweets the txt
+      id = tweet(txt).id
+
+      #log tweet ids and url token for each copied tweet
+      open('tweet_ids.txt', 'a') { |f|
+        f.puts "#{id},#{key},#{txt}"
+      }
 
     rescue => e
       p "twitter error : #{e}"
