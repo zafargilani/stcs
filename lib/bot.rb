@@ -132,6 +132,8 @@ class BobTheBot < Ebooks::Bot
 
   def post_tweet_copy(topic:"job opportunity", min_retweets:0)
 
+    keys = []
+
     begin
       tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
 
@@ -148,6 +150,7 @@ class BobTheBot < Ebooks::Bot
         json = JSON.parse(response)
         key= json["unique_key"]
         p key
+        keys << key
         replacements << [url, "http://tnyurl.uk/#{key}"]
       end
 
@@ -175,7 +178,7 @@ class BobTheBot < Ebooks::Bot
 
       #log tweet ids and url token for each copied tweet
       open('tweet_ids.txt', 'a') { |f|
-        f.puts "#{id},#{key},#{txt}"
+        f.puts "#{id},#{keys},#{txt}"
       }
 
     rescue => e

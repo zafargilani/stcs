@@ -17,7 +17,7 @@ class UrlgencontrollerController < ApplicationController
   def show
 
       begin
-        #log tweet ids and url token for each copied tweet
+        #log url click timestamp, tweet ids and url token for each copied tweet
         open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
           f.puts "#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}"
         }
@@ -27,4 +27,9 @@ class UrlgencontrollerController < ApplicationController
 
   	redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
   end
+
+  def index
+      render "generate"
+  end
+
 end
