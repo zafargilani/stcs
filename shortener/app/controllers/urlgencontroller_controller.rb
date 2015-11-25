@@ -26,4 +26,9 @@ class UrlgencontrollerController < ApplicationController
 
   	redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
   end
+
+  def index
+      render "generate"
+  end
+
 end
