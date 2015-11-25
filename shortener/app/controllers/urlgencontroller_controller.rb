@@ -16,9 +16,9 @@ class UrlgencontrollerController < ApplicationController
   def show
 
       begin
-        #log tweet ids and url token for each copied tweet
+        #log url click timestamp, tweet ids and url token for each copied tweet
         open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
-          f.puts "#{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}"
+          f.puts "#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}"
         }
       rescue => e
         p e
