@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   #get 'urlgencontroller/generate'
   get '/u/:id' => "shortener/shortened_urls#show"
+  #get '/:id' => "shortener/shortened_urls#show"
   get '/:id' => "urlgencontroller#show"
   get '/gen/:id' => "urlgencontroller#generate"
   get '/r/:id' => "urlgencontroller#redirect"
