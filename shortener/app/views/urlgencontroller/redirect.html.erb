@@ -1,8 +1,12 @@
 <div class="jumbotron">
   <div class="container">
 
+  	<img src="LOGO-strech.png" width="300"/>
+	   </div>
+</div>
+
+<div class="container">
 <!-- Run our code here-->
-<div id="example"></div>
 
 Welcome to TNYurl.uk!
 
@@ -10,8 +14,8 @@ Please wait while we redirect you in <%= @timer %> seconds...
 <!-- Please wait while we redirect you to <%= @url[:url] %> in <%= @timer %> seconds...-->
 <!-- Insert some timing here before redirection-->
 
-  </div>
 </div>
+<br><br>
 
 <!-- This will redirect to url of the token-->
 <meta http-equiv="refresh" content="<%= @timer %>; url=<%= @url[:url] %>" />
