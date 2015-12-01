@@ -156,8 +156,6 @@ And now you should be able to execute stcs without the connection timeout error.
 
 [How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
 
-[How to setup a Rails app with Apache and Passenger](https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6)
-
 [Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
 
 Permissions:
@@ -171,7 +169,15 @@ sudo chmod -R 755 public/
 sudo chmod -R 0664 log/
 ```
 
-Additionallly .htaccess can be used to limit the access to the db folder.
+If the Apache2 service fails to start (may be because something got messed up with Phusion Passenger), then do the following:
+
+``` bash
+bundle clean --force
+sudo gem install passenger
+sudo passenger-install-apache2-module
+bundle install
+sudo service apache2 start
+```
 
 ## Installing Ruby, RVM and bundler
 
