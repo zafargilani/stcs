@@ -152,6 +152,8 @@ bundle install
 ```
 And now you should be able to execute stcs without the connection timeout error. 
 
+Note: if shortener version is outdated then do the same for shortener, i.e.: clone, build, install.
+
 ## Deploying Rails on Apache2
 
 [How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
