@@ -24,6 +24,8 @@ class UrlgencontrollerController < ApplicationController
         p e
       end
 
+      p Shortener::ShortenedUrl.methods.sort
+
   	#redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
 
       token = Shortener::ShortenedUrl.extract_token(params[:id])
