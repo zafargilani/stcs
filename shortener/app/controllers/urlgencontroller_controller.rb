@@ -40,7 +40,7 @@ class UrlgencontrollerController < ApplicationController
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = `tail -n 1000 /home/aknahs/clicks.txt`
+    lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
     out = "["
 
     count_clicks = 1
@@ -66,11 +66,11 @@ class UrlgencontrollerController < ApplicationController
     render text: out 
   end
 
-    def jsongraph
+  def jsongraph
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = `tail -n 1000 /home/aknahs/clicks.txt`
+    lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
     out = "?(["
 
     count_clicks = 1
