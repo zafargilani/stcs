@@ -36,6 +36,71 @@ class UrlgencontrollerController < ApplicationController
       render "redirect"
   end
 
+
+  def vectorgraph
+
+    r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
+    rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
+    lines = `tail -n 1000 /home/aknahs/clicks.txt`
+    out = "["
+
+    count_clicks = 1
+    minute = -1
+
+    lines.each_line do |line|
+      next unless content = r.match(line)
+      time = rr.match(content[1])
+
+      if time[5].to_i == minute
+        count_clicks += 1
+      else
+        out << "[Date.UTC(#{time[1]},#{time[2]},#{time[3]},#{time[4]},#{time[5]},#{time[6]}),#{count_clicks}],"
+        minute = time[5].to_i
+        count_clicks = 1
+      end
+
+    end
+
+    out = out[0...-1]
+    out << "]"
+
+    render text: out 
+  end
+
+    def jsongraph
+
+    r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
+    rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
+    lines = `tail -n 1000 /home/aknahs/clicks.txt`
+    out = "?(["
+
+    count_clicks = 1
+    minute = -1
+
+    lines.each_line do |line|
+      next unless content = r.match(line)
+      time = rr.match(content[1])
+
+      if time[5].to_i == minute
+        count_clicks += 1
+      else
+        out << "[Date.UTC(#{time[1]},#{time[2]},#{time[3]},#{time[4]},#{time[5]},#{time[6]}),#{count_clicks}],"
+        minute = time[5].to_i
+        count_clicks = 1
+      end
+
+    end
+
+    out = out[0...-1]
+    out << "]);"
+
+    render text: out 
+  end
+
+  def getgraph
+    render "graph"
+  end
+
   def index
       render "generate"
   end
