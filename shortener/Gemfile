@@ -27,6 +27,8 @@ gem 'shortener'
 gem 'thin'
 gem 'user_agent_parser'
 
+gem 'em-websocket'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
