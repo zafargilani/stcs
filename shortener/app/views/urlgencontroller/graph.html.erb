@@ -23,9 +23,11 @@ $(function () {
 
                     setInterval(
                         function () {
-
-                            var data = $.getJSON("getjson/i", function(data) {
-                                $.each(obj, function(i,item) {
+			    console.log("new cycle")
+                            $.getJSON("getjson/i", function(data) {
+				console.log(JSON.stringify(data))								
+                                $.each(data, function(i,item) {
+				    console.log(item)
                                     series.addPoint(item, true, true);
                                 })
                             })                        
@@ -68,7 +70,7 @@ $(function () {
                 for (i = -999; i <= 0; i += 1) {
                     data.push([
                         time + i * 1000,
-                        Math.round(Math.random() * 100)
+                        0
                     ]);
                 }
                 return data;
