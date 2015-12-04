@@ -21,7 +21,7 @@ storage_folder: '/local/scratch/twitter-data'
 #--------------------------------------------
 
 #bot options
-#15 follows each 15 min. i.e., 1440 follows per day
+#15 (follow_number) follows each 15 min. (follow_frequency) i.e., 1440 follows per day
 follow_number: 15
 #per time interval (minutes)
 follow_frequency: 15
