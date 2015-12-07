@@ -18,7 +18,7 @@ class UrlgencontrollerController < ApplicationController
 
       begin
         #log url click timestamp, tweet ids and url token for each copied tweet
-        open('~/clicks/clicks.txt', 'a') { |f|
+        open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
           f.puts "#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}"
         }
       rescue => e
@@ -41,7 +41,7 @@ class UrlgencontrollerController < ApplicationController
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = `tail -n 1000 ~/clicks/clicks.txt`
+    lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
     out = "["
 
     count_clicks = 1
@@ -71,7 +71,7 @@ class UrlgencontrollerController < ApplicationController
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = `tail -n 1000 ~/clicks/clicks.txt`
+    lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
     out = "{["
 
     count_clicks = 1
