@@ -10,7 +10,7 @@ require_relative 'lib/bot'
 
 class MyCLI < Thor
 
-	desc "collect","Collect and store tweets using Twitter Sample"
+	desc "collect", "Collect and store tweets using Twitter Sample"
 	def collect()
 		conf = YAML.load_file('config.yml')
 

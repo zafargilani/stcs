@@ -152,7 +152,14 @@ bundle install
 ```
 And now you should be able to execute stcs without the connection timeout error. 
 
-Note: if shortener version is outdated then do the same for shortener, i.e.: clone, build, install.
+If shortener version is outdated or you see 'undefined method `extract_token'' then do the same for shortener, i.e.: clone, build, install:
+
+``` bash
+git clone https://github.com/jpmcgrath/shortener.git
+gem build shortener.gemspec
+gem install shortener-0.5.5.gem
+
+```
 
 ## Deploying Rails on Apache2
 
@@ -190,9 +197,16 @@ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB8
 \curl -sSL https://get.rvm.io | bash -s stable --ruby
 source /home/cloud-user/.rvm/scripts/rvm
 rvm install 2.2
-rvm use 2.2
+rvm --default use 2.2
 ruby -v
 ```
+
+Note: you can select to [use a different version of Ruby](https://rvm.io/rubies/default) on your system later on by:
+``` bash
+rvm list
+rvm use [version]
+ruby -v
+``` 
 
 If you see "Could not find 'bundler'" upon "bundle install", try: 
 
