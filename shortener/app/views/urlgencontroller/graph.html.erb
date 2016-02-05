@@ -86,7 +86,29 @@ $(function () {
         series : [{
             name : 'Random data',
             data : (function () {
-                // generate an array of random data
+
+                console.log("new cycle")
+
+                            
+                            
+                            var data = []
+                            $.ajax({
+                                url:   "getjson/i",
+                                dataType:   "json", 
+                                success:    function(data){
+                                    //alert("Got JSON"); // this statement doesn't show up
+                                    $.each(data.data, function(entryIndex, entry){
+                                        //console.log(entry)
+                                        data.push([entry.ts,entry.count]);
+                                    });
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                }  
+                            });
+                            return data;
+
+               /* // generate an array of random data
                 var data = [], time = (new Date()).getTime(), i;
 
                 for (i = -999; i <= 0; i += 1) {
@@ -95,7 +117,7 @@ $(function () {
                         0
                     ]);
                 }
-                return data;
+                return data;*/
             }())
         }]
     });
