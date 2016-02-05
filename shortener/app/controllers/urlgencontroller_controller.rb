@@ -72,7 +72,7 @@ class UrlgencontrollerController < ApplicationController
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
     lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
-    out = "{["
+    out = "?(["
 
     count_clicks = 1
     minute = -1
@@ -92,7 +92,7 @@ class UrlgencontrollerController < ApplicationController
     end
 
     out = out[0...-1]
-    out << "]}"
+    out << "]);"
 
     render text: out 
   end
