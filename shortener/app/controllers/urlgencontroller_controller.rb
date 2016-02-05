@@ -84,7 +84,9 @@ class UrlgencontrollerController < ApplicationController
       if time[5].to_i == minute
         count_clicks += 1
       else
-        out << "{\"ts\" : \"Date.UTC(#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i})\", \"count\" : #{count_clicks}},"
+        ts = DateTime.new(time[1],time[2],time[3],time[4],time[5],time[6],0)
+        p DateTime.now.strftime('%Q')
+        out << "{\"ts\" : \"#{ts.strftime('%Q')}\", \"count\" : #{count_clicks}},"
         minute = time[5].to_i
         count_clicks = 1
       end

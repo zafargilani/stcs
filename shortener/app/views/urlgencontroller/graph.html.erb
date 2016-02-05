@@ -21,6 +21,8 @@ $(function () {
                     // set up the updating of the chart each second
                     var series = this.series[0];
 
+                    alert(series.name)
+
                     setInterval(
                         function () {
 
@@ -28,7 +30,7 @@ $(function () {
 
                             $.ajax({
                                 url:   "getjson/i",
-                                dataType:   "json", // <== JSON-P request
+                                dataType:   "json", 
                                 success:    function(data){
                                     //alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.data, function(entryIndex, entry){
