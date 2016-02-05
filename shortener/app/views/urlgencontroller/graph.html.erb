@@ -31,8 +31,8 @@ $(function () {
                                 dataType:   "json", // <== JSON-P request
                                 success:    function(data){
                                     alert("Got JSON"); // this statement doesn't show up
-                                    $.each(data.result, function(entryIndex, entry){ // <=== Note, `data.results`, not j
-                                        console.log("entry")
+                                    $.each(data.data, function(entryIndex, entry){
+                                        console.log(entry)
                                     });
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
