@@ -30,9 +30,9 @@ $(function () {
                                 url:   "getjson/i",
                                 dataType:   "json", // <== JSON-P request
                                 success:    function(data){
-                                    alert("Got JSON"); // this statement doesn't show up
+                                    //alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.data, function(entryIndex, entry){
-                                        console.log(entry)
+                                        //console.log(entry)
                                         series.addPoint([entry.ts,entry.count], true, true);
                                     });
                                 },
