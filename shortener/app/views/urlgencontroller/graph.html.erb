@@ -19,9 +19,9 @@ $(function () {
                 load : function () {
 
                     // set up the updating of the chart each second
-                    var series = this.series[0];
+                    var ser = this.series[0];
 
-                    alert(series.name)
+                    alert(ser.name)
 
                     setInterval(
                         function () {
@@ -36,7 +36,7 @@ $(function () {
                                     //alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.data, function(entryIndex, entry){
                                         console.log([entry.ts,entry.count])
-                                        this.series[0].addPoint([entry.ts,entry.count], true, true);
+                                        ser.addPoint([entry.ts,entry.count], true, true);
                                     });
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
