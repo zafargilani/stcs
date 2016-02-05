@@ -23,13 +23,14 @@ $(function () {
 
                     setInterval(
                         function () {
-			    console.log("new cycle")
+	               console.log("new cycle")
                             $.getJSON("getjson/i", function(data) {
-				console.log(JSON.stringify(data))								
-                                $.each(data, function(i,item) {
-				    console.log(item)
-                                    series.addPoint(item, true, true);
-                                })
+			console.log("got json")
+                                        console.log(JSON.stringify(data))								
+                                      $.each(data, function(i,item) {
+			     console.log(item)
+                                            series.addPoint(item, true, true);
+                                       })
                             })                        
                     }, 1000);
                 }
