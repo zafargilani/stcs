@@ -72,7 +72,7 @@ class UrlgencontrollerController < ApplicationController
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
     lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
-    out = "?(["
+    out = "{ \"data\" : ["
 
     count_clicks = 1
     minute = -1
@@ -84,7 +84,7 @@ class UrlgencontrollerController < ApplicationController
       if time[5].to_i == minute
         count_clicks += 1
       else
-        out << "[Date.UTC(#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i}),#{count_clicks}],"
+        out << "{\"ts\" : \"Date.UTC(#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i})\", \"count\" : #{count_clicks}},"
         minute = time[5].to_i
         count_clicks = 1
       end
@@ -92,7 +92,7 @@ class UrlgencontrollerController < ApplicationController
     end
 
     out = out[0...-1]
-    out << "]);"
+    out << "]}"
 
     render text: out 
   end
