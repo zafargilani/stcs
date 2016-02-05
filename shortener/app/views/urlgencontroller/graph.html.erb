@@ -91,16 +91,18 @@ $(function () {
 
                             
                             
-                            var data = []
-                            $.ajax({
+                            var data = $.ajax({
                                 url:   "getjson/i",
                                 dataType:   "json", 
                                 success:    function(data){
                                     //alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.data, function(entryIndex, entry){
                                         //console.log(entry)
+                                        var data = []
                                         data.push([entry.ts,entry.count]);
+
                                     });
+                                    return data;
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                                     alert("Status: " + textStatus); alert("Error: " + errorThrown); 
