@@ -26,27 +26,30 @@ $(function () {
 
                             console.log("new cycle")
 
-                            /*$.ajax({
+                            $.ajax({
                                 url:   "getjson/i",
-                                dataType:   "json", // <== JSON-P request
+                                dataType:   "jsonp", // <== JSON-P request
                                 success:    function(data){
                                     alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.result, function(entryIndex, entry){ // <=== Note, `data.results`, not j
                                         console.log("entry")
                                     });
                                 }
+                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                }  
                             });
-                            */
+                            
 	               
 
-                            $.getJSON("getjson/i", function(data) {
+                            /*$.getJSON("getjson/i", function(data) {
 			console.log("got json")
                                         console.log(JSON.stringify(data))								
                                       $.each(data, function(i,item) {
 			     console.log(item)
                                             series.addPoint(item, true, true);
                                        })
-                            })                        
+                            })*/                        
                     }, 10000);
                 }
             }
