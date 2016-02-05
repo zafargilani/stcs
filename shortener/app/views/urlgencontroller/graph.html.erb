@@ -34,7 +34,7 @@ $(function () {
                                     $.each(data.result, function(entryIndex, entry){ // <=== Note, `data.results`, not j
                                         console.log("entry")
                                     });
-                                }
+                                },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                                     alert("Status: " + textStatus); alert("Error: " + errorThrown); 
                                 }  
