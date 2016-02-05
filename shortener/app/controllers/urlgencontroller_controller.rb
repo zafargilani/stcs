@@ -71,7 +71,7 @@ class UrlgencontrollerController < ApplicationController
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
+    lines = `tail -n 100 /home/cloud-user/clicks/clicks.txt`
     out = "{ \"data\" : ["
 
     count_clicks = 1
