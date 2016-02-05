@@ -28,7 +28,7 @@ $(function () {
 
                             $.ajax({
                                 url:   "getjson/i",
-                                dataType:   "jsonp", // <== JSON-P request
+                                dataType:   "json", // <== JSON-P request
                                 success:    function(data){
                                     alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.result, function(entryIndex, entry){ // <=== Note, `data.results`, not j
