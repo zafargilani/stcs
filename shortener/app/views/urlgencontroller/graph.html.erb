@@ -33,6 +33,7 @@ $(function () {
                                     alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.data, function(entryIndex, entry){
                                         console.log(entry)
+                                        series.addPoint([entry.ts,entry.count], true, true);
                                     });
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
