@@ -23,15 +23,30 @@ $(function () {
 
                     setInterval(
                         function () {
-	               console.log("new cycle")
-                            $.getJSON("getjson/i", function(data) {
+
+                            console.log("new cycle")
+
+                            $.ajax({
+                                url:   getjson/i     ,
+                                dataType:   "jsonp", // <== JSON-P request
+                                success:    function(data){
+                                    alert("Got JSON"); // this statement doesn't show up
+                                    $.each(data.result, function(entryIndex, entry){ // <=== Note, `data.results`, not j
+                                        console.log("entry")
+                                    });
+                                }
+                            });
+
+	               
+
+                            /*$.getJSON("getjson/i", function(data) {
 			console.log("got json")
                                         console.log(JSON.stringify(data))								
                                       $.each(data, function(i,item) {
 			     console.log(item)
                                             series.addPoint(item, true, true);
                                        })
-                            })                        
+                            })*/                        
                     }, 1000);
                 }
             }
