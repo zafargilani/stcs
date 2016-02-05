@@ -27,6 +27,7 @@ $(function () {
                         function () {
 
                             console.log("new cycle")
+                            console.log((new Date()).getTime())
 
                             $.ajax({
                                 url:   "getjson/i",
@@ -34,7 +35,7 @@ $(function () {
                                 success:    function(data){
                                     //alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.data, function(entryIndex, entry){
-                                        //console.log(entry)
+                                        console.log([entry.ts,entry.count])
                                         series.addPoint([entry.ts,entry.count], true, true);
                                     });
                                 },
@@ -80,12 +81,12 @@ $(function () {
         },
 
         exporting: {
-            enabled: false
+            enabled: true
         },
 
         series : [{
             name : 'Random data',
-            data : []
+            data : [[0,0]]
             // data : (function () {
 
             //     console.log("new cycle")
