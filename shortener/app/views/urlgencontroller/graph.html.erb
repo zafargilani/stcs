@@ -86,7 +86,27 @@ $(function () {
 
         series : [{
             name : 'Random data',
-            data : [[0,0]]
+            data : (function(){
+                var data = $.ajax({
+                                url:   "getjson/i",
+                                dataType:   "json", 
+                                success:    function(data){
+                                    var data = []
+                                    //alert("Got JSON"); // this statement doesn't show up
+                                    $.each(data.data, function(entryIndex, entry){
+                                        console.log([entry.ts,entry.count])
+                                        data.push([entry.ts,entry.count]);
+                                        
+                                    });
+
+                                    return data;
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                }  
+                            });
+                return data;
+            }())
             // data : (function () {
 
             //     console.log("new cycle")
