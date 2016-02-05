@@ -29,28 +29,22 @@ $(function () {
                             console.log("new cycle")
                             console.log((new Date()).getTime())
 
-                            var newseries = $.ajax({
+                            $.ajax({
                                 url:   "getjson/i",
                                 dataType:   "json", 
                                 success:    function(data){
-                                    var nser = []
                                     //alert("Got JSON"); // this statement doesn't show up
                                     $.each(data.data, function(entryIndex, entry){
-                                        //console.log([entry.ts,entry.count])
-                                        nser.push([entry.ts,entry.count])
-                                        //series.addPoint([entry.ts,entry.count], true, true);
+                                        console.log([entry.ts,entry.count])
+                                        this.series[0].addPoint([entry.ts,entry.count], true, true);
                                     });
-                                    return nser;
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                                     alert("Status: " + textStatus); alert("Error: " + errorThrown); 
                                 }  
                             });
                             
-	               for (index = 0; index < newseries.length; ++index) {
-                                console.log(newseries[index]);
-                                series.addPoint(newseries[index],true,true)
-                            }
+	               
 
                             /*$.getJSON("getjson/i", function(data) {
 			console.log("got json")
@@ -92,7 +86,7 @@ $(function () {
 
         series : [{
             name : 'Random data',
-            data : [[0,0],[0,1]]
+            data : [[0,0]]
             // data : (function () {
 
             //     console.log("new cycle")
