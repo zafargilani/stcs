@@ -4,6 +4,102 @@
 <div id="container" style="height: 400px; min-width: 310px"></div>
 
 <script>
+
+$(function () {
+
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
+    // Create the chart
+    $('#container').highcharts('StockChart', {
+        chart : {
+            events : {
+                load : function () {
+
+			var series = this.series[0];
+
+			setInterval(function () {
+    				$.getJSON("getjson/i", function(data) {
+                                console.log("got json")
+                                console.log(data)                                                               
+                                $.each(data.data, function(i,item) {
+                                    console.log(item)
+					console.log([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]])
+                                        //var s = $('#container').highcharts().series
+					shift = series.data.length > 20;
+                                        series.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]], true, shift);
+                                    })
+                                })
+                                .done(function() {
+                                        console.log( "second success" );
+                                })
+                                .fail( function(d, textStatus, error) {
+                                        console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+                                })
+                                .always(function() {
+                                        console.log( "complete" );
+                                })                 
+		
+                    // set up the updating of the chart each second
+                    	/*var series = this.series[0];
+                    	setInterval(function () {
+                        var x = (new Date()).getTime(), // current time
+                            y = Math.round(Math.random() * 100);
+                        series.addPoint([x, y], true, true);
+			*/
+                    }, 10000);
+                }
+            }
+        },
+
+        rangeSelector: {
+            buttons: [{
+                count: 1,
+                type: 'minute',
+                text: '1M'
+            }, {
+                count: 5,
+                type: 'minute',
+                text: '5M'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            inputEnabled: false,
+            selected: 0
+        },
+
+        title : {
+            text : 'Live random data'
+        },
+
+        exporting: {
+            enabled: false
+        },
+
+        series : [{
+            name : 'Random data',
+            data : []
+		/*(function () {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+
+                for (i = -999; i <= 0; i += 1) {
+                    data.push([
+                        time + i * 1000,
+                        Math.round(Math.random() * 100)
+                    ]);
+                }
+                return data;
+            }())*/
+        }]
+    });
+
+});
+/*
 $(function () {
 
     Highcharts.setOptions({
@@ -21,38 +117,16 @@ $(function () {
                     // set up the updating of the chart each second
                     var ser = this.series[0];
 
-                    alert(ser.name)
-
                     setInterval(
                         function () {
-
-                            console.log("new cycle")
-                            console.log((new Date()).getTime())
-
-/*                            $.ajax({
-                                url:   "getjson/i",
-                                dataType:   "json", 
-                                success:    function(data){
-                                    //alert("Got JSON"); // this statement doesn't show up
-                                    $.each(data.data, function(entryIndex, entry){
-                                        console.log([entry.ts,entry.count])
-                                        ser.addPoint([entry.ts,entry.count], true, true);
-                                    });
-                                },
-                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-                                }  
-                            });
-                            
-*/	               
 
                         var json = $.getJSON("getjson/i", function(data) {
 				console.log("got json")
                                 console.log(data)								
                                 $.each(data.data, function(i,item) {
 				    console.log(item)
-                                	var series = $('#container').highcharts().series[0]
-				      series.addPoint(item, true, true);
+                                	var s = $('#container').highcharts().series
+			      		s.addPoint([new Date(item[0]).getTime(),item[1]], true, true);
                                     })
                             	})
 				.done(function() {
@@ -91,63 +165,17 @@ $(function () {
         },
 
         exporting: {
-            enabled: true
+            enabled: false
         },
 
-        series : [{
+        series : {
             name : 'Random data',
-           /* data : (function(){
-                var data = $.ajax({
-                                url:   "getjson/i",
-                                dataType:   "json", 
-                                success:    function(data){
-                                    var data = []
-                                    //alert("Got JSON"); // this statement doesn't show up
-                                    $.each(data.data, function(entryIndex, entry){
-                                        console.log([entry.ts,entry.count])
-                                        data.push([entry.ts,entry.count]);
-                                        
-                                    });
-
-                                    return data;
-                                },
-                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-                                }  
-                            });
-                return data;
-            }())
-*/         
-   // data : (function () {
-
-            //     console.log("new cycle")
-
-                            
-                            
-            //                 var data = $.ajax({
-            //                     url:   "getjson/i",
-            //                     dataType:   "json", 
-            //                     success:    function(data){
-            //                         //alert("Got JSON"); // this statement doesn't show up
-            //                         $.each(data.data, function(entryIndex, entry){
-            //                             //console.log(entry)
-            //                             var data = []
-            //                             data.push([entry.ts,entry.count]);
-
-            //                         });
-            //                         return data;
-            //                     },
-            //                     error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            //                         alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-            //                     }  
-            //                 });
-            //                 return data;
-	data : []
-     
-        }]
+	    data : [[Date.UTC(2016,2,7,22,13,0,0),0]]
+	}     
     });
 
 });
+*/
 </script>
 
 
