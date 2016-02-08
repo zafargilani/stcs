@@ -1,18 +1,170 @@
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container" style="height: 400px; min-width: 310px"></div>
 
 <script>
 $(function () {
-    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
 
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
+    // Create the chart
+    $('#container').highcharts('StockChart', {
+        chart : {
+            events : {
+                load : function () {
+
+                    // set up the updating of the chart each second
+                    var ser = this.series[0];
+
+                    alert(ser.name)
+
+                    setInterval(
+                        function () {
+
+                            console.log("new cycle")
+                            console.log((new Date()).getTime())
+
+/*                            $.ajax({
+                                url:   "getjson/i",
+                                dataType:   "json", 
+                                success:    function(data){
+                                    //alert("Got JSON"); // this statement doesn't show up
+                                    $.each(data.data, function(entryIndex, entry){
+                                        console.log([entry.ts,entry.count])
+                                        ser.addPoint([entry.ts,entry.count], true, true);
+                                    });
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                }  
+                            });
+                            
+*/	               
+
+                        var json = $.getJSON("getjson/i", function(data) {
+				console.log("got json")
+                                console.log(data)								
+                                $.each(data.data, function(i,item) {
+				    console.log(item)
+                                	var series = $('#container').highcharts().series[0]
+				      series.addPoint(item, true, true);
+                                    })
+                            	})
+				.done(function() {
+    					console.log( "second success" );
+  				})
+  				.fail( function(d, textStatus, error) {
+        				console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+    				})
+				.always(function() {
+    					console.log( "complete" );
+  				})                        
+                    }, 10000);
+                }
+            }
+        },
+
+        rangeSelector: {
+            buttons: [{
+                count: 1,
+                type: 'minute',
+                text: '1M'
+            }, {
+                count: 5,
+                type: 'minute',
+                text: '5M'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            inputEnabled: false,
+            selected: 0
+        },
+
+        title : {
+            text : 'Live random data'
+        },
+
+        exporting: {
+            enabled: true
+        },
+
+        series : [{
+            name : 'Random data',
+           /* data : (function(){
+                var data = $.ajax({
+                                url:   "getjson/i",
+                                dataType:   "json", 
+                                success:    function(data){
+                                    var data = []
+                                    //alert("Got JSON"); // this statement doesn't show up
+                                    $.each(data.data, function(entryIndex, entry){
+                                        console.log([entry.ts,entry.count])
+                                        data.push([entry.ts,entry.count]);
+                                        
+                                    });
+
+                                    return data;
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                }  
+                            });
+                return data;
+            }())
+*/         
+   // data : (function () {
+
+            //     console.log("new cycle")
+
+                            
+                            
+            //                 var data = $.ajax({
+            //                     url:   "getjson/i",
+            //                     dataType:   "json", 
+            //                     success:    function(data){
+            //                         //alert("Got JSON"); // this statement doesn't show up
+            //                         $.each(data.data, function(entryIndex, entry){
+            //                             //console.log(entry)
+            //                             var data = []
+            //                             data.push([entry.ts,entry.count]);
+
+            //                         });
+            //                         return data;
+            //                     },
+            //                     error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            //                         alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+            //                     }  
+            //                 });
+            //                 return data;
+	data : []
+     
+        }]
+    });
+
+});
+</script>
+
+
+<!--
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+<div id="container" style="height: 400px; min-width: 310px"></div>
+
+<script>
+$(function () {
         $('#container').highcharts({
             chart: {
                 zoomType: 'x'
             },
             title: {
-                text: 'CLick rate over time'
+                text: 'Clicks over time'
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -23,7 +175,7 @@ $(function () {
             },
             yAxis: {
                 title: {
-                    text: 'Click rate'
+                    text: 'Number of clicks'
                 }
             },
             legend: {
@@ -58,10 +210,10 @@ $(function () {
 
             series: [{
                 type: 'area',
-                name: 'Clicks',
-                data: data
+                name: 'USD to EUR',
+                data: <%= @data %>
             }]
-        });
     });
 });
 </script>
+-->
