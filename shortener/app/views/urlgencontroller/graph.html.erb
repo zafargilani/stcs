@@ -238,13 +238,13 @@ $(function () {
 			var series = this.series[0];
 
 			//setInterval(
-			function getData() {
-    				$.getJSON("getjson/i", function(data) {
-                                console.log("got json")
-                                console.log(data)                                                               
+			function getData(location) {
+    				$.getJSON(location, function(data) {
+//                                console.log("got json")
+  //                              console.log(data)                                                               
                                 $.each(data.data, function(i,item) {
-                                    console.log(item)
-					console.log([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]])
+    //                                console.log(item)
+//					console.log([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]])
                                         //var s = $('#container').highcharts().series
 					shift = series.data.length > 100;
                                         series.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]], true, shift);
@@ -260,7 +260,7 @@ $(function () {
                                         console.log( "complete" );
                                 })
 
-				setTimeout(getData, 1000); //Dont lower this to not overload the server 			                 
+				setTimeout(getData, 10000, "getjson"); //Dont lower this to not overload the server 			                 
 		
                     // set up the updating of the chart each second
                     	/*var series = this.series[0];
@@ -270,7 +270,7 @@ $(function () {
                         series.addPoint([x, y], true, true);
 			*/
                     }
-		    getData();
+		    getData("getlongjson");
 			//, 10000);
                 }
             }

@@ -68,10 +68,18 @@ class UrlgencontrollerController < ApplicationController
   end
 
   def jsongraph
+	graphhelper(100)
+  end
+
+  def longjsongraph
+	graphhelper(500)
+  end
+
+  def graphhelper(numberclicks)
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = `tail -n 100 /home/cloud-user/clicks/clicks.txt`
+    lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
     out = "{\"data\" : ["
     #out = "?(["
 
