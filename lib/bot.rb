@@ -49,31 +49,12 @@ class BobTheBot < Ebooks::Bot
   def random_follow(number_of_users:10)
     p "Following #{number_of_users} users..."
     users = @collector.dump_sample_users(number_of_users:number_of_users)
- 
-    return if users == nil
-
-    users.each do |user|
-      follow(user)
-    end
-  end
-
-  def advanced_random_follow(number_of_users:10)
-    number_of_users = number_of_users*100
-    p "Checking #{number_of_users} users (to follow only those with language = english)..."
-    users = @collector.dump_sample_users(number_of_users:number_of_users)
 
     return if users == nil
 
-    user_count = 0
     users.each do |user|
-      if user_count < @follow_number.to_i
-        if user.language.to_s == "english"
-          follow(user)
-          user_count += 1
-        end
-      end
+        follow(user)
     end
-    p "Now following #{user_count} more users out of #{number_of_users} checked for language = english..."
   end
 
   def advanced_random_follow(number_of_users:10)
@@ -302,5 +283,6 @@ class BobTheBot < Ebooks::Bot
     # follow(user.screen_name)
   end
 end
+
 
 
