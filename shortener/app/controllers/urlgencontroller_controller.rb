@@ -108,8 +108,12 @@ class UrlgencontrollerController < ApplicationController
    render :json => out # :callback => params[:callback] #jsonp
   end
 
-  def getgraph
-    render "graph"
+  def getclicks
+    render "clicks"
+  end
+  
+  def getbotornot
+    render "botornot"
   end
 
   def index
