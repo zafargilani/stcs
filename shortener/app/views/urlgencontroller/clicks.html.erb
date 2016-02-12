@@ -1,0 +1,252 @@
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+<div id="container" style="height: 400px; min-width: 310px"></div>
+
+<script>
+
+$(function () {
+
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
+    // Create the chart
+    $('#container').highcharts('StockChart', {
+        chart : {
+            events : {
+                load : function () {
+
+			var series = this.series[0];
+
+			//setInterval(
+			function getData(location) {
+    				$.getJSON(location, function(data) {
+//                                console.log("got json")
+  //                              console.log(data)                                                               
+                                $.each(data.data, function(i,item) {
+    //                                console.log(item)
+//					console.log([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]])
+                                        //var s = $('#container').highcharts().series
+					shift = series.data.length > 100;
+                                        series.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]], true, shift);
+                                    })
+                                })
+                                .done(function() {
+                                        console.log( "second success" );
+                                })
+                                .fail( function(d, textStatus, error) {
+                                        console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+                                })
+                                .always(function() {
+                                        console.log( "complete" );
+                                })
+
+				setTimeout(getData, 1000, "getjson"); //Dont lower this to not overload the server 			                 
+		
+                    // set up the updating of the chart each second
+                    	/*var series = this.series[0];
+                    	setInterval(function () {
+                        var x = (new Date()).getTime(), // current time
+                            y = Math.round(Math.random() * 100);
+                        series.addPoint([x, y], true, true);
+			*/
+                    }
+		    getData("getlongjson");
+			//, 10000);
+                }
+            }
+        },
+
+        rangeSelector: {
+            buttons: [{
+                count: 1,
+                type: 'minute',
+                text: '1M'
+            }, {
+                count: 5,
+                type: 'minute',
+                text: '5M'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            inputEnabled: false,
+            selected: 0
+        },
+
+        title : {
+            text : 'Stweeler URL clicks per minute'
+        },
+
+        exporting: {
+            enabled: true
+        },
+
+        series : [{
+            name : 'Random data',
+            data : []
+		/*(function () {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+
+                for (i = -999; i <= 0; i += 1) {
+                    data.push([
+                        time + i * 1000,
+                        Math.round(Math.random() * 100)
+                    ]);
+                }
+                return data;
+            }())*/
+        }]
+    });
+
+});
+/*
+$(function () {
+
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
+    // Create the chart
+    $('#container').highcharts('StockChart', {
+        chart : {
+            events : {
+                load : function () {
+
+                    // set up the updating of the chart each second
+                    var ser = this.series[0];
+
+                    setInterval(
+                        function () {
+
+                        var json = $.getJSON("getjson/i", function(data) {
+				console.log("got json")
+                                console.log(data)								
+                                $.each(data.data, function(i,item) {
+				    console.log(item)
+                                	var s = $('#container').highcharts().series
+			      		s.addPoint([new Date(item[0]).getTime(),item[1]], true, true);
+                                    })
+                            	})
+				.done(function() {
+    					console.log( "second success" );
+  				})
+  				.fail( function(d, textStatus, error) {
+        				console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+    				})
+				.always(function() {
+    					console.log( "complete" );
+  				})                        
+                    }, 10000);
+                }
+            }
+        },
+
+        rangeSelector: {
+            buttons: [{
+                count: 1,
+                type: 'minute',
+                text: '1M'
+            }, {
+                count: 5,
+                type: 'minute',
+                text: '5M'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            inputEnabled: false,
+            selected: 0
+        },
+
+        title : {
+            text : 'Live random data'
+        },
+
+        exporting: {
+            enabled: false
+        },
+
+        series : {
+            name : 'Random data',
+	    data : [[Date.UTC(2016,2,7,22,13,0,0),0]]
+	}     
+    });
+
+});
+*/
+</script>
+
+
+<!--
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+<div id="container" style="height: 400px; min-width: 310px"></div>
+
+<script>
+$(function () {
+        $('#container').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Clicks over time'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of clicks'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'USD to EUR',
+                data: <%= @data %>
+            }]
+    });
+});
+</script>
+-->
