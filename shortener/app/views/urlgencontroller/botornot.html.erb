@@ -4,73 +4,80 @@
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <script>
-
 $(function () {
+
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
     $('#container').highcharts({
-        chart: {
-            type: 'column'
+        chart : {
+            events : {
+                load : function () {
+
+			var series0 = this.series[0];
+			var series1 = this.series[1];
+
+			function getData(location) {
+    				$.getJSON(location, function(data) {
+                                $.each(data.data, function(i,item) {
+					shift0 = series0.data.length > 100;
+					shift1 = series1.data.length > 100;
+                                        series0.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]], true, shift0);
+                                        series1.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[8]], true, shift1);
+                                    })
+                                })
+                                .done(function() {
+                                        console.log( "second success" );
+                                })
+                                .fail( function(d, textStatus, error) {
+                                        console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+                                })
+                                .always(function() {
+                                        console.log( "complete" );
+                                })
+
+				setTimeout(getData, 1000, "getjson4botornot"); //Dont lower this to not overload the server 			                 
+                    }
+		    getData("getjson4botornot");
+                }
+            }
+        },
+        exporting: {
+            enabled: true
         },
         title: {
-            text: 'Monthly Average Rainfall'
+            text: 'Stweeler Bots vs. Non-bots',
+            x: -20 //center
         },
         subtitle: {
-            text: 'Source: WorldClimate.com'
-        },
-        xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ],
-            crosshair: true
+            text: 'Source: Stweeler data',
+            x: -20
         },
         yAxis: {
-            min: 0,
             title: {
-                text: 'Rainfall (mm)'
+                text: 'Bot or non-bot'
             }
         },
         tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
+            valueSuffix: ''
         },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        series: [{
-            name: 'Tokyo',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
+        series : [{
+            name : 'Bot',
+            data : []
         }, {
-            name: 'New York',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-        }, {
-            name: 'London',
-            data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-        }, {
-            name: 'Berlin',
-            data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
+            name : 'Non-bot',
+            data : []
         }]
     });
 });
-
 </script>
+

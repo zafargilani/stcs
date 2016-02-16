@@ -108,6 +108,37 @@ class UrlgencontrollerController < ApplicationController
    render :json => out # :callback => params[:callback] #jsonp
   end
 
+  def json4botornotgraph
+    r = /bot/ 
+    rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
+    lines = %x(tail -n #{500} /home/cloud-user/clicks/clicks.txt)
+    out = "{\"data\" : ["
+
+    count_bots = 0
+    count_nonbots = 500
+    minute = -1
+
+    lines.each_line do |line|
+      next unless content = r.match(line)
+      time = rr.match(content[1])
+
+      if time[5].to_i == minute
+        count_bots += 1
+        count_nonbots -= 1
+      else
+        out << "[#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i},0,#{count_bots},#{count_nonbots}],"
+        minute = time[5].to_i
+        count_bots = 0
+        count_nonbots = 500
+      end
+    end
+
+    out = out[0...-1]
+    out << "]}"
+
+    render :json => out
+  end
+
   def getclicks
     render "clicks"
   end
