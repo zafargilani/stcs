@@ -67,15 +67,15 @@ class UrlgencontrollerController < ApplicationController
     render json: out 
   end
 
-  def jsongraph
-	graphhelper(100)
+  def jsongraph4clicks
+	clicksgraphhelper(100)
   end
 
-  def longjsongraph
-	graphhelper(500)
+  def longjsongraph4clicks
+	clicksgraphhelper(500)
   end
 
-  def graphhelper(numberclicks)
+  def clicksgraphhelper(numberclicks)
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/

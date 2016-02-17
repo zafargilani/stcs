@@ -16,8 +16,8 @@ Rails.application.routes.draw do
   get '/:id' => "urlgencontroller#show"
   get '/gen/:id' => "urlgencontroller#generate" #of the form /gen/i?u=#{url}
   get '/r/:id' => "urlgencontroller#redirect"
-  get '/graph/getjson' => "urlgencontroller#jsongraph"
-  get '/graph/getlongjson' => "urlgencontroller#longjsongraph"
+  get '/graph/getjson4clicks' => "urlgencontroller#jsongraph4clicks"
+  get '/graph/getlongjson4clicks' => "urlgencontroller#longjsongraph4clicks"
   get '/graph/clicks' => "urlgencontroller#getclicks"
   get '/graph/getjson4botornot' => "urlgencontroller#jsongraph4botornot"
   get '/graph/getlongjson4botornot' => "urlgencontroller#longjsongraph4botornot"
