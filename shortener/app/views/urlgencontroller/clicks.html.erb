@@ -60,25 +60,13 @@ $(function () {
             }
         },
 
-        rangeSelector: {
-            buttons: [{
-                count: 1,
-                type: 'minute',
-                text: '1M'
-            }, {
-                count: 5,
-                type: 'minute',
-                text: '5M'
-            }, {
-                type: 'all',
-                text: 'All'
-            }],
-            inputEnabled: false,
-            selected: 0
-        },
-
         title : {
             text : 'Stweeler URL clicks per minute'
+        },
+
+        subtitle: {
+            text: 'Source: Stweeler data',
+            x: -20
         },
 
         exporting: {
@@ -86,7 +74,7 @@ $(function () {
         },
 
         series : [{
-            name : 'Random data',
+            name : 'Clicks',
             data : []
 		/*(function () {
                 // generate an array of random data

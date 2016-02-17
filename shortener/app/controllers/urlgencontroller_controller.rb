@@ -108,10 +108,18 @@ class UrlgencontrollerController < ApplicationController
    render :json => out # :callback => params[:callback] #jsonp
   end
 
-  def json4botornotgraph
-    r = /bot/ 
+  def jsongraph4botornot
+    botgraphhelper(100)
+  end
+
+  def longjsongraph4botornot
+    botgraphhelper(500)
+  end
+
+  def botgraphhelper(numberclicks) 
+    r = /^([^,]*),(.+bot.+)$/ 
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = %x(tail -n #{500} /home/cloud-user/clicks/clicks.txt)
+    lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
     out = "{\"data\" : ["
 
     count_bots = 0

@@ -1,5 +1,6 @@
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<!--script src="https://code.highcharts.com/highcharts.js"></script-->
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
@@ -12,7 +13,7 @@ $(function () {
         }
     });
 
-    $('#container').highcharts({
+    $('#container').highcharts('StockChart', {
         chart : {
             events : {
                 load : function () {
@@ -41,7 +42,7 @@ $(function () {
 
 				setTimeout(getData, 1000, "getjson4botornot"); //Dont lower this to not overload the server 			                 
                     }
-		    getData("getjson4botornot");
+		    getData("getlongjson4botornot");
                 }
             }
         },
@@ -58,7 +59,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'Bot or non-bot'
+                text: 'Quantity'
             }
         },
         tooltip: {
@@ -71,10 +72,10 @@ $(function () {
             borderWidth: 0
         },
         series : [{
-            name : 'Bot',
+            name : 'Bots',
             data : []
         }, {
-            name : 'Non-bot',
+            name : 'Non-bots',
             data : []
         }]
     });
