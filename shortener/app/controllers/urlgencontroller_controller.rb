@@ -152,6 +152,7 @@ class UrlgencontrollerController < ApplicationController
     lines = %x(sort -t' ' -k4 /home/cloud-user/clicks/clicks.txt)
     out = "{\"data\" : ["
 
+    url = ""
     count_url = 0
     lines.each_line do |line|
       next unless content = r.match(line)
