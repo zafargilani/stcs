@@ -113,7 +113,7 @@ class UrlgencontrollerController < ApplicationController
   end
 
   def longjsongraph4botornot
-    botgraphhelper(500)
+    botgraphhelper(1000)
   end
 
   def botgraphhelper(numberclicks) 
@@ -147,12 +147,42 @@ class UrlgencontrollerController < ApplicationController
     render :json => out
   end
 
+  def jsongraph4url
+    r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
+    lines = %x(sort -t' ' -k4 /home/cloud-user/clicks/clicks.txt)
+    out = "{\"data\" : ["
+
+    count_url = 0
+    lines.each_line do |line|
+      next unless content = r.match(line)
+      if count_url == 0
+        url = content[2].to_s.gsub(/\s+/, "")
+      end
+
+      if url.to_s.gsub(/\s+/, "") == content[2].to_s.gsub(/\s+/, "")
+        count_url += 1
+      else
+        out << "[#{url},#{count_url}],"
+        count_url = 0
+      end
+    end
+
+    out = out[0...-1]
+    out << "]}"
+
+    render :json => out
+  end
+
   def getclicks
     render "clicks"
   end
   
   def getbotornot
     render "botornot"
+  end
+
+  def geturlactivity
+    render "urlactivity"
   end
 
   def index

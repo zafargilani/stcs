@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   get '/graph/getjson4botornot' => "urlgencontroller#jsongraph4botornot"
   get '/graph/getlongjson4botornot' => "urlgencontroller#longjsongraph4botornot"
   get '/graph/botornot' => "urlgencontroller#getbotornot"
+  get '/graph/getjson4url' => "urlgencontroller#jsongraph4url"
+  get '/graph/urlactivity' => "urlgencontroller#geturlactivity"
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
