@@ -1,0 +1,80 @@
+<div id="container" style="height: 400px; min-width: 310px"></div>
+
+<script>
+
+  $(function () {
+
+    Highcharts.setOptions({
+      global : {
+        useUTC : false
+      }
+    });
+
+    // Create the chart
+    $('#container').highcharts('StockChart', {
+      chart : {
+        events : {
+          load : function () {
+
+            var series = this.series[0];
+
+            function getData(location) {
+              $.getJSON(location, function(data) {
+
+                    $.each(data.data, function(i,item) {
+
+                      shift = series.data.length > 100;
+                      series.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]], true, shift);
+                    })
+                  })
+                  .done(function() {
+                    console.log( "second success" );
+                  })
+                  .fail( function(d, textStatus, error) {
+                    console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+                  })
+                  .always(function() {
+                    console.log( "complete" );
+                  })
+
+              setTimeout(getData, 5000, "getjson4clicks"); //Dont lower this to not overload the server
+
+            }
+            getData("getjson4clicks");
+            //, 10000);
+          }
+        }
+      },
+
+      title : {
+        text : 'Stweeler URL clicks per minute'
+      },
+
+      navigator : {
+        enabled : false
+      },
+
+      scrollbar : {
+        enabled : false
+      },
+
+      subtitle: {
+        text: 'Source: Stweeler data',
+        x: -20
+      },
+
+      exporting: {
+        enabled: true
+      },
+
+      series : [{
+        name : 'Clicks',
+        data : []
+        //step : true
+      }]
+    });
+
+  });
+
+</script>
+
