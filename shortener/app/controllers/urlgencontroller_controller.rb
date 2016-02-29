@@ -37,36 +37,6 @@ class UrlgencontrollerController < ApplicationController
   end
 
 
-  def vectorgraph
-
-    r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
-    rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = `tail -n 1000 /home/cloud-user/clicks/clicks.txt`
-    out = "["
-
-    count_clicks = 1
-    minute = -1
-
-    lines.each_line do |line|
-      next unless content = r.match(line)
-      time = rr.match(content[1])
-
-      if time[5].to_i == minute
-        count_clicks += 1
-      else
-        out << "[Date.UTC(#{time[1]},#{time[2]},#{time[3]},#{time[4]},#{time[5]},#{time[6]}),#{count_clicks}],"
-        minute = time[5].to_i
-        count_clicks = 1
-      end
-
-    end
-
-    out = out[0...-1]
-    out << "]"
-
-    render json: out 
-  end
-
   def jsongraph4clicks
 	clicksgraphhelper(100)
   end
@@ -85,18 +55,34 @@ class UrlgencontrollerController < ApplicationController
 
     count_clicks = 1
     minute = -1
+    last_date = nil
 
     lines.each_line do |line|
       next unless content = r.match(line)
       time = rr.match(content[1])
+      new_time= time[5].to_i
 
-      if time[5].to_i == minute
+      if new_time == minute #this is a fast hack, to be precise should compare dates and get difference (leave, its faster)
+        # basically this breaks if two events occur within two different hours (days, years..) but with same minute
+        # the probability is low and this is a graph for demoing, it wont break anything that important.
+
+        #aggregate per minute
         count_clicks += 1
       else
+        #found new minute, output aggregate count and start new counting
         out << "[#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i},0,#{count_clicks}],"
-        minute = time[5].to_i
+
+        if new_time >= (minute +1) && (minute + 1) < 60
+          #this is an overly simplistic hack. Does not work if event on 60iest second :)
+          #Basically we want the graph to go to 0 when there are no events!
+          out << "[#{last_date[1].to_i},#{last_date[2].to_i},#{last_date[3].to_i},#{last_date[4].to_i},#{last_date[5].to_i + 1},#{last_date[6].to_i},0,0],"
+        end
+
+        minute = new_time
         count_clicks = 1
       end
+
+      last_date = time
 
     end
 
