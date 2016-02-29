@@ -5,80 +5,80 @@
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <script>
-$(function () {
+    $(function () {
 
-    Highcharts.setOptions({
-        global : {
-            useUTC : false
-        }
-    });
+        Highcharts.setOptions({
+            global : {
+                useUTC : false
+            }
+        });
 
-    $('#container').highcharts('StockChart', {
-        chart : {
-            events : {
-                load : function () {
+        $('#container').highcharts('StockChart', {
+            chart : {
+                events : {
+                    load : function () {
 
-			var series0 = this.series[0];
-			var series1 = this.series[1];
+                        var series0 = this.series[0];
+                        var series1 = this.series[1];
 
-			function getData(location) {
-    				$.getJSON(location, function(data) {
-                                $.each(data.data, function(i,item) {
-					shift0 = series0.data.length > 100;
-					shift1 = series1.data.length > 100;
+                        function getData(location) {
+                            $.getJSON(location, function(data) {
+                                    $.each(data.data, function(i,item) {
+                                        shift0 = series0.data.length > 100;
+                                        shift1 = series1.data.length > 100;
                                         series0.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[7]], true, shift0);
                                         series1.addPoint([new Date(item[0],item[1],item[2],item[3],item[4],item[5],item[6]).getTime(),item[8]], true, shift1);
                                     })
                                 })
                                 .done(function() {
-                                        console.log( "second success" );
+                                    console.log( "second success" );
                                 })
                                 .fail( function(d, textStatus, error) {
-                                        console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+                                    console.error("getJSON failed, status: " + textStatus + ", error: "+error)
                                 })
                                 .always(function() {
-                                        console.log( "complete" );
+                                    console.log( "complete" );
                                 })
 
-				setTimeout(getData, 1000, "getjson4botornot"); //Dont lower this to not overload the server 			                 
+                            setTimeout(getData, 1000, "getjson4botornot"); //Dont lower this to not overload the server
+                        }
+                        getData("getlongjson4botornot");
                     }
-		    getData("getlongjson4botornot");
                 }
-            }
-        },
-        exporting: {
-            enabled: true
-        },
-        title: {
-            text: 'Stweeler Bots vs. Non-bots',
-            x: -20 //center
-        },
-        subtitle: {
-            text: 'Source: Stweeler data',
-            x: -20
-        },
-        yAxis: {
+            },
+            exporting: {
+                enabled: true
+            },
             title: {
-                text: 'Quantity'
-            }
-        },
-        tooltip: {
-            valueSuffix: ''
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series : [{
-            name : 'Bots',
-            data : []
-        }, {
-            name : 'Non-bots',
-            data : []
-        }]
+                text: 'Stweeler Bots vs. Non-bots',
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Source: Stweeler data',
+                x: -20
+            },
+            yAxis: {
+                title: {
+                    text: 'Quantity'
+                }
+            },
+            tooltip: {
+                valueSuffix: ''
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series : [{
+                name : 'Bots',
+                data : []
+            }, {
+                name : 'Non-bots',
+                data : []
+            }]
+        });
     });
-});
 </script>
 
