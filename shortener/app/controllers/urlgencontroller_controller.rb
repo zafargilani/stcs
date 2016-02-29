@@ -72,7 +72,7 @@ class UrlgencontrollerController < ApplicationController
         #found new minute, output aggregate count and start new counting
         out << "[#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i},0,#{count_clicks}],"
 
-        if new_time >= (minute +1) && (minute + 1) < 60
+        if new_time >= (minute +1) && (minute + 1) < 60 && last_date != nil
           #this is an overly simplistic hack. Does not work if event on 60iest second :)
           #Basically we want the graph to go to 0 when there are no events!
           out << "[#{last_date[1].to_i},#{last_date[2].to_i},#{last_date[3].to_i},#{last_date[4].to_i},#{last_date[5].to_i + 1},#{last_date[6].to_i},0,0],"
