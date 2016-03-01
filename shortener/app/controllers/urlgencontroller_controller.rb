@@ -152,7 +152,7 @@ class UrlgencontrollerController < ApplicationController
   end
 
   def botsJson
-    render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total}}"
+    render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
   end
 
   def jsongraph4url
@@ -182,12 +182,8 @@ class UrlgencontrollerController < ApplicationController
     render :json => out
   end
 
-  def getclicks
-    render "clicks"
-  end
-
-  def getbotornot
-    render "botornot"
+  def getGraphs
+    render "graphs"
   end
 
   def geturlactivity
