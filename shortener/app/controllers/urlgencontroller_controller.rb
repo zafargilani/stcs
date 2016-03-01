@@ -28,20 +28,20 @@ class UrlgencontrollerController < ApplicationController
       @MAX = max
     end
 
-    def self.insert val
+    def insert val
       @cache << val
       if @cache.size > @MAX
         @cache.shift #remove in FIFO order
       end
     end
 
-    def self.get
+    def get
       @cache
     end
 
   end
 
-  @clicksCache = Cache(500)
+  @clicksCache = Cache.new(500)
 
   def generate
 
