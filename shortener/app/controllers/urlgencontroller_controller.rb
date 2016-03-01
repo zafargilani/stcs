@@ -4,6 +4,9 @@ require 'time'
 
 class UrlgencontrollerController < ApplicationController
 
+  @@bots = 0
+  @@total = 0
+
   class Click
 
     attr_accessor :timestamp
@@ -64,37 +67,39 @@ class UrlgencontrollerController < ApplicationController
 
   def generate
 
-	if request.remote_ip != "127.0.0.1"
-		render json: "Unauthorized access by #{request.remote_ip}."
-		return
-	end
+    if request.remote_ip != "127.0.0.1"
+      render json: "Unauthorized access by #{request.remote_ip}."
+      return
+    end
 
-  	short = Shortener::ShortenedUrl.generate(params[:u])
-  	render json: short
+    short = Shortener::ShortenedUrl.generate(params[:u])
+    render json: short
   end
 
   def show
 
-      begin
-        #log url click timestamp, tweet ids and url token for each copied tweet
-        open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
-          f.puts "#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}"
-        }
-      rescue => e
-        p e
-      end
+    begin
+      #log url click timestamp, tweet ids and url token for each copied tweet
+      open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
+        f.puts "#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}"
+      }
+    rescue => e
+      p e
+    end
 
-      Caches.insert('clicks', Click.new(Time.now, params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
+    Caches.insert('clicks', Click.new("#{Time.now}", params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
 
-      #p Shortener::ShortenedUrl.methods.sort
+    if request.env["HTTP_USER_AGENT"].include? 'bot'
+      @@bots += 1
+    end
 
-  	#redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
+    @@total += 1
 
-      token = Shortener::ShortenedUrl.extract_token(params[:id])
-      @url   = Shortener::ShortenedUrl.fetch_with_token(token: token)
-      @timer = 5
+    token = Shortener::ShortenedUrl.extract_token(params[:id])
+    @url   = Shortener::ShortenedUrl.fetch_with_token(token: token)
+    @timer = 5
 
-      render "redirect"
+    render "redirect"
   end
 
   def clicksJson
@@ -142,18 +147,11 @@ class UrlgencontrollerController < ApplicationController
     out = out[0...-1]
     out << "]}"
 
-   render :json => out
+    render :json => out
   end
 
-  def jsongraph4botornot
-    botgraphhelper(100)
-  end
-
-  def longjsongraph4botornot
-    botgraphhelper(1000)
-  end
-
-  def botgraphhelper(numberclicks) 
+  def botsJson
+    out = "{\"data\" : []}"
 
   end
 
@@ -187,7 +185,7 @@ class UrlgencontrollerController < ApplicationController
   def getclicks
     render "clicks"
   end
-  
+
   def getbotornot
     render "botornot"
   end
@@ -197,7 +195,7 @@ class UrlgencontrollerController < ApplicationController
   end
 
   def index
-      render "generate"
+    render "generate"
   end
 
 end
