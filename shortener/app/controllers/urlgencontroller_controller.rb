@@ -21,27 +21,46 @@ class UrlgencontrollerController < ApplicationController
     end
   end
 
-  class Cache
+  class Caches
 
-    def initialize(max)
-      @cache = []
-      @MAX = max
-    end
+    class Cache
 
-    def insert val
-      @cache << val
-      if @cache.size > @MAX
-        @cache.shift #remove in FIFO order
+      def initialize(max)
+        @cache = []
+        @MAX = max
+      end
+
+      def insert val
+        @cache << val
+        if @cache.size > @MAX
+          @cache.shift #remove in FIFO order
+        end
+      end
+
+      def get
+        @cache
       end
     end
 
-    def get
-      @cache
+    @@caches = Hash.new
+
+    def self.insert(name,val)
+      if ! @@caches.key? name
+        @@caches[name] = []
+      end
+
+      @@caches[name] << val
+    end
+
+    def self.get(name)
+      if ! @@caches.key? name
+        []
+      else
+        @@caches[name]
+      end
     end
 
   end
-
-  @clicksCache = Cache.new(500)
 
   def generate
 
@@ -65,7 +84,7 @@ class UrlgencontrollerController < ApplicationController
         p e
       end
 
-      @clicksCache.insert(Click.new(Time.now, params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
+      Caches.insert('clicks', Click.new(Time.now, params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
 
       #p Shortener::ShortenedUrl.methods.sort
 
@@ -83,7 +102,7 @@ class UrlgencontrollerController < ApplicationController
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
     #lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
-    lines = @clicksCache.get
+    lines = Caches.get('clicks')
     out = "{\"data\" : ["
     #out = "?(["
 
