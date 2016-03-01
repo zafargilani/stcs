@@ -4,26 +4,44 @@ require 'time'
 
 class UrlgencontrollerController < ApplicationController
 
-  class ClicksCache
+  class Click
 
-    #def initialize(max)
-    @@cache = []
-    @@MAX = 500
-    #end
+    attr_accessor :timestamp
+    attr_accessor :token
+    attr_accessor :ip
+    attr_accessor :cookie
+    attr_accessor :agent
+
+    def initialize(time, token, ip, cookie, agent)
+      @timestamp = time
+      @token = token
+      @ip = ip
+      @cookie = cookie
+      @agent = agent
+    end
+  end
+
+  class Cache
+
+    def initialize(max)
+      @cache = []
+      @MAX = max
+    end
 
     def self.insert val
-      @@cache << val
-      if @@cache.size > @@MAX
-        @@cache.shift #remove in FIFO order
+      @cache << val
+      if @cache.size > @MAX
+        @cache.shift #remove in FIFO order
       end
     end
 
     def self.get
-      @@cache
+      @cache
     end
 
   end
 
+  @clicksCache = Cache(500)
 
   def generate
 
@@ -47,9 +65,9 @@ class UrlgencontrollerController < ApplicationController
         p e
       end
 
-      ClicksCache.insert("#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}")
+      @clicksCache.insert(Click.new(Time.now, params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
 
-      p Shortener::ShortenedUrl.methods.sort
+      #p Shortener::ShortenedUrl.methods.sort
 
   	#redirect_to url_for(:controller => "shortener/shortened_urls", :action => "show")
 
@@ -60,21 +78,12 @@ class UrlgencontrollerController < ApplicationController
       render "redirect"
   end
 
-
-  def jsongraph4clicks
-	clicksgraphhelper(100)
-  end
-
-  def longjsongraph4clicks
-	clicksgraphhelper(500)
-  end
-
-  def clicksgraphhelper(numberclicks)
+  def clicksJson
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
     #lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
-    lines = ClicksCache.get
+    lines = @clicksCache.get
     out = "{\"data\" : ["
     #out = "?(["
 
@@ -82,9 +91,9 @@ class UrlgencontrollerController < ApplicationController
     minute = -1
     last_date = nil
 
-    lines.each do |line|
-      next unless content = r.match(line)
-      time = rr.match(content[1])
+    lines.each do |click|
+      #next unless content = r.match(line)
+      time = rr.match(click.timestamp)
       new_time= time[5].to_i
 
       if new_time == minute #this is a fast hack, to be precise should compare dates and get difference (leave, its faster)
@@ -113,10 +122,8 @@ class UrlgencontrollerController < ApplicationController
 
     out = out[0...-1]
     out << "]}"
-    #out << "]);"
 
-	#render :text => out
-   render :json => out # :callback => params[:callback] #jsonp
+   render :json => out
   end
 
   def jsongraph4botornot
@@ -128,34 +135,7 @@ class UrlgencontrollerController < ApplicationController
   end
 
   def botgraphhelper(numberclicks) 
-    r = /^([^,]*),(.+bot.+)$/ 
-    rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
-    out = "{\"data\" : ["
 
-    count_bots = 0
-    count_nonbots = 500
-    minute = -1
-
-    lines.each_line do |line|
-      next unless content = r.match(line)
-      time = rr.match(content[1])
-
-      if time[5].to_i == minute
-        count_bots += 1
-        count_nonbots -= 1
-      else
-        out << "[#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i},0,#{count_bots},#{count_nonbots}],"
-        minute = time[5].to_i
-        count_bots = 0
-        count_nonbots = 500
-      end
-    end
-
-    out = out[0...-1]
-    out << "]}"
-
-    render :json => out
   end
 
   def jsongraph4url
