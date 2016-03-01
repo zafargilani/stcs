@@ -1,6 +1,7 @@
 require 'user_agent_parser'
 require 'shortener'
 require 'time'
+require '../models/clicksCache'
 
 class UrlgencontrollerController < ApplicationController
 
