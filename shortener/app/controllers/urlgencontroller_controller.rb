@@ -87,7 +87,7 @@ class UrlgencontrollerController < ApplicationController
       p e
     end
 
-    Caches.insert('clicks', Click.new("#{Time.now}", params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
+    Caches.insert('clicks', Click.new(Time.now, params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
 
     if request.env["HTTP_USER_AGENT"].include? 'bot'
       @@bots += 1
@@ -117,8 +117,9 @@ class UrlgencontrollerController < ApplicationController
 
     lines.each do |click|
       #next unless content = r.match(line)
-      time = rr.match(click.timestamp)
-      new_time= time[5].to_i
+      #time = rr.match(click.timestamp)
+      time = click.timestamp
+      new_time= time.min
 
       if new_time == minute #this is a fast hack, to be precise should compare dates and get difference (leave, its faster)
         # basically this breaks if two events occur within two different hours (days, years..) but with same minute
@@ -128,12 +129,12 @@ class UrlgencontrollerController < ApplicationController
         count_clicks += 1
       else
         #found new minute, output aggregate count and start new counting
-        out << "[#{time[1].to_i},#{time[2].to_i},#{time[3].to_i},#{time[4].to_i},#{time[5].to_i},#{time[6].to_i},0,#{count_clicks}],"
+        out << "[#{time.year},#{time.month},#{time.day},#{time.hour},#{time.min},#{time.sec},0,#{count_clicks}],"
 
         if new_time >= (minute +1) && (minute + 1) < 60 && last_date != nil
           #this is an overly simplistic hack. Does not work if event on 60iest second :)
           #Basically we want the graph to go to 0 when there are no events!
-          out << "[#{last_date[1].to_i},#{last_date[2].to_i},#{last_date[3].to_i},#{last_date[4].to_i},#{last_date[5].to_i + 1},#{last_date[6].to_i},0,0],"
+          out << "[#{time.year},#{time.month},#{time.day},#{time.hour},#{time.min + 1},#{time.sec},0,0],"
         end
 
         minute = new_time
@@ -151,8 +152,7 @@ class UrlgencontrollerController < ApplicationController
   end
 
   def botsJson
-    out = "{\"data\" : []}"
-
+    render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total}}"
   end
 
   def jsongraph4url
