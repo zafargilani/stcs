@@ -1,48 +1,52 @@
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
-<div class="row paint">
-  <div class="col-lg-7 paint">
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
+<div class="container paint">
+
+  <div class="row paint">
+    <div class="col-lg-7 paint">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Panel title</h3>
+        </div>
+        <div class="panel-body">
+          <%= render "graphs/clicks" %>
+        </div>
       </div>
-      <div class="panel-body">
-        <%= render "graphs/clicks" %>
+
+    </div>
+
+    <div class="col-lg-5 paint">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Panel title</h3>
+        </div>
+        <div class="panel-body">
+          <%= render "graphs/bots" %>
+        </div>
       </div>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-7 paint">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Panel title</h3>
+        </div>
+        <div class="panel-body">
+          <%= render "graphs/tokens" %>
+        </div>
+      </div>
+
     </div>
 
   </div>
-
-  <div class="col-lg-5 paint">
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
-      </div>
-      <div class="panel-body">
-        <%= render "graphs/bots" %>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-lg-7 paint">
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
-      </div>
-      <div class="panel-body">
-        <%= render "graphs/tokens" %>
-      </div>
-    </div>
-
-  </div>
-
 </div>
 
 <%= render "graphs/theme" %>
