@@ -49,17 +49,17 @@ class UrlgencontrollerController < ApplicationController
 
     def self.insert(name,val)
       if ! @@caches.key? name
-        @@caches[name] = []
+        @@caches[name] = Cache.new(1000)
       end
 
-      @@caches[name] << val
+      @@caches[name].insert(val)
     end
 
     def self.get(name)
       if ! @@caches.key? name
         []
       else
-        @@caches[name]
+        @@caches[name].get
       end
     end
 
@@ -156,24 +156,20 @@ class UrlgencontrollerController < ApplicationController
   end
 
   def jsongraph4url
-    r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
-    lines = %x(sort -t' ' -k4 /home/cloud-user/clicks/clicks.txt)
+    lines = Caches.get('clicks')
     out = "{\"data\" : ["
+    tokens = Hash.new
 
-    url = ""
-    count_url = 0
-    lines.each_line do |line|
-      next unless content = r.match(line)
-      if count_url == 0
-        url = content[2].to_s.gsub(/\s+/, "")
-      end
-
-      if url.to_s.gsub(/\s+/, "") == content[2].to_s.gsub(/\s+/, "")
-        count_url += 1
+    lines.each do |click|
+      if tokens.key? click.token
+        tokens[click.token] += 1
       else
-        out << "[#{url},#{count_url}],"
-        count_url = 0
+        tokens[click.token] = 0
       end
+    end
+
+    tokens.keys.each do |key|
+      out << "[#{key},#{tokens[key]}],"
     end
 
     out = out[0...-1]
