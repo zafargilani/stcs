@@ -3,6 +3,7 @@ require 'shortener'
 require 'time'
 
 class UrlgencontrollerController < ApplicationController
+
   def generate
 
 	if request.remote_ip != "127.0.0.1"
@@ -24,6 +25,8 @@ class UrlgencontrollerController < ApplicationController
       rescue => e
         p e
       end
+
+      ClicksCache.insert("#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}")
 
       p Shortener::ShortenedUrl.methods.sort
 
@@ -49,7 +52,8 @@ class UrlgencontrollerController < ApplicationController
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
+    #lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
+    lines = ClicksCache.get
     out = "{\"data\" : ["
     #out = "?(["
 
@@ -57,7 +61,7 @@ class UrlgencontrollerController < ApplicationController
     minute = -1
     last_date = nil
 
-    lines.each_line do |line|
+    lines.each do |line|
       next unless content = r.match(line)
       time = rr.match(content[1])
       new_time= time[5].to_i
