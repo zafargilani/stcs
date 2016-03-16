@@ -172,7 +172,7 @@ class UrlgencontrollerController < ApplicationController
   	render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
   end
 
-  def jsongraph4url
+  def urlJson
     lines = Caches.get('clicks')
     out = "{\"data\" : ["
     tokens = Hash.new
@@ -193,6 +193,7 @@ class UrlgencontrollerController < ApplicationController
     out << "]}"
 
     render :json => out
+    #render :json => "{\"key\" : #{key}, \"tokens\" : #{tokens[key]}}"
   end
 
   def getGraphs

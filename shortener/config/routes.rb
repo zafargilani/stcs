@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   get '/graph/botsjson' => "urlgencontroller#botsJson"
 
-  get '/graph/getjson4url' => "urlgencontroller#jsongraph4url"
+  get '/graph/urljson' => "urlgencontroller#urlJson"
   get '/graph/urlactivity' => "urlgencontroller#geturlactivity"
 
 end
