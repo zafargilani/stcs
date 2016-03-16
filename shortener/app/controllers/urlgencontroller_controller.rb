@@ -92,20 +92,21 @@ class UrlgencontrollerController < ApplicationController
     Caches.insert('clicks', Click.new(Time.now, params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
 
     #detect bots via self-advertised bots in HTTP_USER_AGENT
-    if request.env["HTTP_USER_AGENT"].include? 'bot'
+    if request.env["HTTP_USER_AGENT"].include? 'bot' or request.env["HTTP_USER_AGENT"].include? 'http'
       @@bots += 1
 
       if @@bots == 0 || @@total == 0
         @@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | grep "bot" | wc -l).to_i
 	@@total = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | wc -l).to_i
       end
-    
+
+    #detect bots via inter-click delay (later: try to update to Entropy Component?)
+    #else
+    #  if request.env["HTTP_USER_AGENT"].include? 'http'
+    #  end
     end
 
     @@total += 1
-
-    #detect bots via inter-click delay (later: try to update to Entropy Component?)
-    #Caches.get('clicks')
 
     token = Shortener::ShortenedUrl.extract_token(params[:id])
     @url   = Shortener::ShortenedUrl.fetch_with_token(token: token)
