@@ -25,6 +25,10 @@
           text: 'Stweeler identified bots vs. non-bots'
         },
 
+	subtitle: {
+	  text: 'Source: Stweeler data'
+	},
+
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
@@ -37,7 +41,8 @@
               enabled: true,
               format: '<b>{point.name}</b>: {point.percentage:.1f} %',
               style: {
-                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+		fontSize: 16
               }
             }
           }

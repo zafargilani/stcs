@@ -172,9 +172,32 @@ class UrlgencontrollerController < ApplicationController
   	render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
   end
 
+#  def urlJson
+#    lines = Caches.get('clicks')
+#    out = "["
+#    tokens = Hash.new
+#
+#    lines.each do |click|
+#      if tokens.key? click.token
+#        tokens[click.token] += 1
+#      else
+#        tokens[click.token] = 0
+#      end
+#    end
+#
+#    tokens.keys.each do |key|
+#      out << "{\"key\" : \"#{key}\", \"tokens\" : #{tokens[key]}},"
+#    end
+#
+#    out = out[0...-1]
+#    out << "]"
+#
+#    render :json => out
+#    #render :json => "{\"key\" : #{key}, \"tokens\" : #{tokens[key]}}"
+#  end
+
   def urlJson
     lines = Caches.get('clicks')
-    out = "{\"data\" : ["
     tokens = Hash.new
 
     lines.each do |click|
@@ -185,15 +208,29 @@ class UrlgencontrollerController < ApplicationController
       end
     end
 
+    tokens00 = 0
+    tokens10 = 0
+    tokens20 = 0
+    tokens30 = 0
+    tokens40 = 0
+    tokens50 = 0
     tokens.keys.each do |key|
-      out << "[#{key},#{tokens[key]}],"
+      if tokens[key].to_i == 0
+        tokens00 += 1
+      elsif tokens[key].to_i >= 10 && tokens[key].to_i <= 19
+        tokens10 += 1
+      elsif tokens[key].to_i >= 20 && tokens[key].to_i <= 29
+        tokens20 += 1
+      elsif tokens[key].to_i >= 30 && tokens[key].to_i <= 39
+        tokens30 += 1
+      elsif tokens[key].to_i >= 40 && tokens[key].to_i <= 49
+        tokens40 += 1
+      else
+        tokens50 += 1
+      end
     end
 
-    out = out[0...-1]
-    out << "]}"
-
-    render :json => out
-    #render :json => "{\"key\" : #{key}, \"tokens\" : #{tokens[key]}}"
+    render :json => "{\"tokens00\" : #{tokens00}, \"tokens10\" : #{tokens10}, \"tokens20\" : #{tokens20}, \"tokens30\" : #{tokens30}, \"tokens40\" : #{tokens40}, \"tokens50\" : #{tokens50}}"
   end
 
   def getGraphs

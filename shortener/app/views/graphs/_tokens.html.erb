@@ -1,0 +1,80 @@
+<div id="tokens">
+    <!--style="height: 400px; min-width: 310px"-->
+</div>
+
+<script>
+    $(function () {
+        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-v.json&callback=?', function (data) {
+
+            // create the chart
+            $('#tokens').highcharts('StockChart', {
+                chart: {
+                    alignTicks: false
+                },
+
+                rangeSelector: {
+                    selected: 1
+                },
+
+                title: {
+                    text: 'URL click distribution'
+                },
+
+		subtitle: {
+		    text: 'Source: Stweeler data'
+		},
+
+		xAxis: {
+          	    categories: [
+			'= 0',
+			'>= 10',
+			'>= 20',
+			'>= 30',
+			'>= 40',
+			'>= 50'
+            	    ],
+            	    crosshair: true
+        	},
+        
+		yAxis: {
+            	    min: 0,
+            	    title: {
+                	text: 'Clicks'
+            	    }
+        	},
+
+                navigator : {
+                    enabled : false
+                },
+
+                scrollbar : {
+                    enabled : false
+                },
+
+                series: [{
+                    type: 'column',
+                    name: 'Clicks',
+                    data: [{
+			name: '= 0',
+			data: data.tokens00
+			}, {
+			name: '>= 10',
+			data: data.tokens10
+			}, {
+			name: '>= 20',
+			data: data.tokens20
+			}, {
+			name: '>= 30',
+			data: data.tokens30
+			}, {
+			name: '>= 40',
+			data: data.tokens40
+			}, {
+			name: '>= 50',
+			data: data.tokens50
+                    }]
+                }]
+            });
+        });
+    });
+</script>
