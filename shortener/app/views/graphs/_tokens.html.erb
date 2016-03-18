@@ -4,7 +4,8 @@
 
 <script>
     $(function () {
-        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-v.json&callback=?', function (data) {
+
+        $.getJSON('urljson', function (data) {
 
             // create the chart
             $('#tokens').highcharts('StockChart', {
