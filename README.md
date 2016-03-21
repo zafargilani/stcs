@@ -15,6 +15,7 @@ Functionalities:
  * Bot Functionality - manages a twitter account, following, retweeting, etc
  * URL analyzer - provides algorithms to retrieve urls and currently some pocs of malware detection
  * URL shortener - rails project to generate shortened urls and interact with the bot
+ * BotOrNot - python project to find if a twitter account is an automated program (bot) or human
 
 ## Getting started
 
@@ -90,6 +91,12 @@ Commands:
   stweeler.rb help [COMMAND]                 # Describe available commands or one specific command
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
+
+Installing BotOrNot: to install bot or not, visit [BotOrNot GitHub page](https://github.com/truthy/botornot-python).
+
+Running BotOrNot:
+``` bash
+```
 
 ## Troubleshooting
 
