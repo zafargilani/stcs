@@ -66,6 +66,14 @@ class MyCLI < Thor
 		bob.prepare
 		bob.start
 	end
+
+	desc "botornot @username", "Checks whether a Twitter acct is a bot or not"
+ 	def botornot
+		argv = ARGV[1].dup
+		response = %x(/usr/bin/python botornot-python/botornot.py #{argv.chomp})
+		puts response
+	end
+
 end
 
 MyCLI.start(ARGV)
