@@ -21,6 +21,6 @@ twitter_app_auth = {
 bon = botornot.BotOrNot(**twitter_app_auth)
 
 #json_response = json.dumps(bon.check_account('@clayadavis'), sort_keys=True, indent=4, separators=(',', ': '))
-print(json.dumps(bon.check_account(str(sys.argv[1])), sort_keys=True, indent=4, separators=(',', ': ')))
+print(json.dumps(bon.check_account(sys.argv[1]), sort_keys=True, indent=4, separators=(',', ': ')))
 #print(json.dumps(bon.check_account('@clayadavis'), sort_keys=True, indent=4, separators=(',', ': ')))
 
