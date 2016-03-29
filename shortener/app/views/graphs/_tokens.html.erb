@@ -8,13 +8,9 @@
         $.getJSON('urljson', function (data) {
 
             // create the chart
-            $('#tokens').highcharts('StockChart', {
+            $('#tokens').highcharts({
                 chart: {
-                    alignTicks: false
-                },
-
-                rangeSelector: {
-                    selected: 1
+                    type: 'column'
                 },
 
                 title: {
@@ -26,15 +22,7 @@
 		},
 
 		xAxis: {
-          	    categories: [
-			'= 0',
-			'>= 10',
-			'>= 20',
-			'>= 30',
-			'>= 40',
-			'>= 50'
-            	    ],
-            	    crosshair: true
+			type: 'category'
         	},
         
 		yAxis: {
@@ -44,37 +32,37 @@
             	    }
         	},
 
-                navigator : {
-                    enabled : false
-                },
+		navigator: {
+			enabled: false
+		},
 
-                scrollbar : {
-                    enabled : false
-                },
+		scrollbar: {
+			enabled: false
+		},
 
-                series: [{
-                    type: 'column',
-                    name: 'Clicks',
-                    data: [{
-			name: '= 0',
-			data: data.tokens00
+		series: [{
+			name: 'Clicks',
+			colorByPoint: true,
+			data: [{
+				name: '= 0',
+				y: data.tokens00,
 			}, {
-			name: '>= 10',
-			data: data.tokens10
+				name: '>= 10',
+				y: data.tokens10,
 			}, {
-			name: '>= 20',
-			data: data.tokens20
+				name: '>= 20',
+				y: data.tokens20,
 			}, {
-			name: '>= 30',
-			data: data.tokens30
+				name: '>= 30',
+				y: data.tokens30,
 			}, {
-			name: '>= 40',
-			data: data.tokens40
+				name: '>= 40',
+				y: data.tokens40,
 			}, {
-			name: '>= 50',
-			data: data.tokens50
-                    }]
-                }]
+				name: '>= 50',
+				y: data.tokens50,
+			}]
+		}]
             });
         });
     });
