@@ -12,12 +12,9 @@ Rails.application.routes.draw do
   get '/gen/:id' => "urlgencontroller#generate" #of the form /gen/i?u=#{url}
   get '/r/:id' => "urlgencontroller#redirect"
 
-  get '/graph/clicksjson' => "urlgencontroller#clicksJson"
   get '/graph/graphs' => "urlgencontroller#getGraphs"
-
+  get '/graph/clicksjson' => "urlgencontroller#clicksJson"
   get '/graph/botsjson' => "urlgencontroller#botsJson"
-
   get '/graph/urljson' => "urlgencontroller#urlJson"
-  get '/graph/urlactivity' => "urlgencontroller#geturlactivity"
 
 end

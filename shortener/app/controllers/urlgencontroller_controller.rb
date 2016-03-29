@@ -237,10 +237,6 @@ class UrlgencontrollerController < ApplicationController
     render "graphs"
   end
 
-  def geturlactivity
-    render "urlactivity"
-  end
-
   def index
     render "generate"
   end
