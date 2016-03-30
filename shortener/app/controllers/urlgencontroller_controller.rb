@@ -78,8 +78,6 @@ class UrlgencontrollerController < ApplicationController
 
   def show
 
-    #@@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | ruby /home/cloud-user/clicks/getUserAgents.rb | grep 'bot\|http' | wc -l)
-
     begin
       #log url click timestamp, tweet ids and url token for each copied tweet
       open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
@@ -91,12 +89,12 @@ class UrlgencontrollerController < ApplicationController
 
     Caches.insert('clicks', Click.new(Time.now, params[:id], request.remote_ip, cookies[:revisit], request.env["HTTP_USER_AGENT"]))
 
-    #detect bots via self-advertised bots in HTTP_USER_AGENT
+    #detect bots via self-advertised bots in HTTP_USER_AGENT (search for 'bot' and/or 'http')
     if request.env["HTTP_USER_AGENT"].include? 'bot' or request.env["HTTP_USER_AGENT"].include? 'http'
       @@bots += 1
 
       if @@bots == 0 || @@total == 0
-        @@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | grep "bot" | wc -l).to_i
+        @@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
 	@@total = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | wc -l).to_i
       end
 
@@ -166,7 +164,7 @@ class UrlgencontrollerController < ApplicationController
 
   def botsJson
 	if @@bots == 0 || @@total == 0
-		@@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | grep "bot" | wc -l).to_i
+		@@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
 		@@total = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | wc -l).to_i
 	end
   	render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
