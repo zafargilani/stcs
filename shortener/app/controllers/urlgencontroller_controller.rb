@@ -213,7 +213,7 @@ class UrlgencontrollerController < ApplicationController
     tokens40 = 0
     tokens50 = 0
     tokens.keys.each do |key|
-      if tokens[key].to_i == 0
+      if tokens[key].to_i >= 0 && tokens[key].to_i <= 9
         tokens00 += 1
       elsif tokens[key].to_i >= 10 && tokens[key].to_i <= 19
         tokens10 += 1
