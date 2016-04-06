@@ -195,6 +195,7 @@ class UrlgencontrollerController < ApplicationController
 #  end
 
   def urlJson
+    # key = url, tokens = clicks
     lines = Caches.get('clicks')
     tokens = Hash.new
 
