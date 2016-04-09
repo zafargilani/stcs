@@ -22,7 +22,10 @@
 		},
 
 		xAxis: {
-			type: 'category'
+                    type: 'category',
+                    title: {
+                        text: 'Number of clicks'
+                    }
         	},
         
 		yAxis: {
@@ -44,22 +47,22 @@
 			name: 'URLs',
 			colorByPoint: true,
 			data: [{
-				name: '< 10',
+				name: 'upto 9', // < 10
 				y: data.tokens00,
 			}, {
-				name: '>= 10',
+				name: 'upto 19', // >= 10
 				y: data.tokens10,
 			}, {
-				name: '>= 20',
+				name: 'upto 29', // >= 20
 				y: data.tokens20,
 			}, {
-				name: '>= 30',
+				name: 'upto 39', // >= 30
 				y: data.tokens30,
 			}, {
-				name: '>= 40',
+				name: 'upto 49', // >= 40
 				y: data.tokens40,
 			}, {
-				name: '>= 50',
+				name: 'over 50', // >= 50
 				y: data.tokens50,
 			}]
 		}]
