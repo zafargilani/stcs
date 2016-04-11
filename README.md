@@ -170,7 +170,7 @@ gem install shortener-0.5.5.gem
 
 If you see a "Connection timeout error" then simply retry launching your bot.
 
-If you see a "invalid or expired token" error then try issuing new tokens for your application. In some cases you might need to delete the application and create a new one. View [a discussion on this topic](http://stackoverflow.com/questions/17636701/twitter-api-reasons-for-invalid-or-expired-token). The [Twitter GET account/verify accounts page](https://dev.twitter.com/rest/reference/get/account/verify_credentials) helps to find if your application tokens are valid (HTTP 200 OK) or not (HTTP 401).
+If you see a "invalid or expired token" error then try issuing new tokens for your application. In some cases you might need to delete the application and create a new one. View [a discussion on this topic](http://stackoverflow.com/questions/17636701/twitter-api-reasons-for-invalid-or-expired-token). The [Twitter GET account/verify accounts page](https://dev.twitter.com/rest/reference/get/account/verify_credentials) helps to find if your application tokens are valid (HTTP 200 OK) or not (HTTP 401). See [OAuth flow here](http://oauth.net/core/1.0/#anchor9).
 
 ## Deploying Rails on Apache2
 
