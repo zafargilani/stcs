@@ -170,30 +170,6 @@ class UrlgencontrollerController < ApplicationController
   	render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
   end
 
-#  def urlJson
-#    lines = Caches.get('clicks')
-#    out = "["
-#    tokens = Hash.new
-#
-#    lines.each do |click|
-#      if tokens.key? click.token
-#        tokens[click.token] += 1
-#      else
-#        tokens[click.token] = 0
-#      end
-#    end
-#
-#    tokens.keys.each do |key|
-#      out << "{\"key\" : \"#{key}\", \"tokens\" : #{tokens[key]}},"
-#    end
-#
-#    out = out[0...-1]
-#    out << "]"
-#
-#    render :json => out
-#    #render :json => "{\"key\" : #{key}, \"tokens\" : #{tokens[key]}}"
-#  end
-
   def urlJson
     # key = url, tokens = clicks
     lines = Caches.get('clicks')
