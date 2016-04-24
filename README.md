@@ -1,6 +1,6 @@
 # stcs - Super Trully Cuning Stweeler!
 
-STCS is a tweeter bot platform for analysis.
+STCS is a tweeter bot platform for analysis for Twitter. Find research work using this platform [here](http://dl.acm.org/citation.cfm?id=2889360).
 
 Its bots are able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%).
 
