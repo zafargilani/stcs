@@ -7,7 +7,7 @@ response = ""
 parsed_response = ""
 out = ""
 begin
-  infile = open('/data/zf-twitter-data/2015-10-18.uk.txt.gz')
+  infile = open('/data/zf-twitter-data/2016-4-1.uk.txt.gz')
   gzi = Zlib::GzipReader.new(infile)
   gzi.each_line do |line|
     begin
@@ -16,14 +16,14 @@ begin
       parsed_response = JSON.parse(response)
       if parsed_response["score"].to_f >= 0.5 #bot = 1, notbot/human = 0
         #output: tweet_id, user, botornot, followers, friends, retweets
-        out = out + "#{parsed_line['id']}, @#{parsed_line['user']['screen_name']}, 1, #{parsed_line['user']['followers_count']}, "
+        out = out + "#{parsed_line['id']}, @#{parsed_line['user']['screen_name']}, bot, #{parsed_line['user']['followers_count']}, "
         out = out + "#{parsed_line['user']['friends_count']}, #{parsed_line['retweet_count']}\n"
       else
-        out = out + "#{parsed_line['id']}, @#{parsed_line['user']['screen_name']}, 0, #{parsed_line['user']['followers_count']}, "
+        out = out + "#{parsed_line['id']}, @#{parsed_line['user']['screen_name']}, human, #{parsed_line['user']['followers_count']}, "
         out = out + "#{parsed_line['user']['friends_count']}, #{parsed_line['retweet_count']}\n"
       end
       #puts out
-      open('/data2/zf-twitter-data/2015-10-18.uk.out.txt', 'a') { |outfile|
+      open('/data2/zf-twitter-data/2016-4-1.uk.out.txt', 'a') { |outfile|
         outfile.puts out
       }
       out = "" #reset out
