@@ -1,9 +1,18 @@
 require 'ruby-fann'
+# Example fann program
 
-train = RubyFann::TrainData.new(:inputs=>[[0.3, 0.4, 0.5], [0.1, 0.2, 0.3]], :desired_outputs=>[[0.7], [0.8]])
+#train = RubyFann::TrainData.new(:inputs=>[[0.3, 0.4, 0.5], [0.1, 0.2, 0.3]], :desired_outputs=>[[0.7], [0.8]])
+#fann = RubyFann::Standard.new(:num_inputs=>3, :hidden_neurons=>[2, 8, 4, 3, 4], :num_outputs=>1)
+#fann.train_on_data(train, 1000, 10, 0.1) # 1000 max_epochs, 10 errors between reports and 0.1 desired MSE (mean-squared-error)
+#outputs = fann.run([0.3, 0.2, 0.4])   
+
+# initial feature set: followers, friends, tweets
+train = RubyFann::TrainData.new(:inputs=>[[0.9, 0.001, 0.5], [0.4, 0.3, 0.2]], :desired_outputs=>[[0.9], [0.2]])
 fann = RubyFann::Standard.new(:num_inputs=>3, :hidden_neurons=>[2, 8, 4, 3, 4], :num_outputs=>1)
 fann.train_on_data(train, 1000, 10, 0.1) # 1000 max_epochs, 10 errors between reports and 0.1 desired MSE (mean-squared-error)
-outputs = fann.run([0.3, 0.2, 0.4])   
+#outputs = fann.run([0.3, 0.2, 0.1])
+outputs = fann.run([0.85, 0.01, 0.5])
+puts outputs 
 
 # save trained data to file and use it later
 #train.save('verify.train')

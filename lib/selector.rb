@@ -1,5 +1,7 @@
 require 'zlib'
 require 'json'
+# This script writes out most popular Twitter accounts from data collected via Streaming API
+# Criteria is either large number of followers/friends or large number of favourite tweets
 
 parsed_line = ""
 out = ""

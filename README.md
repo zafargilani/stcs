@@ -92,13 +92,6 @@ Commands:
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
-Installing BotOrNot: to install bot or not, visit [BotOrNot GitHub page](https://github.com/truthy/botornot-python).
-
-Running BotOrNot:
-``` bash
-$ ruby lib/classifier.rb
-```
-
 ## Troubleshooting
 
 If sqlite3 is not installed by bundle install, try:
@@ -226,4 +219,34 @@ If you see "Could not find 'bundler'" upon "bundle install", try:
 gem install bundle
 bundle update
 ```
+
+## Add-Ons
+
+### BotOrNot (experimental / working)
+
+To install BotOrNot visit [BotOrNot GitHub page](https://github.com/truthy/botornot-python).
+
+Running BotOrNot:
+``` bash
+$ ruby lib/classifier.rb
+
+Running selector (classification of criteria-based selected accounts):
+``` bash
+$ ruby lib/selector.rb
+
+### Ruby-FANN (experimental / example)
+
+To install Ruby-FANN visit [Ruby-FANN GitHub page](https://github.com/tangledpath/ruby-fann)
+
+Running example program:
+``` bash
+$ ruby lib/fann.rb
+
+### kmeans-clusterer (experimental / example)
+
+To install kmeans-clusterer visit [kmeans-clusterer GitHub page](https://github.com/gbuesing/kmeans-clusterer)
+
+Running example program:
+``` bash
+$ ruby lib/kmeans.rb
 
