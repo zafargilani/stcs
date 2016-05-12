@@ -150,12 +150,14 @@ class BobTheBot < Ebooks::Bot
     end
   end
 
-  def post_tweet_copy(topic:"job opportunity", min_retweets:0)
+  #def post_tweet_copy(topic:"job opportunity", min_retweets:0)
+  def post_tweet_copy(min_retweets:1)
 
     keys = []
 
     begin
-      tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
+      #tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
+      tw = @collector.dump_sample_tweet(min_retweets:min_retweets)
 
       replacements = []
 
@@ -185,13 +187,13 @@ class BobTheBot < Ebooks::Bot
 
       p txt
 
-      if not txt.include? '#job'
-        txt = "#{txt} \#job" if txt.size < 140 - " \#job".size
-      end
+      #if not txt.include? '#job'
+      #  txt = "#{txt} \#job" if txt.size < 140 - " \#job".size
+      #end
 
-      if not txt.include? '#recruiting'
-        txt = "#{txt} \#recruiting" if txt.size < 140 - " \#recruiting".size
-      end
+      #if not txt.include? '#recruiting'
+      #  txt = "#{txt} \#recruiting" if txt.size < 140 - " \#recruiting".size
+      #end
 
       #note that this tweets the txt
       id = tweet(txt).id
@@ -204,7 +206,8 @@ class BobTheBot < Ebooks::Bot
     rescue => e
       p "twitter error : #{e}"
       #this happens if the tweet goes over 140 chars
-      post_tweet_copy(topic:topic, min_retweets:min_retweets)
+      #post_tweet_copy(topic:topic, min_retweets:min_retweets)
+      post_tweet_copy(min_retweets:min_retweets)
     end
   end
 
@@ -219,7 +222,8 @@ class BobTheBot < Ebooks::Bot
     begin
       scheduler.every "1h" do
         for i in 0..1
-          retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
+          #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
+          retweet(@collector.dump_sample_tweet(min_retweets:1))
         end
         post_tweet_copy
     end
