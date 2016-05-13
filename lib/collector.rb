@@ -39,7 +39,8 @@ class Collector
     client = TweetStream::Client.new
   end
 
-  def dump_sample_tweet(min_retweets:100)
+  #def dump_sample_tweet(min_retweets:100)
+  def dump_sample_tweet(lang:"en",min_retweets:100)
     return if min_retweets <= 0
 
     client = TweetStream::Client.new
@@ -49,7 +50,8 @@ class Collector
       #p status.attrs
       print "#{status.retweeted_status.retweet_count}.."
 
-      if status.retweeted_status.retweet_count > min_retweets
+      #if status.retweeted_status.retweet_count > min_retweets
+      if status.retweeted_status.retweet_count > min_retweets and status.lang == lang 
         max_retweet = status.retweet_count
         tweet = status
         break

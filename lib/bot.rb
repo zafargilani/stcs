@@ -59,7 +59,7 @@ class BobTheBot < Ebooks::Bot
 
   def advanced_random_follow(number_of_users:10)
     number_of_users = number_of_users*100
-    p "Checking #{number_of_users} users (to follow only those with language = english)..."
+    p "Checking #{number_of_users} users (to follow only those with language english or spanish)..."
     users = @collector.dump_sample_users(number_of_users:number_of_users)
 
     return if users == nil
@@ -67,13 +67,13 @@ class BobTheBot < Ebooks::Bot
     user_count = 0
     users.each do |user|
       if user_count < @follow_number.to_i
-        if user.language.to_s == "english"
+        if user.language.to_s == "english" or user.language.to_s == "spanish"
           follow(user)
           user_count += 1
         end
       end
     end
-    p "Now following #{user_count} more users out of #{number_of_users} checked for language = english..."
+    p "Now following #{user_count} more users out of #{number_of_users} checked for language english or spanish..."
   end
 
 
@@ -151,13 +151,13 @@ class BobTheBot < Ebooks::Bot
   end
 
   #def post_tweet_copy(topic:"job opportunity", min_retweets:0)
-  def post_tweet_copy(min_retweets:1)
+  def post_tweet_copy(lang:"en", min_retweets:1)
 
     keys = []
 
     begin
       #tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
-      tw = @collector.dump_sample_tweet(min_retweets:min_retweets)
+      tw = @collector.dump_sample_tweet(lang:lang,min_retweets:min_retweets)
 
       replacements = []
 
@@ -207,7 +207,7 @@ class BobTheBot < Ebooks::Bot
       p "twitter error : #{e}"
       #this happens if the tweet goes over 140 chars
       #post_tweet_copy(topic:topic, min_retweets:min_retweets)
-      post_tweet_copy(min_retweets:min_retweets)
+      post_tweet_copy(lang:lang, min_retweets:min_retweets)
     end
   end
 
@@ -223,9 +223,9 @@ class BobTheBot < Ebooks::Bot
       scheduler.every "1h" do
         for i in 0..1
           #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
-          retweet(@collector.dump_sample_tweet(min_retweets:1))
+          retweet(@collector.dump_sample_tweet(lang:"en",min_retweets:1))
         end
-        post_tweet_copy
+        post_tweet_copy #no args follows default
     end
 
     rescue => e
