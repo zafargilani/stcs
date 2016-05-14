@@ -61,7 +61,7 @@ class Collector
     tweet
   end
 
-    def dump_topic_tweet(topic:"job opportunity",min_retweets:100)
+  def dump_topic_tweet(topic:"job opportunity",min_retweets:100)
     return if min_retweets < 0
 
     client = TweetStream::Client.new
