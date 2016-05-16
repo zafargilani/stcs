@@ -156,8 +156,8 @@ class BobTheBot < Ebooks::Bot
     keys = []
 
     begin
-      #tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
-      tw = @collector.dump_sample_tweet(lang:lang,min_retweets:min_retweets)
+      tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
+      #tw = @collector.dump_sample_tweet(lang:lang,min_retweets:min_retweets)
 
       replacements = []
 
@@ -222,8 +222,8 @@ class BobTheBot < Ebooks::Bot
     begin
       scheduler.every "1h" do
         for i in 0..1
-          #retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
-          retweet(@collector.dump_sample_tweet(lang:"en",min_retweets:1))
+          retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
+          #retweet(@collector.dump_sample_tweet(lang:"en",min_retweets:1))
         end
         post_tweet_copy #no args follows default
     end
