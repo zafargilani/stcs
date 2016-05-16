@@ -150,8 +150,8 @@ class BobTheBot < Ebooks::Bot
     end
   end
 
-  #def post_tweet_copy(topic:"job opportunity", min_retweets:0)
-  def post_tweet_copy(lang:"en", min_retweets:10)
+  def post_tweet_copy(topic:"job opportunity", min_retweets:0)
+  #def post_tweet_copy(lang:"en", min_retweets:25)
 
     keys = []
 
@@ -206,8 +206,8 @@ class BobTheBot < Ebooks::Bot
     rescue => e
       p "twitter error : #{e}"
       #this happens if the tweet goes over 140 chars
-      #post_tweet_copy(topic:topic, min_retweets:min_retweets)
-      post_tweet_copy(lang:lang, min_retweets:min_retweets)
+      post_tweet_copy(topic:topic, min_retweets:min_retweets)
+      #post_tweet_copy(lang:lang, min_retweets:min_retweets)
     end
   end
 
