@@ -2,26 +2,17 @@ require 'zlib'
 require 'json'
 require 'time'
 
-# read accts (bots, cyborgs, humans) from a file (format: screen_name, type) and populate appropriate lists
-# for now using arrays
-#acct_list = ["AmericanAir", "verizon", "XHNews", "GirIsWant", "footlocker", # bots
-#  "Forbes", "CNET", "HugoGloss", "AppSame", "THR", # bots
-#  "NatbyNature", "awkwardgoogle", "carlaangola", "ErnestoChavana", # humans
-#  "GuyKawasaki", "SeanMaxwell", "DeepakChopra", "OrlandoMagic", "victordrija", "cavs"] # humans
-
-acct_list = ["AmericanAir", "XHNews", "verizon", "GirIsWant", "footlocker", "Forbes", "CNET", "HugoGloss",
-  "GuyKawasaki", "SeanMaxwell", "carlaangola", "DeepakChopra", "victordrija", "OrlandoMagic", "ErnestoChavana", "NatbyNature"]
-
-#acct_list = []
-#begin
-#  acct_file = open('accts.list')
-#  acct_file.each_line do |l|
-#    acct_list.push(l)
-#  end
-#  acct_file.close()
-#rescue => e
-#  puts e
-#end
+# read accounts from a file
+acct_list = []
+begin
+  acct_file = open("accts.list")
+  acct_file.each_line do |l|
+    acct_list.push(l.slice(0..(l.index(':')-1)))#.delete!("\n")) # slice and get the pesky newline characters removed
+  end
+  acct_file.close()
+rescue => e
+  puts e
+end
 
 # get user engagement from raw tweets/json
 # -> per post Summ.( [1] [3] and if [3] > 0: Summ.( [4] ) )
@@ -42,7 +33,7 @@ count, k = 0, 0
 
 acct_list.each do |acct|
   begin
-    infile = open('/data2/zf-twitter-classifier/2016-4.'.concat(acct))
+    infile = open("/data2/zf-twitter-classifier/2016-4.#{acct}")#.concat(acct))
     #gzi = Zlib::GzipReader.new(infile)
     #gzi.each_line do |line|
     infile.each_line do |line|
@@ -100,6 +91,7 @@ acct_list.each do |acct|
           k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
+        # quoted
         elsif pline["quoted_status"]["user"]["screen_name"] == acct
           favorite_count = ( pline["quoted_status"]["favorite_count"] ).to_f # 1
           favorite_count_sum = favorite_count_sum + favorite_count
