@@ -62,7 +62,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline["user"]["favourites_count"].to_f / pline["user"]["statuses_count"].to_f # 9
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
-          k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+          #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         # retweeted
@@ -88,7 +88,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline["retweeted_status"]["user"]["favourites_count"].to_f / pline["retweeted_status"]["user"]["statuses_count"].to_f # 9
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
-          k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+          #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         # quoted
@@ -114,7 +114,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline["quoted_status"]["user"]["favourites_count"].to_f / pline["quoted_status"]["user"]["statuses_count"].to_f # 9
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
-          k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+          #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         end
@@ -124,7 +124,7 @@ acct_list.each do |acct|
     end
     # Liang doesn't like JSON
     out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, "
-    out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{count}, #{k/count}"
+    out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{count}"#, #{k/count}"
     puts out
     #out_json = {
     #  "screen_name" => "#{acct}",

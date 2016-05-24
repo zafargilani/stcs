@@ -166,6 +166,8 @@ If you see a "Connection timeout error" then simply retry launching your bot.
 
 If you see a "invalid or expired token" error then try issuing new tokens for your application. In some cases you might need to delete the application and create a new one. View [a discussion on this topic](http://stackoverflow.com/questions/17636701/twitter-api-reasons-for-invalid-or-expired-token). The [Twitter GET account/verify accounts page](https://dev.twitter.com/rest/reference/get/account/verify_credentials) helps to find if your application tokens are valid (HTTP 200 OK) or not (HTTP 401). See [OAuth flow here](http://oauth.net/core/1.0/#anchor9).
 
+If you see a "Over capacity error / ServiceUnavailable error" then simply retry launching your bot. See [Twitter Service Status here](https://dev.twitter.com/overview/status).
+
 ## Deploying Rails on Apache2
 
 [How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
@@ -229,10 +231,12 @@ To install BotOrNot visit [BotOrNot GitHub page](https://github.com/truthy/botor
 Running BotOrNot:
 ``` bash
 $ ruby lib/classifier.rb
+```
 
 Running selector (classification of criteria-based selected accounts):
 ``` bash
 $ ruby lib/selector.rb
+```
 
 ### Ruby-FANN (experimental / example)
 
@@ -241,6 +245,7 @@ To install Ruby-FANN visit [Ruby-FANN GitHub page](https://github.com/tangledpat
 Running example program:
 ``` bash
 $ ruby lib/fann.rb
+```
 
 ### kmeans-clusterer (experimental / example)
 
@@ -249,4 +254,5 @@ To install kmeans-clusterer visit [kmeans-clusterer GitHub page](https://github.
 Running example program:
 ``` bash
 $ ruby lib/kmeans.rb
+```
 
