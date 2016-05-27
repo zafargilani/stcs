@@ -2,17 +2,11 @@ require 'zlib'
 require 'json'
 require 'time'
 
-# read accounts from a file
-acct_list = []
-begin
-  acct_file = open("accts.list")
-  acct_file.each_line do |l|
-    acct_list.push(l.slice(0..(l.index(':')-1)))#.delete!("\n")) # slice and get the pesky newline characters removed
-  end
-  acct_file.close()
-rescue => e
-  puts e
-end
+# read accts/files from a directory
+acct_list = Dir.entries("/local/scratch/szuhg2/classifier_data/accts.2016-4.new/")
+acct_list.delete(".") # remove . from the list
+acct_list.delete("..") # remove .. from the list
+acct_list.sort!
 
 # get user engagement from raw tweets/json
 # -> per post Summ.( [1] [3] and if [3] > 0: Summ.( [4] ) )
@@ -33,7 +27,7 @@ count, k = 0, 0
 
 acct_list.each do |acct|
   begin
-    infile = open("/data2/zf-twitter-classifier/2016-4.#{acct}")#.concat(acct))
+    infile = open("/local/scratch/szuhg2/classifier_data/accts.2016-4.new/#{acct}")
     #gzi = Zlib::GzipReader.new(infile)
     #gzi.each_line do |line|
     infile.each_line do |line|
@@ -122,7 +116,6 @@ acct_list.each do |acct|
         next
       end
     end
-    # Liang doesn't like JSON
     out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, "
     out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{count}"#, #{k/count}"
     puts out
