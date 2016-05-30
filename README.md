@@ -92,6 +92,102 @@ Commands:
   stweeler.rb launch_bot                     # Launches a bot OMG OMG OMG
 ``` 
 
+## Deploying Rails on Apache2
+
+[How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
+
+From the page:
+
+``` bash
+sudo apt-get install ruby-full build-essential
+sudo apt-get install apache2 apache2-dev
+sudo gem install rails
+sudo gem install passenger
+sudo passenger-install-apache2-module
+```
+
+Issues: The page asks to install apache2-mpm-prefork, apache2-prefork-dev but both are not unavailable. In this case it is better to install apache2-dev as directed above.
+
+Copy LoadModule script to /etc/apache2/apache2.conf.
+
+Then enable mod_rewrite for Apache2:
+
+``` bash
+sudo a2enmod rewrite
+```
+
+Create a file in /etc/apache2/sites-available/ for your site e.g. website.conf and insert the following:
+
+``` bash
+<VirtualHost>
+    RailsEnv development
+    ServerName website.com
+    DocumentRoot /var/www/html/stcs/shortener
+</VirtualHost>
+```
+
+Enable the site and restart:
+``` bash
+sudo a2ensite dev.blah.com
+service apache2 restart
+```
+
+Might need to add an entry to /etc/hosts:
+
+``` bash
+127.0.0.1     website.com
+```
+
+[Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
+
+Permissions:
+
+Note that although db folder is writable, access to it is rejected except for localhost:
+
+``` bash
+cd stcs/shortener/
+sudo chmod -R 777 db/
+sudo chmod -R 755 public/
+sudo chmod -R 0664 log/
+```
+
+If the Apache2 service fails to start (may be because something got messed up with Phusion Passenger), then do the following:
+
+``` bash
+bundle clean --force
+sudo gem install passenger
+sudo passenger-install-apache2-module
+bundle install
+sudo service apache2 start
+```
+
+## Installing Ruby, RVM and bundler
+
+Install RVM and set default Ruby to version 2.2 (https://rvm.io/rvm/install):
+
+``` bash
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl -sSL https://get.rvm.io | bash -s stable --ruby
+source /home/cloud-user/.rvm/scripts/rvm
+rvm install 2.2
+rvm --default use 2.2
+ruby -v
+```
+
+Note: you can select to [use a different version of Ruby](https://rvm.io/rubies/default) on your system later on by:
+``` bash
+rvm list
+rvm use [version]
+ruby -v
+``` 
+
+If you see "Could not find 'bundler'" upon "bundle install", try: 
+
+``` bash
+gem install bundle
+bundle update
+```
+
 ## Troubleshooting
 
 If sqlite3 is not installed by bundle install, try:
@@ -167,72 +263,6 @@ If you see a "Connection timeout error" then simply retry launching your bot.
 If you see a "invalid or expired token" error then try issuing new tokens for your application. In some cases you might need to delete the application and create a new one. View [a discussion on this topic](http://stackoverflow.com/questions/17636701/twitter-api-reasons-for-invalid-or-expired-token). The [Twitter GET account/verify accounts page](https://dev.twitter.com/rest/reference/get/account/verify_credentials) helps to find if your application tokens are valid (HTTP 200 OK) or not (HTTP 401). See [OAuth flow here](http://oauth.net/core/1.0/#anchor9).
 
 If you see a "Over capacity error / ServiceUnavailable error" then simply retry launching your bot. See [Twitter Service Status here](https://dev.twitter.com/overview/status).
-
-## Deploying Rails on Apache2
-
-[How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
-
-From the page:
-``` bash
-sudo apt-get install ruby-full build-essential
-sudo apt-get install apache2 apache2-dev
-sudo gem install rails
-sudo gem install passenger
-sudo passenger-install-apache2-module
-```
-
-Issues:
-- the page asks to install apache2-mpm-prefork, apache2-prefork-dev but both are not unavailable. In this case it is better to install apache2-dev as directed above.
-
-[Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
-
-Permissions:
-
-Note that although db folder is writable, access to it is rejected except for localhost:
-
-``` bash
-cd stcs/shortener/
-sudo chmod -R 777 db/
-sudo chmod -R 755 public/
-sudo chmod -R 0664 log/
-```
-
-If the Apache2 service fails to start (may be because something got messed up with Phusion Passenger), then do the following:
-
-``` bash
-bundle clean --force
-sudo gem install passenger
-sudo passenger-install-apache2-module
-bundle install
-sudo service apache2 start
-```
-
-## Installing Ruby, RVM and bundler
-
-Install RVM and set default Ruby to version 2.2 (https://rvm.io/rvm/install):
-
-``` bash
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-\curl -sSL https://get.rvm.io | bash -s stable --ruby
-source /home/cloud-user/.rvm/scripts/rvm
-rvm install 2.2
-rvm --default use 2.2
-ruby -v
-```
-
-Note: you can select to [use a different version of Ruby](https://rvm.io/rubies/default) on your system later on by:
-``` bash
-rvm list
-rvm use [version]
-ruby -v
-``` 
-
-If you see "Could not find 'bundler'" upon "bundle install", try: 
-
-``` bash
-gem install bundle
-bundle update
-```
 
 ## Add-Ons
 
