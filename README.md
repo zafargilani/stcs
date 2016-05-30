@@ -172,6 +172,18 @@ If you see a "Over capacity error / ServiceUnavailable error" then simply retry 
 
 [How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
 
+From the page:
+``` bash
+sudo apt-get install ruby-full build-essential
+sudo apt-get install apache2 apache2-dev
+sudo gem install rails
+sudo gem install passenger
+sudo passenger-install-apache2-module
+```
+
+Issues:
+- the page asks to install apache2-mpm-prefork, apache2-prefork-dev but both are not unavailable. In this case it is better to install apache2-dev as directed above.
+
 [Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
 
 Permissions:
