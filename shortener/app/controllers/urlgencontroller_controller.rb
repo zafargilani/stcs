@@ -80,7 +80,7 @@ class UrlgencontrollerController < ApplicationController
 
     begin
       #log url click timestamp, tweet ids and url token for each copied tweet
-      open('/home/cloud-user/clicks/clicks.txt', 'a') { |f|
+      open('/home/szuhg2/clicks/clicks.txt', 'a') { |f|
         f.puts "#{Time.now}, #{params[:id]}, #{request.remote_ip}, #{cookies[:revisit]}, #{request.env["HTTP_USER_AGENT"]}"
       }
     rescue => e
@@ -94,8 +94,8 @@ class UrlgencontrollerController < ApplicationController
       @@bots += 1
 
       if @@bots == 0 || @@total == 0
-        @@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
-	@@total = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | wc -l).to_i
+        @@bots = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
+	@@total = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | wc -l).to_i
       end
 
     #detect bots via inter-click delay (later: try to update to Entropy Component?)

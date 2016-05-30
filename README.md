@@ -138,6 +138,12 @@ Might need to add an entry to /etc/hosts:
 127.0.0.1     website.com
 ```
 
+In case the web server doesn't seem to listen to port 80 (netstat -nutlep):
+
+``` bash
+ufw allow 80
+```
+
 [Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
 
 Permissions:
