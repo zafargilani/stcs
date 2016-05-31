@@ -108,7 +108,15 @@ sudo passenger-install-apache2-module
 
 Issues: The page asks to install apache2-mpm-prefork, apache2-prefork-dev but both are not unavailable. In this case it is better to install apache2-dev as directed above.
 
-Copy LoadModule script to /etc/apache2/apache2.conf.
+Copy LoadModule script at the bottom of /etc/apache2/apache2.conf file:
+
+``` bash
+LoadModule passenger_module /home/szuhg2/.rvm/gems/ruby-2.2.4/gems/passenger-5.0.28/buildout/apache2/mod_passenger.so
+   <IfModule mod_passenger.c>
+     PassengerRoot /home/szuhg2/.rvm/gems/ruby-2.2.4/gems/passenger-5.0.28
+     PassengerDefaultRuby /home/szuhg2/.rvm/gems/ruby-2.2.4/wrappers/ruby
+   </IfModule>
+```
 
 Then enable mod_rewrite for Apache2:
 
@@ -116,26 +124,33 @@ Then enable mod_rewrite for Apache2:
 sudo a2enmod rewrite
 ```
 
-Create a file in /etc/apache2/sites-available/ for your site e.g. website.conf and insert the following:
+Modify /etc/apache2/sites-available/000-default.conf as follows:
 
 ``` bash
-<VirtualHost>
-    RailsEnv development
-    ServerName website.com
-    DocumentRoot /var/www/html/stcs/shortener
+<VirtualHost *:80>
+        ServerName svr-szuhg2-web.cl.cam.ac.uk
+
+        RailsEnv development
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html/stcs/shortener/public
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
 
 Enable the site and restart:
+
 ``` bash
-sudo a2ensite dev.blah.com
+sudo a2ensite 000-default.conf
 service apache2 restart
 ```
 
 Might need to add an entry to /etc/hosts:
 
 ``` bash
-127.0.0.1     website.com
+127.0.0.1     svr-szuhg2-web.cl.cam.ac.uk
 ```
 
 In case the web server doesn't seem to listen to port 80 (netstat -nutlep):
