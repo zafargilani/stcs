@@ -2,7 +2,7 @@
 
 STCS is a tweeter bot platform for analysis on Twitter. Find research work using this platform [here](http://dl.acm.org/citation.cfm?id=2889360). Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
 
-Its bots are able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%).
+The bot is able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%).
 
 It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags.
 

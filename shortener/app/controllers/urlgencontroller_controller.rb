@@ -67,7 +67,7 @@ class UrlgencontrollerController < ApplicationController
 
   def generate
 
-    if request.remote_ip != "127.0.0.1" or request.remote_ip != "::1"
+    if request.remote_ip != "127.0.0.1" and request.remote_ip != "::1"
       render json: "Unauthorized access by #{request.remote_ip}."
       return
     end
