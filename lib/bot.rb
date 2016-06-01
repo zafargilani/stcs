@@ -67,10 +67,14 @@ class BobTheBot < Ebooks::Bot
     user_count = 0
     users.each do |user|
       if user_count < @follow_number.to_i
-        if user.language.to_s == "english" or user.language.to_s == "spanish"
-          follow(user)
-          user_count += 1
-        end
+        #if user.language.to_s == "english" or user.language.to_s == "spanish"
+        #if user.lang == "en" or user.lang == "es"
+        #if user.language == "en" or user.language == "es"
+        #  follow(user)
+        #  user_count += 1
+        #end
+        follow(user)
+        user_count += 1
       end
     end
     p "Now following #{user_count} more users out of #{number_of_users} checked for language english or spanish..."

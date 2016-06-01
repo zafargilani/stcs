@@ -172,6 +172,11 @@ sudo chmod -R 755 public/
 sudo chmod -R 0664 log/
 ```
 
+If the above permissions for log/ and log/development.log fail then try the following:
+``` bash
+sudo chmod -R 777 log/
+```
+
 If the Apache2 service fails to start (may be because something got messed up with Phusion Passenger), then do the following:
 
 ``` bash
