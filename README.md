@@ -150,7 +150,7 @@ In case the web server doesn't seem to listen to port 80 (netstat -nutlep):
 ufw allow 80
 ```
 
-Now the most important bit of shortener - Creating db, creating shortened_urls table, migrating db to RAILS:
+The most important bit of shortener - Creating db, creating shortened_urls table, migrating db to rails:
 
 ``` bash  
 cd shortener
