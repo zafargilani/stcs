@@ -68,15 +68,6 @@ follow_frequency: 15
 follower_ratio: 0.3
 #unfollow will occur every N hours:
 unfollow_frequency: 48
-
-``` 
-
-Running shortener:
-``` bash  
-cd shortener
-bundle install
-bin/rake db:migrate RAILS_ENV=development
-bin/rails server
 ``` 
 
 Other commands:
@@ -157,6 +148,22 @@ In case the web server doesn't seem to listen to port 80 (netstat -nutlep):
 
 ``` bash
 ufw allow 80
+```
+
+Now the most important bit of shortener - Creating db, creating shortened_urls table, migrating db to RAILS:
+
+``` bash  
+cd shortener
+bundle install
+rails generate shortener
+bin/rake db:migrate RAILS_ENV=development
+```
+
+Running rails server for debug purposes (starting/restarting Apache2 should automatically start rails server):
+
+``` bash
+cd shortener
+bin/rails server
 ```
 
 [Purge or recreate a Ruby on Rails database](http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database)
