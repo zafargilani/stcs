@@ -67,10 +67,10 @@ class UrlgencontrollerController < ApplicationController
 
   def generate
 
-    if request.remote_ip != "127.0.0.1" and request.remote_ip != "::1"
+    #if request.remote_ip != "127.0.0.1" and request.remote_ip != "::1"
       render json: "Unauthorized access by #{request.remote_ip}."
       return
-    end
+    #end
 
     short = Shortener::ShortenedUrl.generate(params[:u])
     render json: short
@@ -117,7 +117,7 @@ class UrlgencontrollerController < ApplicationController
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    #lines = %x(tail -n #{numberclicks} /home/cloud-user/clicks/clicks.txt)
+    #lines = %x(tail -n #{numberclicks} /home/szuhg2/clicks/clicks.txt)
     lines = Caches.get('clicks')
     out = "{\"data\" : ["
     #out = "?(["
@@ -164,8 +164,8 @@ class UrlgencontrollerController < ApplicationController
 
   def botsJson
 	if @@bots == 0 || @@total == 0
-		@@bots = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
-		@@total = %x(tail -n 1000 /home/cloud-user/clicks/clicks.txt | wc -l).to_i
+		@@bots = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
+		@@total = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | wc -l).to_i
 	end
   	render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
   end

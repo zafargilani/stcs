@@ -58,8 +58,8 @@ class BobTheBot < Ebooks::Bot
   end
 
   def advanced_random_follow(number_of_users:10)
-    number_of_users = number_of_users*100
-    p "Checking #{number_of_users} users (to follow only those with language english or spanish)..."
+    number_of_users = number_of_users
+    p "Checking #{number_of_users} users..."
     users = @collector.dump_sample_users(number_of_users:number_of_users)
 
     return if users == nil
@@ -67,16 +67,10 @@ class BobTheBot < Ebooks::Bot
     user_count = 0
     users.each do |user|
       if user_count < @follow_number.to_i
-        #if user.language.to_s == "english" or user.language.to_s == "spanish"
-        #if user.lang.to_s == "en" or user.lang.to_s == "es"
-        #  follow(user)
-        #  user_count += 1
-        #end
         follow(user)
         user_count += 1
       end
     end
-    p "Now following #{user_count} more users out of #{number_of_users} checked for language english or spanish..."
   end
 
 

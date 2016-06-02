@@ -121,6 +121,7 @@ class Collector
   end
 
   def dump_sample_users(number_of_users:10)
+    number_of_users = number_of_users*100
 
     return if number_of_users <= 0
 
@@ -129,9 +130,15 @@ class Collector
     users = []
     client.sample do |status|
       #p status.attrs
-      users[i] = status.user.screen_name
-      p users[i]
-      i+=1
+      p "Only user.lang = en / es..."
+      if status.user.lang == "en" or status.user.lang == "es"
+        users[i] = status.user.screen_name
+        p users[i]
+        i+=1
+      end
+      #users[i] = status.user.screen_name
+      #p users[i]
+      #i+=1
       break if(i == number_of_users)
     end
     users
