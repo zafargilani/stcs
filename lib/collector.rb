@@ -64,6 +64,11 @@ class Collector
   def dump_topic_tweet(topic:"job opportunity",min_retweets:100)
     return if min_retweets < 0
 
+    if topic.include? ','
+      topics = topic.split(',')
+      topic = topics[rand(topics.length)]
+    end
+
     client = TweetStream::Client.new
     tweet = nil
 
@@ -128,7 +133,7 @@ class Collector
     client = TweetStream::Client.new
     i = 0
     users = []
-    p "Only user.lang = en / es..."
+    p "Selecting users with user.lang = en / es..."
     client.sample do |status|
       #p status.attrs
       if status.user.lang == "en" or status.user.lang == "es"
@@ -157,7 +162,7 @@ class Collector
         client.sample do |status|
           if ptime.day != Time.now.day # check for day, if new day then new file
             ptime = Time.now
-            file = File.new("/local/scratch/twitter-data/#{ptime.year}-#{ptime.month}-#{ptime.day}.uk.txt", "w")
+            file = File.new("/home/szuhg2/twitter-data/#{ptime.year}-#{ptime.month}-#{ptime.day}.uk.txt", "w")
           end
 
           puts i
