@@ -89,6 +89,7 @@ Commands:
 First clone the repository in the /var/www/html/ so the shortener can be deployed:
 
 ``` bash
+cd /var/www/html
 sudo git clone https://github.com/zafargilani/stcs.git stcs
 cd stcs
 bundle install
@@ -294,7 +295,7 @@ If shortener version is outdated or you see 'undefined method `extract_token'' t
 
 ``` bash
 cd ~
-git clone https://github.com/jpmcgrath/shortener.git
+git clone https://github.com/jpmcgrath/shortener.git shortener
 gem build shortener.gemspec
 gem install shortener-0.5.5.gem
 
