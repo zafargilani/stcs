@@ -128,9 +128,9 @@ class Collector
     client = TweetStream::Client.new
     i = 0
     users = []
+    p "Only user.lang = en / es..."
     client.sample do |status|
       #p status.attrs
-      p "Only user.lang = en / es..."
       if status.user.lang == "en" or status.user.lang == "es"
         users[i] = status.user.screen_name
         p users[i]
