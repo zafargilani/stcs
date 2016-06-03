@@ -1,4 +1,4 @@
-# stcs - Super Trully Cuning Stweeler!
+# stcs - Super Truly Cunning Stweeler!
 
 STCS is a tweeter bot platform for analysis on Twitter. Find research work using this platform [here](http://dl.acm.org/citation.cfm?id=2889360). Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
 
@@ -11,17 +11,18 @@ Url redirection is useful to retrieve http header information, such as user agen
 It can potentially be extended to work as a proxy, in order to inject functionality into linked pages.
 
 Functionalities:
- * Streaming Tweet Collection System - uses the stream apis to collect and dump user tweets
- * Bot Functionality - manages a twitter account, following, retweeting, etc
+ * Streaming Tweet Collection System - uses the [twitter ruby gem](https://github.com/sferik/twitter) and Twitter's Streaming API to collect and dump user tweets
+ * Bot Functionality - the automated program or [bot](https://github.com/mispy/twitter_ebooks) manages a twitter account, following, retweeting, etc
  * URL analyzer - provides algorithms to retrieve urls and currently some pocs of malware detection
- * URL shortener - rails project to generate shortened urls and interact with the bot
- * BotOrNot - python project to find if a twitter account is an automated program (bot) or human
+ * URL shortener - [shortener](https://github.com/jpmcgrath/shortener) rails project to generate shortened urls and interact with the bot
+ * BotOrNot - [botornot](https://github.com/truthy/botornot-python) is a python project to find if a twitter account is an automated program (bot) or human
 
 ## Getting started
 
-You should be using ruby >= 2.2 and run bundle install: 
+You should be using ruby >= 2.2 and run bundle install. This will deploy the bot, not the shortener or the rails web server, for that see [Deploying Rails on Apache2](https://github.com/zafargilani/stcs#deploying-rails-on-apache2) below:
 
 ``` bash  
+cd ~
 git clone https://github.com/zafargilani/stcs.git stcs
 cd stcs
 bundle install 
@@ -85,9 +86,15 @@ Commands:
 
 ## Deploying Rails on Apache2
 
-[How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger)
+First clone the repository in the /var/www/html/ so the shortener can be deployed:
 
-From the page:
+``` bash
+sudo git clone https://github.com/zafargilani/stcs.git stcs
+cd stcs
+bundle install
+```
+
+For the page [How to do Ruby on Rails Apache with Passenger](https://nathanhoad.net/how-to-ruby-on-rails-ubuntu-apache-with-passenger):
 
 ``` bash
 sudo apt-get install ruby-full build-essential
@@ -268,6 +275,7 @@ If you get a [connection timeout error](https://github.com/sferik/twitter/issues
 Either try updating this project to a more recent version of twitter by switching the twitter version in the Gemfile or in case version 6 didnt come out yet, try the following (remember to switch <YOUR_STCS_FOLDER> by your stcs folder):
 
 ``` bash
+cd ~
 git clone https://github.com/sferik/twitter.git twitter
 cd twitter
 vi lib/twitter/streaming/connection.rb
@@ -285,6 +293,7 @@ And now you should be able to execute stcs without the connection timeout error.
 If shortener version is outdated or you see 'undefined method `extract_token'' then do the same for shortener, i.e.: clone, build, install:
 
 ``` bash
+cd ~
 git clone https://github.com/jpmcgrath/shortener.git
 gem build shortener.gemspec
 gem install shortener-0.5.5.gem
