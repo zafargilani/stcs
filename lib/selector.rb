@@ -6,24 +6,24 @@ require 'json'
 parsed_line = ""
 out = ""
 begin
-  infile = open('/data/zf-twitter-data/2016-4-1.uk.txt.gz')
+  infile = open('/local/scratch/twitter-data/2016-4-10.uk.txt.gz')
   gzi = Zlib::GzipReader.new(infile)
   gzi.each_line do |line|
     begin
       parsed_line = JSON.parse(line)
       # output: screen_name, followers_count, friends_count, favourites_count, statuses_count
       # perspective 1: user following and friends
-      if parsed_line["user"]["followers_count"].to_i >= 1000000 or parsed_line["user"]["friends_count"] >= 1000000
+      if parsed_line["user"]["followers_count"].to_i >= 50000000 or parsed_line["user"]["friends_count"] >= 50000000
         out = out + "@#{parsed_line['user']['screen_name']}, #{parsed_line['user']['followers_count']}, #{parsed_line['user']['friends_count']}, "
         out = out + "#{parsed_line["user"]["favourites_count"]}, #{parsed_line["user"]["statuses_count"]}\n"
-        open('/data2/zf-twitter-classifier/2016-4-1.fnf', 'a') { |outfile| # followers and friends
+        open('/local/scratch/szuhg2/classifier_data/2016-4-1.fnf', 'a') { |outfile| # followers and friends
           outfile.puts out
         }
       # perspective 2: favourties = 25% or more of tweets
-      elsif parsed_line["user"]["followers_count"].to_i >= 1000000 and parsed_line["user"]["favourites_count"].to_i >= (0.25*parsed_line["user"]["statuses_count"].to_f).to_i
+      elsif parsed_line["user"]["followers_count"].to_i >= 50000000 and parsed_line["user"]["favourites_count"].to_i >= (0.25*parsed_line["user"]["statuses_count"].to_f).to_i
         out = out + "@#{parsed_line['user']['screen_name']}, #{parsed_line['user']['followers_count']}, #{parsed_line['user']['friends_count']}, "
         out = out + "#{parsed_line["user"]["favourites_count"]}, #{parsed_line["user"]["statuses_count"]}\n"
-        open('/data2/zf-twitter-classifier/2016-4-1.fav', 'a') { |outfile| # favourites = 25% of all tweets
+        open('/local/scratch/szuhg2/classifier_data/2016-4-1.fav', 'a') { |outfile| # favourites = 25% of all tweets
           outfile.puts out
         }
       end
