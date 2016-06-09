@@ -1,9 +1,10 @@
+# usage: ruby userengagements.rb /fully/qualified/path
 require 'zlib'
 require 'json'
 require 'time'
 
 # read accts/files from a directory
-acct_list = Dir.entries("/local/scratch/szuhg2/classifier_data/accts.2016-4.new/")
+acct_list = Dir.entries(ARGV[0])
 acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
@@ -18,16 +19,19 @@ acct_list.sort!
 # [7] fo_fr_ratio = user -> followers_count / friends_count
 # [8] tweet_freq = user -> statuses_count / days( user -> created_at - created_at )
 # [9] fav_tw_ratio = user -> favourites_count / statuses_count
+# [10] replies_count
+# [11] age_of_account = days
 # dump this in an output file from time to time
 
 pline = ""
 out = ""
 favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
+replies_count_sum, days = 0, 0
 count, k = 0, 0
 
 acct_list.each do |acct|
   begin
-    infile = open("/local/scratch/szuhg2/classifier_data/accts.2016-4.new/#{acct}")
+    infile = open("#{ARGV[0]}/#{acct}")
     #gzi = Zlib::GzipReader.new(infile)
     #gzi.each_line do |line|
     infile.each_line do |line|
@@ -56,6 +60,10 @@ acct_list.each do |acct|
           fav_tw_ratio = pline["user"]["favourites_count"].to_f / pline["user"]["statuses_count"].to_f # 9
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
+          if pline["in_reply_to_status_id"] != nil
+	    replies_count_sum += 1
+	  end
+
           #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
@@ -82,7 +90,11 @@ acct_list.each do |acct|
           fav_tw_ratio = pline["retweeted_status"]["user"]["favourites_count"].to_f / pline["retweeted_status"]["user"]["statuses_count"].to_f # 9
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
-          #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+          if pline["retweeted_status"]["in_reply_to_status_id"] != nil
+	    replies_count_sum += 1
+	  end
+          
+	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         # quoted
@@ -108,7 +120,11 @@ acct_list.each do |acct|
           fav_tw_ratio = pline["quoted_status"]["user"]["favourites_count"].to_f / pline["quoted_status"]["user"]["statuses_count"].to_f # 9
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
-          #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+          if pline["quoted_status"]["in_reply_to_status_id"] != nil
+	    replies_count_sum += 1
+	  end
+          
+	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         end
@@ -117,7 +133,7 @@ acct_list.each do |acct|
       end
     end
     out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, "
-    out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{count}"#, #{k/count}"
+    out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{replies_count_sum}, #{count}, #{days}"#, #{k/count}"
     puts out
     #out_json = {
     #  "screen_name" => "#{acct}",
@@ -127,12 +143,15 @@ acct_list.each do |acct|
     #  "fo_fr_ratio [7]" => fo_fr_ratio_sum / count,
     #  "tweet_freq [8]" => tweet_freq_sum / count,
     #  "fav_tw_ratio [9]" => fav_tw_ratio_sum / count,
+    #  "replies_count_sum [10]" => replies_count_sum,
     #  #"tweet_count" => count,
+    #  "days [11]" => days,
     #  "k" => k / count
     #}
     #puts out_json
     # reset vars
     favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
+    replies_count_sum, days = 0, 0
     count, k = 0, 0
   rescue => e
     puts e

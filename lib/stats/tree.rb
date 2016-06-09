@@ -1,10 +1,11 @@
+# usage: ruby tree.rb /fully/qualified/path
 require 'zlib'
 require 'json'
 require 'time'
 
 # read accounts from a file
 # read accts/files from a directory
-acct_list = Dir.entries("/local/scratch/szuhg2/classifier_data/accts.2016-4.new/")
+acct_list = Dir.entries(ARGV[0])
 acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
@@ -19,7 +20,7 @@ max_depth = 0
 
 acct_list.each do |acct|
   begin
-    infile = open("/local/scratch/szuhg2/classifier_data/accts.2016-4.new/#{acct}")
+    infile = open("#{ARGV[0]}/#{acct}")
     #gzi = Zlib::GzipReader.new(infile)
     #gzi.each_line do |line|
     infile.each_line do |line|
