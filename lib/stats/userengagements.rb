@@ -1,4 +1,4 @@
-# usage: ruby userengagements.rb /fully/qualified/path
+# usage: ruby userengagements.rb /fully/qualified/path/to/directory
 require 'zlib'
 require 'json'
 require 'time'
