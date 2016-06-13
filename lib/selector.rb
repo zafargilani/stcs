@@ -1,3 +1,4 @@
+# usage: ruby selector.rb /full/path/input/file.txt.gz
 require 'zlib'
 require 'json'
 # This script writes out most popular Twitter accounts from data collected via Streaming API
@@ -6,7 +7,7 @@ require 'json'
 parsed_line = ""
 out = ""
 begin
-  infile = open('/local/scratch/twitter-data/2016-4-10.uk.txt.gz')
+  infile = open(ARGV[0])
   gzi = Zlib::GzipReader.new(infile)
   gzi.each_line do |line|
     begin
