@@ -25,8 +25,9 @@ acct_list.sort!
 
 pline = ""
 out = ""
+source_list = []
 favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
-replies_count_sum, days = 0, 0
+replies_count_sum, urls_count, days = 0, 0, 0
 count, k = 0, 0
 
 acct_list.each do |acct|
@@ -39,6 +40,12 @@ acct_list.each do |acct|
         pline = JSON.parse(line)
         # simple case: original tweet
         if pline["user"]["screen_name"] == acct
+	  if source_list.include? pline["source"] # match found
+	    # do nothing
+	  else
+	    source_list.push(pline["source"])
+	  end
+
           favorite_count = ( pline["favorite_count"] ).to_f # 1
           favorite_count_sum = favorite_count_sum + favorite_count
 
@@ -64,11 +71,21 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
 
+          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+            urls_count += 1
+	  end
+
           #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         # retweeted
         elsif pline["retweeted_status"]["user"]["screen_name"] == acct
+	  if source_list.include? pline["source"] # match found
+	    # do nothing
+	  else
+	    source_list.push(pline["source"])
+	  end
+
           favorite_count = ( pline["retweeted_status"]["favorite_count"] ).to_f # 1
           favorite_count_sum = favorite_count_sum + favorite_count
 
@@ -94,11 +111,21 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
           
+          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+	    urls_count += 1
+	  end
+
 	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         # quoted
         elsif pline["quoted_status"]["user"]["screen_name"] == acct
+	  if source_list.include? pline["source"] # match found
+	    # do nothing
+	  else
+	    source_list.push(pline["source"])
+	  end
+
           favorite_count = ( pline["quoted_status"]["favorite_count"] ).to_f # 1
           favorite_count_sum = favorite_count_sum + favorite_count
 
@@ -124,6 +151,10 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
           
+          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+	    urls_count += 1
+	  end
+          
 	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
@@ -133,7 +164,7 @@ acct_list.each do |acct|
       end
     end
     out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, "
-    out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{replies_count_sum}, #{count}, #{days}"#, #{k/count}"
+    out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{count}, #{days}, #{replies_count_sum}, #{source_list.size}, #{urls_count}"#, #{k/count}"
     puts out
     #out_json = {
     #  "screen_name" => "#{acct}",
@@ -143,15 +174,18 @@ acct_list.each do |acct|
     #  "fo_fr_ratio [7]" => fo_fr_ratio_sum / count,
     #  "tweet_freq [8]" => tweet_freq_sum / count,
     #  "fav_tw_ratio [9]" => fav_tw_ratio_sum / count,
-    #  "replies_count_sum [10]" => replies_count_sum,
     #  #"tweet_count" => count,
     #  "days [11]" => days,
+    #  "replies_count_sum [10]" => replies_count_sum,
+    #  "source_list" => "#{source_list.size}",
+    #  "urls_count" => "#{urls_count}"
     #  "k" => k / count
     #}
     #puts out_json
     # reset vars
+    source_list.clear
     favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
-    replies_count_sum, days = 0, 0
+    replies_count_sum, urls_count, days = 0, 0, 0
     count, k = 0, 0
   rescue => e
     puts e
