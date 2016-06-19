@@ -1,4 +1,4 @@
-# usage: ruby tree.rb /fully/qualified/path/to/directory > tree.txt
+# usage: ruby tree.rb /fully/qualified/path/to/directory[accts] > tree.txt
 require 'zlib'
 require 'json'
 require 'time'
