@@ -1,4 +1,4 @@
-# usage: ruby source.rb /fully/qualified/path/to/directory > source.txt
+# usage: ruby source.rb /fully/qualified/path/to/directory[accts] > source.txt
 require 'zlib'
 require 'json'
 require 'time'
