@@ -1,6 +1,0 @@
-[DEFAULT]
-bon_consumer_key = key
-bon_consumer_secret = secret
-bon_oauth_token = token
-bon_oauth_secret = secret
-
