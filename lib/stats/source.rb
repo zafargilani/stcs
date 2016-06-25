@@ -1,7 +1,6 @@
 # usage: ruby source.rb /fully/qualified/path/to/directory[accts] > source.txt
 require 'zlib'
 require 'json'
-require 'time'
 
 # read accounts from a file
 # read accts/files from a directory
@@ -20,7 +19,7 @@ max_depth = 0
 
 acct_list.each do |acct|
   begin
-    infile = open("#{ARGV[0]}/#{acct}") # can be ARGV[1]
+    infile = open("#{ARGV[0]}/#{acct}")
     #gzi = Zlib::GzipReader.new(infile)
     #gzi.each_line do |line|
     infile.each_line do |line|

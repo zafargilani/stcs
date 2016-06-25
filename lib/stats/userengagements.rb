@@ -71,7 +71,8 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
 
-          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+          #if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+          if pline["entities"]["media"]["url"] != nil
             urls_count += 1
 	  end
 
@@ -111,7 +112,8 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
           
-          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+          #if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+          if pline["retweeted_status"]["entities"]["media"]["url"] != nil
 	    urls_count += 1
 	  end
 
@@ -151,7 +153,8 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
           
-          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+          #if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
+          if pline["quoted_status"]["entities"]["media"]["url"] != nil
 	    urls_count += 1
 	  end
           
