@@ -71,8 +71,8 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
 
-          #if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
-          if pline["entities"]["media"]["url"] != nil
+          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//) # captures all urls
+	  #if pline["entities"]["media"][0]["media_url"] != nil # only captures [entities]..[media_url] or [entities][url] (some are empty)
             urls_count += 1
 	  end
 
@@ -112,8 +112,8 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
           
-          #if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
-          if pline["retweeted_status"]["entities"]["media"]["url"] != nil
+          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//) # captures all urls
+          #if pline["retweeted_status"]["entities"]["media"][0]["media_url"] != nil # only captures [entities]..[media_url] or [entities][url] (some are empty)
 	    urls_count += 1
 	  end
 
@@ -153,8 +153,8 @@ acct_list.each do |acct|
 	    replies_count_sum += 1
 	  end
           
-          #if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//)
-          if pline["quoted_status"]["entities"]["media"]["url"] != nil
+          if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//) # captures all urls
+	  #if pline["quoted_status"]["entities"]["media"][0]["media_url"] != nil # only captures [entities]..[media_url] or [entities][url] (some are empty)
 	    urls_count += 1
 	  end
           
