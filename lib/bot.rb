@@ -218,7 +218,8 @@ class BobTheBot < Ebooks::Bot
     advanced_random_unfollow(follower_ratio:@follower_ratio, max_unfollow:300)
 
     begin
-      scheduler.every "1h" do
+      rnd = rand(45..60).to_i
+      scheduler.every "#{rnd}m" do
         for i in 0..1
           retweet(@collector.dump_topic_tweet(topic:"job opportunity",min_retweets:1))
           #retweet(@collector.dump_sample_tweet(lang:"en",min_retweets:1))
