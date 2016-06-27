@@ -1,4 +1,4 @@
-# usage: ruby source.rb /fully/qualified/path/to/directory[accts] > source.txt
+# usage: ruby text.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/output/directory
 require 'zlib'
 require 'json'
 
@@ -14,8 +14,6 @@ acct_list.sort!
 
 pline = ""
 out = ""
-source_list = []
-max_depth = 0
 
 acct_list.each do |acct|
   begin
@@ -26,38 +24,27 @@ acct_list.each do |acct|
       begin
         pline = JSON.parse(line)
 	if pline["user"]["screen_name"] == acct
-	  if source_list.include? pline["source"] # match found
-	    # do nothing
-	  else
-            source_list.push(pline["source"])
-	  end
+          out = out + "#{pline["text"]}\n"
 	elsif pline["retweeted_status"]["user"]["screen_name"] == acct
-	  if source_list.include? pline["retweeted_status"]["source"] # match found
-	    # do nothing
-	  else
-            source_list.push(pline["retweeted_status"]["source"])
-	  end
+          out = out + "#{pline["text"]}\n"
 	elsif pline["quoted_status"]["user"]["screen_name"] == acct
-	  if source_list.include? pline["quoted_status"]["source"] # match found
-	    # do nothing
-	  else
-            source_list.push(pline["quoted_status"]["source"])
-	  end
+          out = out + "#{pline["text"]}\n"
 	end
       rescue
         next
       end
     end
     # if you don't like JSON
-    out = "#{acct}: #{source_list}"
-    puts out
+    File.open("#{ARGV[1]}/#{acct}", 'w') { |file| file.write(out) }
+    #out = "#{source_list}"
+    #puts out
     #out_json = {
     #  "screen_name" => "#{acct}",
     #  "tree" => "#{source_list}"
     #}
     #puts out_json
     # reset vars
-    source_list.clear
+    out = ""
   rescue => e
     puts e
   end
