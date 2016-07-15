@@ -28,7 +28,7 @@ out = ""
 source_list = []
 favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
 replies_count_sum, urls_count, days = 0, 0, 0
-count, k = 0, 0
+count, retweets, k = 0, 0, 0
 
 acct_list.each do |acct|
   begin
@@ -76,6 +76,10 @@ acct_list.each do |acct|
             urls_count += 1
 	  end
 
+          if pline["text"].include? "RT"
+	    retweets += 1
+	  end
+
           #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
@@ -115,6 +119,10 @@ acct_list.each do |acct|
           if pline["text"].include? "http" or pline["text"].match(/.[a-z]*\//) # captures all urls
           #if pline["retweeted_status"]["entities"]["media"][0]["media_url"] != nil # only captures [entities]..[media_url] or [entities][url] (some are empty)
 	    urls_count += 1
+	  end
+
+          if pline["text"].include? "RT"
+	    retweets += 1
 	  end
 
 	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
@@ -158,6 +166,10 @@ acct_list.each do |acct|
 	    urls_count += 1
 	  end
           
+          if pline["text"].include? "RT"
+	    retweets += 1
+	  end
+
 	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
@@ -166,8 +178,8 @@ acct_list.each do |acct|
         next
       end
     end
-    out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, "
-    out = out + "#{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{count}, #{days}, #{replies_count_sum}, #{source_list.size}, #{urls_count}"#, #{k/count}"
+    out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, #{tweet_freq_sum/count}, "
+    out = out + "#{fav_tw_ratio_sum/count}, #{count}, #{days}, #{replies_count_sum}, #{source_list.size}, #{urls_count}, #{retweets}"#, #{k/count}"
     puts out
     #out_json = {
     #  "screen_name" => "#{acct}",
@@ -182,6 +194,7 @@ acct_list.each do |acct|
     #  "replies_count_sum [10]" => replies_count_sum,
     #  "source_list" => "#{source_list.size}",
     #  "urls_count" => "#{urls_count}"
+    #  "retweets" => retweets,
     #  "k" => k / count
     #}
     #puts out_json
@@ -189,7 +202,7 @@ acct_list.each do |acct|
     source_list.clear
     favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
     replies_count_sum, urls_count, days = 0, 0, 0
-    count, k = 0, 0
+    count, retweets, k = 0, 0, 0
   rescue => e
     puts e
   end
