@@ -5,9 +5,11 @@ require 'json'
 require 'time'
 
 # filter out tweets for list of users in their respective files
-# but first, might want to clean the file up:
-# grep -w --ignore-case 'bot' 1k.csv | grep -vw --ignore-case 'human.*human' | awk -F"," '{print $1}' > bots.1k
-# grep -w --ignore-case 'human' 1k.csv | grep -vw --ignore-case 'bot.*bot' | awk -F"," '{print $1}' > humans.1k
+# but first, pre-process the annotated lists:
+# crude: grep -w --ignore-case 'bot' 1k.csv | grep -vw --ignore-case 'human.*human' | awk -F"," '{print $1}' > bots.1k
+# crude: grep -w --ignore-case 'human' 1k.csv | grep -vw --ignore-case 'bot.*bot' | awk -F"," '{print $1}' > humans.1k
+# clean: awk -F',' '$10 ~ /Bot/ { print $1 }' 1k.all | awk -F'"' '{print $2}' > 1k.bots
+# clean: awk -F',' '$10 ~ /Human/ { print $1 }' 1k.all | awk -F'"' '{print $2}' > 1k.humans
 
 acct_list = []
 File.open(ARGV[0], 'r') do |f|
@@ -26,6 +28,7 @@ file_list = Dir.entries(ARGV[1])
 file_list.delete(".") # remove . from the list
 file_list.delete("..") # remove .. from the list
 #file_list.sort!
+#file_list.sort_by { |f| f.split("-")[2].to_i }
 #puts file_list
 
 file_list.each do |file|
