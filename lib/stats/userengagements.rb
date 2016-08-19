@@ -46,13 +46,13 @@ acct_list.each do |acct|
 	    source_list.push(pline["source"])
 	  end
 
-          favorite_count = ( pline["favorite_count"] ).to_f # 1
-          favorite_count_sum = favorite_count_sum + favorite_count
+          favorite_count = ( pline["favorite_count"] ) # 1
+	  favorite_count_sum = favorite_count_sum + favorite_count
 
-          retweet_count = ( pline["retweet_count"] ).to_f # 3
-          retweet_count_sum = retweet_count_sum + retweet_count
+          retweet_count = ( pline["retweet_count"] ) # 3
+	  retweet_count_sum = retweet_count_sum + retweet_count
 
-          listed_count = ( pline["user"]["listed_count"] ).to_f # 6
+          listed_count = ( pline["user"]["listed_count"] ) # 6
           listed_count_sum = listed_count_sum + listed_count
 
           fo_fr_ratio = pline["user"]["followers_count"].to_f / pline["user"]["friends_count"].to_f # 7
@@ -91,13 +91,13 @@ acct_list.each do |acct|
 	    source_list.push(pline["source"])
 	  end
 
-          favorite_count = ( pline["retweeted_status"]["favorite_count"] ).to_f # 1
-          favorite_count_sum = favorite_count_sum + favorite_count
+          favorite_count = ( pline["retweeted_status"]["favorite_count"] ) # 1
+	  favorite_count_sum = favorite_count_sum + favorite_count
 
-          retweet_count = ( pline["retweeted_status"]["retweet_count"] ).to_f # 3
+          retweet_count = ( pline["retweeted_status"]["retweet_count"] ) # 3
           retweet_count_sum = retweet_count_sum + retweet_count
 
-          listed_count = ( pline["retweeted_status"]["user"]["listed_count"] ).to_f # 6
+          listed_count = ( pline["retweeted_status"]["user"]["listed_count"] ) # 6
           listed_count_sum = listed_count_sum + listed_count
 
           fo_fr_ratio = pline["retweeted_status"]["user"]["followers_count"].to_f / pline["retweeted_status"]["user"]["friends_count"].to_f # 7
@@ -136,13 +136,13 @@ acct_list.each do |acct|
 	    source_list.push(pline["source"])
 	  end
 
-          favorite_count = ( pline["quoted_status"]["favorite_count"] ).to_f # 1
+          favorite_count = ( pline["quoted_status"]["favorite_count"] ) # 1
           favorite_count_sum = favorite_count_sum + favorite_count
 
-          retweet_count = ( pline["quoted_status"]["retweet_count"] ).to_f # 3
+          retweet_count = ( pline["quoted_status"]["retweet_count"] ) # 3
           retweet_count_sum = retweet_count_sum + retweet_count
 
-          listed_count = ( pline["quoted_status"]["user"]["listed_count"] ).to_f # 6
+          listed_count = ( pline["quoted_status"]["user"]["listed_count"] ) # 6
           listed_count_sum = listed_count_sum + listed_count
 
           fo_fr_ratio = pline["quoted_status"]["user"]["followers_count"].to_f / pline["quoted_status"]["user"]["friends_count"].to_f # 7

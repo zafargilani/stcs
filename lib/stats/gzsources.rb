@@ -1,4 +1,4 @@
-# usage: ruby gzsources.rb /full/path/to/file.txt[acct_list] /fully/qualified/path/to/directory[.gz] > source.txt
+# usage: ruby gzsources.rb /full/path/to/file.txt[acct_list] /fully/qualified/path/to/directory[.gz] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 require 'time'
@@ -52,6 +52,8 @@ file_list.each do |file|
     puts e
   end
 end
-puts source_list
+File.open("#{ARGV[2]}", 'a') do |f|
+  f.puts(source_list)
+end # auto file close
 source_list.clear # cleanup, though unnecessary
 
