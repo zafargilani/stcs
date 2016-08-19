@@ -1,4 +1,4 @@
-# usage: ruby tree.rb /fully/qualified/path/to/directory[accts] > tree.txt
+# usage: ruby tree.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 require 'time'
@@ -42,7 +42,9 @@ acct_list.each do |acct|
     end
     # if you don't like JSON
     out = "#{acct}: #{tree_list}"
-    puts out
+    File.open("#{ARGV[1]}", 'a') do |f|
+      f.puts(out)
+    end # auto file close
     #out_json = {
     #  "screen_name" => "#{acct}",
     #  "tree" => "#{tree_list}"

@@ -1,4 +1,4 @@
-# usage: ruby cdncontent.rb /fully/qualified/path/to/directory[accts] > cdncontent.txt
+# usage: ruby cdncontent.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 
@@ -47,7 +47,9 @@ acct_list.each do |acct|
     end
     # if you don't like JSON
     out = "#{acct}: #{content_size.inject(0){ |sum, x| sum + x }} KB" # bytes to KB to MB
-    puts out
+    File.open("#{ARGV[1]}", 'a') do |f|
+      f.puts(out)
+    end # auto file file
     #out_json = {
     #  "screen_name" => "#{acct}",
     #  "total_content_size" => "#{content_size}"
