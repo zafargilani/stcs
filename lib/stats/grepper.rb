@@ -1,4 +1,4 @@
-# usage: ruby grepper.rb /fully/qualified/path/to/list[accts] /fully/qualified/path/to/.gz[sources] /fully/qualified/path/to/output/directory
+# usage: ruby grepper.rb /fully/qualified/path/to/listfile[accts] /fully/qualified/path/to/.gz[sources] /fully/qualified/path/to/output/directory
 # filter out tweets for list of users in their respective files
 require 'zlib'
 require 'json'
@@ -43,7 +43,7 @@ file_list.each do |file|
         if acct_list.include? pline['user']['screen_name']
 	  #puts "found .. #{pline['user']['screen_name']} .. writing to file .."
           File.open("#{ARGV[2]}/#{pline['user']['screen_name']}", 'a') do |f|
-	    f.puts(pline)
+	    f.puts(JSON.generate(pline))
 	  end # auto file close
 	end
       rescue
