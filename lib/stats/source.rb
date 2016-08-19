@@ -1,4 +1,4 @@
-# usage: ruby source.rb /fully/qualified/path/to/directory[accts] > source.txt
+# usage: ruby source.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 
@@ -50,7 +50,9 @@ acct_list.each do |acct|
     end
     # if you don't like JSON
     out = "#{acct}: #{source_list}"
-    puts out
+    File.open("#{ARGV[1]}", 'a') do |f|
+      f.puts(out)
+    end # auto file close
     #out_json = {
     #  "screen_name" => "#{acct}",
     #  "tree" => "#{source_list}"
