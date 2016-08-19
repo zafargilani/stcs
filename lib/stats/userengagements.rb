@@ -1,4 +1,4 @@
-# usage: ruby userengagements.rb /fully/qualified/path/to/directory[accts]
+# usage: ruby userengagements.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.csv]
 require 'zlib'
 require 'json'
 require 'time'
@@ -180,7 +180,10 @@ acct_list.each do |acct|
     end
     out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, #{tweet_freq_sum/count}, "
     out = out + "#{fav_tw_ratio_sum/count}, #{count}, #{days}, #{replies_count_sum}, #{source_list.size}, #{urls_count}, #{retweets}"#, #{k/count}"
-    puts out
+    File.open("#{ARGV[1]}", 'a') do |f|
+      f.puts(out)
+    end # auto file close
+    #puts out
     #out_json = {
     #  "screen_name" => "#{acct}",
     #  "favorite_count [1]" => favorite_count_sum / count,
@@ -204,7 +207,7 @@ acct_list.each do |acct|
     replies_count_sum, urls_count, days = 0, 0, 0
     count, retweets, k = 0, 0, 0
   rescue => e
-    puts e
+    raise e
   end
 end
 
