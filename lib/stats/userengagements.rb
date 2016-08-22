@@ -33,7 +33,7 @@ acct_list.each do |acct|
       begin
         pline = JSON.parse(line)
         # simple case: original tweet
-        if pline["user"]["screen_name"].include?(acct)
+        if pline["user"]["screen_name"].include? acct # == acct
 	  if source_list.include? pline["source"] # match found
 	    # do nothing
 	  else
@@ -81,7 +81,7 @@ acct_list.each do |acct|
 
           count += 1
         # retweeted
-        elsif pline["retweeted_status"]["user"]["screen_name"].include?(acct)
+        elsif pline["retweeted_status"]["user"]["screen_name"].include? acct
 	  if source_list.include? pline["source"] # match found
 	    # do nothing
 	  else
@@ -129,7 +129,7 @@ acct_list.each do |acct|
 
           count += 1
         # quoted
-        elsif pline["quoted_status"]["user"]["screen_name"].include?(acct)
+        elsif pline["quoted_status"]["user"]["screen_name"].include? acct
 	  if source_list.include? pline["source"] # match found
 	    # do nothing
 	  else
