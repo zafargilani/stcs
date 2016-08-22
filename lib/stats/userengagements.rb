@@ -9,26 +9,20 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
+# Tweets API: https://dev.twitter.com/overview/api/tweets
+# Users API: https://dev.twitter.com/overview/api/users
+
 # get user engagement from raw tweets/json
-# -> per post Summ.( [1] [3] and if [3] > 0: Summ.( [4] ) )
-# -> per bot ("user") [6] [7] [8] [9]
-# [1] favorite_count
-# [3] retweet_count
-# [4] in_reply_to_status_id, _str, in_reply_to_user_id, _str, in_reply_to_screen_name
-# [6] user -> listed_count
-# [7] fo_fr_ratio = user -> followers_count / friends_count
-# [8] tweet_freq = user -> statuses_count / days( user -> created_at - created_at )
-# [9] fav_tw_ratio = user -> favourites_count / statuses_count
-# [10] replies_count
-# [11] age_of_account = days
 # dump this in an output file from time to time
+# note: historically, likes were called favorites
 
 pline = ""
 out = ""
 source_list = []
-favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
-replies_count_sum, urls_count, days = 0, 0, 0
-count, retweets, k = 0, 0, 0
+count, retweets, favourited_count_sum, replies_count_sum = 0, 0, 0, 0
+likes_count_sum, retweet_count_sum, listed_count_sum = 0, 0, 0
+fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0
+days, urls_count, k = 0, 0, 0
 
 acct_list.each do |acct|
   begin
@@ -39,32 +33,35 @@ acct_list.each do |acct|
       begin
         pline = JSON.parse(line)
         # simple case: original tweet
-        if pline["user"]["screen_name"] == acct
+        if pline["user"]["screen_name"].include? acct # == acct
 	  if source_list.include? pline["source"] # match found
 	    # do nothing
 	  else
 	    source_list.push(pline["source"])
 	  end
 
-          favorite_count = ( pline["favorite_count"] ) # 1
-	  favorite_count_sum = favorite_count_sum + favorite_count
+          favourited_count = ( pline["user"]["favourites_count"] ).to_f
+          favourited_count_sum = favourited_count_sum + favourited_count
 
-          retweet_count = ( pline["retweet_count"] ) # 3
+          likes_count = ( pline["favorite_count"] ).to_f
+	  likes_count_sum = likes_count_sum + likes_count
+
+          retweet_count = ( pline["retweet_count"] ).to_f
 	  retweet_count_sum = retweet_count_sum + retweet_count
 
-          listed_count = ( pline["user"]["listed_count"] ) # 6
+          listed_count = ( pline["user"]["listed_count"] ).to_f
           listed_count_sum = listed_count_sum + listed_count
 
-          fo_fr_ratio = pline["user"]["followers_count"].to_f / pline["user"]["friends_count"].to_f # 7
+          fo_fr_ratio = pline["user"]["followers_count"].to_f / pline["user"]["friends_count"].to_f
           fo_fr_ratio_sum = fo_fr_ratio_sum + fo_fr_ratio
  
           user_time = Time.parse( pline["user"]["created_at"] ).to_f
           tweet_time = Time.parse( pline["created_at"] ).to_f
           days = ( ( tweet_time - user_time ) / 60 / 60 / 24 ).to_f
-          tweet_freq = pline["user"]["statuses_count"].to_f / days # 8
+          tweet_freq = pline["user"]["statuses_count"].to_f / days
           tweet_freq_sum = tweet_freq_sum + tweet_freq
 
-          fav_tw_ratio = pline["user"]["favourites_count"].to_f / pline["user"]["statuses_count"].to_f # 9
+          fav_tw_ratio = pline["user"]["favourites_count"].to_f / pline["user"]["statuses_count"].to_f
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
           if pline["in_reply_to_status_id"] != nil
@@ -80,24 +77,27 @@ acct_list.each do |acct|
 	    retweets += 1
 	  end
 
-          #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+          #k = k + (likes_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         # retweeted
-        elsif pline["retweeted_status"]["user"]["screen_name"] == acct
+        elsif pline["retweeted_status"]["user"]["screen_name"].include? acct
 	  if source_list.include? pline["source"] # match found
 	    # do nothing
 	  else
 	    source_list.push(pline["source"])
 	  end
 
-          favorite_count = ( pline["retweeted_status"]["favorite_count"] ) # 1
-	  favorite_count_sum = favorite_count_sum + favorite_count
+          favourited_count = ( pline["retweeted_status"]["user"]["favourites_count"] ).to_f
+          favourited_count_sum = favourited_count_sum + favourited_count
 
-          retweet_count = ( pline["retweeted_status"]["retweet_count"] ) # 3
+	  likes_count = ( pline["retweeted_status"]["favorite_count"] ).to_f
+	  likes_count_sum = likes_count_sum + likes_count
+
+          retweet_count = ( pline["retweeted_status"]["retweet_count"] ).to_f
           retweet_count_sum = retweet_count_sum + retweet_count
 
-          listed_count = ( pline["retweeted_status"]["user"]["listed_count"] ) # 6
+          listed_count = ( pline["retweeted_status"]["user"]["listed_count"] ).to_f
           listed_count_sum = listed_count_sum + listed_count
 
           fo_fr_ratio = pline["retweeted_status"]["user"]["followers_count"].to_f / pline["retweeted_status"]["user"]["friends_count"].to_f # 7
@@ -106,7 +106,7 @@ acct_list.each do |acct|
           user_time = Time.parse( pline["retweeted_status"]["user"]["created_at"] ).to_f
           tweet_time = Time.parse( pline["retweeted_status"]["created_at"] ).to_f
           days = ( ( tweet_time - user_time ) / 60 / 60 / 24 ).to_f
-          tweet_freq = pline["retweeted_status"]["user"]["statuses_count"].to_f / days # 8
+          tweet_freq = pline["retweeted_status"]["user"]["statuses_count"].to_f / days
           tweet_freq_sum = tweet_freq_sum + tweet_freq
 
           fav_tw_ratio = pline["retweeted_status"]["user"]["favourites_count"].to_f / pline["retweeted_status"]["user"]["statuses_count"].to_f # 9
@@ -125,36 +125,39 @@ acct_list.each do |acct|
 	    retweets += 1
 	  end
 
-	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+	  #k = k + (likes_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         # quoted
-        elsif pline["quoted_status"]["user"]["screen_name"] == acct
+        elsif pline["quoted_status"]["user"]["screen_name"].include? acct
 	  if source_list.include? pline["source"] # match found
 	    # do nothing
 	  else
 	    source_list.push(pline["source"])
 	  end
 
-          favorite_count = ( pline["quoted_status"]["favorite_count"] ) # 1
-          favorite_count_sum = favorite_count_sum + favorite_count
+          favourited_count = ( pline["quoted_status"]["user"]["favourites_count"] ).to_f
+          favourited_count_sum = favourited_count_sum + favourited_count
 
-          retweet_count = ( pline["quoted_status"]["retweet_count"] ) # 3
+          likes_count = ( pline["quoted_status"]["favorite_count"] ).to_f
+          likes_count_sum = likes_count_sum + likes_count
+
+          retweet_count = ( pline["quoted_status"]["retweet_count"] ).to_f
           retweet_count_sum = retweet_count_sum + retweet_count
 
-          listed_count = ( pline["quoted_status"]["user"]["listed_count"] ) # 6
+          listed_count = ( pline["quoted_status"]["user"]["listed_count"] ).to_f
           listed_count_sum = listed_count_sum + listed_count
 
-          fo_fr_ratio = pline["quoted_status"]["user"]["followers_count"].to_f / pline["quoted_status"]["user"]["friends_count"].to_f # 7
+          fo_fr_ratio = pline["quoted_status"]["user"]["followers_count"].to_f / pline["quoted_status"]["user"]["friends_count"].to_f
           fo_fr_ratio_sum = fo_fr_ratio_sum + fo_fr_ratio
 
           user_time = Time.parse( pline["quoted_status"]["user"]["created_at"] ).to_f
           tweet_time = Time.parse( pline["quoted_status"]["created_at"] ).to_f
           days = ( ( tweet_time - user_time ) / 60 / 60 / 24 ).to_f
-          tweet_freq = pline["quoted_status"]["user"]["statuses_count"].to_f / days # 8
+          tweet_freq = pline["quoted_status"]["user"]["statuses_count"].to_f / days
           tweet_freq_sum = tweet_freq_sum + tweet_freq
 
-          fav_tw_ratio = pline["quoted_status"]["user"]["favourites_count"].to_f / pline["quoted_status"]["user"]["statuses_count"].to_f # 9
+          fav_tw_ratio = pline["quoted_status"]["user"]["favourites_count"].to_f / pline["quoted_status"]["user"]["statuses_count"].to_f
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
           if pline["quoted_status"]["in_reply_to_status_id"] != nil
@@ -170,7 +173,7 @@ acct_list.each do |acct|
 	    retweets += 1
 	  end
 
-	  #k = k + (favorite_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
+	  #k = k + (likes_count + retweet_count + listed_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
 
           count += 1
         end
@@ -178,34 +181,37 @@ acct_list.each do |acct|
         next
       end
     end
-    out = "#{acct}, #{favorite_count_sum/count}, #{retweet_count_sum/count}, #{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, #{tweet_freq_sum/count}, "
-    out = out + "#{fav_tw_ratio_sum/count}, #{count}, #{days}, #{replies_count_sum}, #{source_list.size}, #{urls_count}, #{retweets}"#, #{k/count}"
+    out = "#{acct}, #{count}, #{retweets}, #{favourited_count_sum/count}, #{replies_count_sum}, #{likes_count_sum/count}, #{retweet_count_sum/count}, "
+    out = out + "#{listed_count_sum/count}, #{fo_fr_ratio_sum/count}, #{tweet_freq_sum/count}, #{fav_tw_ratio_sum/count}, #{days}, "
+    out = out + "#{source_list.size}, #{urls_count}"#, #{k/count}"
     File.open("#{ARGV[1]}", 'a') do |f|
       f.puts(out)
     end # auto file close
     #puts out
     #out_json = {
     #  "screen_name" => "#{acct}",
-    #  "favorite_count [1]" => favorite_count_sum / count,
-    #  "retweet_count [3]" => retweet_count_sum / count,
-    #  "listed_count [6]" => listed_count_sum / count,
-    #  "fo_fr_ratio [7]" => fo_fr_ratio_sum / count,
-    #  "tweet_freq [8]" => tweet_freq_sum / count,
-    #  "fav_tw_ratio [9]" => fav_tw_ratio_sum / count,
-    #  #"tweet_count" => count,
-    #  "days [11]" => days,
-    #  "replies_count_sum [10]" => replies_count_sum,
+    #  "tweet_count" => count,
+    #  "retweets" => retweets,
+    #  "favourited_count" => favourited_count_sum / count,
+    #  "replies_count_sum" => replies_count_sum,
+    #  "likes_count" => likes_count_sum / count,
+    #  "retweet_count" => retweet_count_sum / count,
+    #  "listed_count" => listed_count_sum / count,
+    #  "fo_fr_ratio" => fo_fr_ratio_sum / count,
+    #  "tweet_freq" => tweet_freq_sum / count,
+    #  "fav_tw_ratio" => fav_tw_ratio_sum / count,
+    #  "days" => days,
     #  "source_list" => "#{source_list.size}",
     #  "urls_count" => "#{urls_count}"
-    #  "retweets" => retweets,
     #  "k" => k / count
     #}
     #puts out_json
     # reset vars
     source_list.clear
-    favorite_count_sum, retweet_count_sum, listed_count_sum, fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0, 0, 0, 0
-    replies_count_sum, urls_count, days = 0, 0, 0
-    count, retweets, k = 0, 0, 0
+    count, retweets, favourited_count_sum, replies_count_sum = 0, 0, 0, 0
+    likes_count_sum, retweet_count_sum, listed_count_sum = 0, 0, 0
+    fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0
+    days, urls_count, k = 0, 0, 0
   rescue => e
     raise e
   end
