@@ -19,7 +19,7 @@ acct_list.sort!
 pline = ""
 out = ""
 source_list = []
-count, retweets, favourited_count_sum, replies_count_sum = 0, 0, 0
+count, retweets, favourited_count_sum, replies_count_sum = 0, 0, 0, 0
 likes_count_sum, retweet_count_sum, listed_count_sum = 0, 0, 0
 fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0
 days, urls_count, k = 0, 0, 0
@@ -208,7 +208,7 @@ acct_list.each do |acct|
     #puts out_json
     # reset vars
     source_list.clear
-    count, retweets, favourited_count_sum, replies_count_sum = 0, 0, 0
+    count, retweets, favourited_count_sum, replies_count_sum = 0, 0, 0, 0
     likes_count_sum, retweet_count_sum, listed_count_sum = 0, 0, 0
     fo_fr_ratio_sum, tweet_freq_sum, fav_tw_ratio_sum = 0, 0, 0
     days, urls_count, k = 0, 0, 0
