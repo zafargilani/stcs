@@ -1,8 +1,3 @@
-# Authors:  Zafar Gilani (UCAM), Mario Almeida (UPC and TID Barcelona)
-# Date:   Oct 2015
-# Version:  1.0
-# Purpose:  Collect tweets from Twitter Streaming API and dump into MongoDB
-
 require 'tweetstream'
 #require 'bson'
 require 'json'
