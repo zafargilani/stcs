@@ -5,16 +5,16 @@
 #--------------------------------------------
 
 #tweeter credentials
-consumer_key: 'XXX'
-consumer_secret: 'XXX'
-oauth_token: 'XXX'
-oauth_token_secret: 'XXX'
+consumer_key: 'XYZ'
+consumer_secret: 'XYZ'
+oauth_token: 'XYZ'
+oauth_token_secret: 'XYZ'
 
 #--------------------------------------------
 #--------------------------------------------
 
 #storage properties
-storage_folder: '/local/scratch/twitter-data'
+storage_folder: '/home/szuhg2/data'
 #storage_folder: '.'
 
 #--------------------------------------------
@@ -27,9 +27,15 @@ follow_number: 15
 follow_frequency: 15
 
 #will unfollow until the follower ratio is: 
-follower_ratio: 0.3
+follower_ratio: 0.30
 #unfollow will occur every N hours:
 unfollow_frequency: 48
+
+#--------------------------------------------
+#--------------------------------------------
+
+#bot topics, string separated by commas
+topic: "x,y,z"
 
 #--------------------------------------------
 #--------------------------------------------
