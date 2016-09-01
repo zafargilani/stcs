@@ -69,6 +69,9 @@ follow_frequency: 15
 follower_ratio: 0.3
 #unfollow will occur every N hours:
 unfollow_frequency: 48
+
+#bot topics, string separated by commas
+topic: "x,y,z"
 ``` 
 
 Other commands:
