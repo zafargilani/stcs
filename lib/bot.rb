@@ -7,7 +7,7 @@ require 'rest-client'
 class BobTheBot < Ebooks::Bot
 
   def initialize(consumer_key, consumer_secret, oauth_token, oauth_token_secret, 
-    collector:nil, bot_name:"gilhuss", follow_number:0, follow_frequency:0, unfollow_number:0, unfollow_frequency:0, follower_ratio:0)
+    collector:nil, bot_name:"gilhuss", follow_number:0, follow_frequency:0, unfollow_number:0, unfollow_frequency:0, follower_ratio:0, topic:"job opportunity")
 
       @consumer_key       = consumer_key
       @consumer_secret    = consumer_secret
@@ -23,7 +23,9 @@ class BobTheBot < Ebooks::Bot
       @unfollow_frequency = unfollow_frequency
       @unfollow_number = unfollow_number
 
-      p "Bot configuration = (#{follow_frequency},#{follow_number},#{unfollow_frequency},#{unfollow_number})"
+      @topic = topic
+
+      p "Bot configuration = (follow_freq:#{follow_frequency}, follow_no:#{follow_number}, unfollow_freq:#{unfollow_frequency}, unfollow_no:#{unfollow_number})"
 
     # Make a MyBot and attach it to an account
     super(bot_name) do |bot|
@@ -147,7 +149,8 @@ class BobTheBot < Ebooks::Bot
     end
   end
 
-  def post_tweet_copy(topic:"job opportunity,celebrity news", min_retweets:0)
+  def post_tweet_copy(topic:@topic, min_retweets:0)
+  #def post_tweet_copy(topic:"job opportunity,celebrity news", min_retweets:0)
   #def post_tweet_copy(topic:"job opportunity", min_retweets:0)
   #def post_tweet_copy(lang:"en", min_retweets:25)
 
