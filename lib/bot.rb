@@ -23,10 +23,7 @@ class BobTheBot < Ebooks::Bot
       @unfollow_frequency = unfollow_frequency
       @unfollow_number = unfollow_number
 
-      @topic = topic
-
       p "Bot configuration (follow_freq:#{follow_frequency}, follow_no:#{follow_number}, unfollow_freq:#{unfollow_frequency}, unfollow_no:#{unfollow_number})"
-      p "Topics of tweets: #{topic}"
 
     # Make a MyBot and attach it to an account
     super(bot_name) do |bot|
@@ -150,8 +147,7 @@ class BobTheBot < Ebooks::Bot
     end
   end
 
-  def post_tweet_copy(topic:@topic, min_retweets:0)
-  #def post_tweet_copy(topic:"job opportunity,celebrity news", min_retweets:0)
+  def post_tweet_copy(topic:"job opportunity,celebrity news,sports", min_retweets:0)
   #def post_tweet_copy(topic:"job opportunity", min_retweets:0)
   #def post_tweet_copy(lang:"en", min_retweets:25)
 
