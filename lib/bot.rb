@@ -156,8 +156,10 @@ class BobTheBot < Ebooks::Bot
 
     keys = []
 
+    p "Topic: #{topic}"
+
     begin
-      tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
+      tw = @collector.dump_topic_tweet(topic:@topic,min_retweets:min_retweets)
       #tw = @collector.dump_sample_tweet(lang:lang,min_retweets:min_retweets)
 
       replacements = []
