@@ -25,7 +25,8 @@ class BobTheBot < Ebooks::Bot
 
       @topic = topic
 
-      p "Bot configuration = (follow_freq:#{follow_frequency}, follow_no:#{follow_number}, unfollow_freq:#{unfollow_frequency}, unfollow_no:#{unfollow_number})"
+      p "Bot configuration (follow_freq:#{follow_frequency}, follow_no:#{follow_number}, unfollow_freq:#{unfollow_frequency}, unfollow_no:#{unfollow_number})"
+      p "Topics of tweets: #{topic}"
 
     # Make a MyBot and attach it to an account
     super(bot_name) do |bot|
@@ -159,7 +160,7 @@ class BobTheBot < Ebooks::Bot
     p "Topic: #{topic}"
 
     begin
-      tw = @collector.dump_topic_tweet(topic:@topic,min_retweets:min_retweets)
+      tw = @collector.dump_topic_tweet(topic:topic,min_retweets:min_retweets)
       #tw = @collector.dump_sample_tweet(lang:lang,min_retweets:min_retweets)
 
       replacements = []
