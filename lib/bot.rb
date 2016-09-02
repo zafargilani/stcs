@@ -7,7 +7,7 @@ require 'rest-client'
 class BobTheBot < Ebooks::Bot
 
   def initialize(consumer_key, consumer_secret, oauth_token, oauth_token_secret, 
-    collector:nil, bot_name:"gilhuss", follow_number:0, follow_frequency:0, unfollow_number:0, unfollow_frequency:0, follower_ratio:0, topic:"job opportunity")
+    collector:nil, bot_name:"gilhuss", follow_number:0, follow_frequency:0, unfollow_number:0, unfollow_frequency:0, follower_ratio:0)
 
       @consumer_key       = consumer_key
       @consumer_secret    = consumer_secret
