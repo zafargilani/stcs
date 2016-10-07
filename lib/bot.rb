@@ -147,7 +147,7 @@ class BobTheBot < Ebooks::Bot
     end
   end
 
-  def post_tweet_copy(topic:"job opportunity,celebrity news,sports", min_retweets:0)
+  def post_tweet_copy(topic:"job opportunity,celebrity news,sports", min_retweets:1)
   #def post_tweet_copy(topic:"job opportunity", min_retweets:0)
   #def post_tweet_copy(lang:"en", min_retweets:25)
 
