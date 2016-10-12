@@ -61,7 +61,7 @@ acct_list.each do |acct|
           tweet_freq = pline["user"]["statuses_count"].to_f / days
           tweet_freq_sum = tweet_freq_sum + tweet_freq
 
-          fav_tw_ratio = pline["user"]["favourites_count"].to_f / pline["user"]["statuses_count"].to_f
+          fav_tw_ratio = pline["favorite_count"].to_f / pline["user"]["statuses_count"].to_f
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
           if pline["in_reply_to_status_id"] != nil
@@ -109,7 +109,7 @@ acct_list.each do |acct|
           tweet_freq = pline["retweeted_status"]["user"]["statuses_count"].to_f / days
           tweet_freq_sum = tweet_freq_sum + tweet_freq
 
-          fav_tw_ratio = pline["retweeted_status"]["user"]["favourites_count"].to_f / pline["retweeted_status"]["user"]["statuses_count"].to_f # 9
+          fav_tw_ratio = pline["retweeted_status"]["favorite_count"].to_f / pline["retweeted_status"]["user"]["statuses_count"].to_f # 9
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
           if pline["retweeted_status"]["in_reply_to_status_id"] != nil
@@ -157,7 +157,7 @@ acct_list.each do |acct|
           tweet_freq = pline["quoted_status"]["user"]["statuses_count"].to_f / days
           tweet_freq_sum = tweet_freq_sum + tweet_freq
 
-          fav_tw_ratio = pline["quoted_status"]["user"]["favourites_count"].to_f / pline["quoted_status"]["user"]["statuses_count"].to_f
+          fav_tw_ratio = pline["quoted_status"]["favorite_count"].to_f / pline["quoted_status"]["user"]["statuses_count"].to_f
           fav_tw_ratio_sum = fav_tw_ratio_sum + fav_tw_ratio
 
           if pline["quoted_status"]["in_reply_to_status_id"] != nil
