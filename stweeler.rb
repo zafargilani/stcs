@@ -65,6 +65,16 @@ class MyCLI < Thor
 
 		bob.prepare
 		bob.start
+
+		tries = 5
+		rescue EOFError =>
+		  if (tries -= 1) > 0
+		    sleep 60
+		    retry
+		  else
+		    raise e
+		  end
+		end
 	end
 
 	desc "botornot @username", "Checks whether a Twitter acct is a bot or not"
