@@ -283,7 +283,7 @@ vi lib/twitter/streaming/connection.rb
 # change this line : client = @tcp_socket_class.new(Resolv.getaddress(request.uri.host), request.uri.port)
 # to this: client = @tcp_socket_class.new(Resolv.getaddress(request.uri.host), 443)
 gem build twitter.gemspec
-gem install twitter-5.15.0.gem
+gem install twitter-5.16.0.gem
 cd <YOUR_STCS_FOLDER>
 vi Gemfile
 #change the twitter version to 5.15.0
