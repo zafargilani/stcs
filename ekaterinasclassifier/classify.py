@@ -6,6 +6,12 @@
 #             GLOBAL represents globally optimum set of features
 # to execute: python classify.py
 
+# dependencies:
+# python -m pip install --upgrade pip
+# (sudo) pip install --user numpy scipy
+# (sudo) apt-get install python python-tk
+# (sudo) pip install -U scikit-learn
+
 #
 from __future__ import print_function, division
 
