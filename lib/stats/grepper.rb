@@ -1,5 +1,4 @@
 # usage: ruby grepper.rb /fully/qualified/path/to/listfile[accts] /fully/qualified/path/to/.gz[sources] /fully/qualified/path/to/output/directory
-# filter out tweets for list of users in their respective files
 require 'zlib'
 require 'json'
 require 'time'

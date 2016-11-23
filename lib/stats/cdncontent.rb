@@ -25,19 +25,19 @@ acct_list.each do |acct|
     infile.each_line do |line|
       begin
         pline = JSON.parse(line)
-	if pline["user"]["screen_name"].include? acct # == acct
-	  if pline["entities"]["media"][0]["media_url"].include? "twimg" # /[a-z]*.twimg.[a-z]*/
-	    size = `wget #{pline["entities"]["media"][0]["media_url"]} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+	if pline['user']['screen_name'].include? acct # == acct
+	  if pline['entities']['media'][0]['media_url'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
+	    size = `wget #{pline['entities']['media'][0]['media_url']} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
 	    content_size.push( size.to_f / 1024 )
 	  end
-	elsif pline["retweeted_status"]["user"]["screen_name"].include? acct
-	  if pline["retweeted_status"]["entities"]["media"][0]["media_url"].include? "twimg" # /[a-z]*.twimg.[a-z]*/
-	    size = `wget #{pline["retweeted_status"]["entities"]["media"][0]["media_url"]} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+	elsif pline['retweeted_status']['user']['screen_name'].include? acct
+	  if pline['retweeted_status']['entities']['media'][0]['media_url'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
+	    size = `wget #{pline['retweeted_status']['entities']['media'][0]['media_url']} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
 	    content_size.push( size.to_f / 1024 )
 	  end
-	elsif pline["quoted_status"]["user"]["screen_name"].include? acct
-	  if pline["quoted_status"]["entities"]["media"][0]["media_url"].include? "twimg" # /[a-z]*.twimg.[a-z]*/
-	    size = `wget #{pline["quoted_status"]["entities"]["media"][0]["media_url"]} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+	elsif pline['quoted_status']['user']['screen_name'].include? acct
+	  if pline['quoted_status']['entities']['media'][0]['media_url'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
+	    size = `wget #{pline['quoted_status']['entities']['media'][0]['media_url']} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
 	    content_size.push( size.to_f / 1024 )
 	  end
 	end
