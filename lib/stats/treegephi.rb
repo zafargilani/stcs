@@ -27,14 +27,14 @@ acct_list.each do |acct|
       begin
         pline = JSON.parse(line)
         # simple case: original tweet
-        if pline["user"]["screen_name"].include? acct # == acct
+        if pline['user']['screen_name'].include? acct # == acct
           # do nothing
         # retweeted
-        elsif pline["retweeted_status"]["user"]["screen_name"].include? acct
-          target = pline["user"]["screen_name"]
+        elsif pline['retweeted_status']['user']['screen_name'].include? acct
+          target = pline['user']['screen_name']
         # quoted
-        elsif pline["quoted_status"]["user"]["screen_name"].include? acct
-          target = pline["user"]["screen_name"]
+        elsif pline['quoted_status']['user']['screen_name'].include? acct
+          target = pline['user']['screen_name']
         end
       rescue
         next

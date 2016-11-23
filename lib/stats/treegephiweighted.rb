@@ -33,21 +33,21 @@ acct_list.each do |acct|
         pline = JSON.parse(line)
 	# retweets/quotes graph of the acct
         # original tweet
-        if pline["user"]["screen_name"].include? acct # == acct
+        if pline['user']['screen_name'].include? acct # == acct
 	  # fo_fr_ratio
-	  fo_fr_ratio = pline["user"]["followers_count"].to_f / pline["user"]["friends_count"].to_f
+	  fo_fr_ratio = pline['user']['followers_count'].to_f / pline['user']['friends_count'].to_f
 	  # favourited_count_tweet_freq_ratio
-	  favourited_count = ( pline["user"]["favourites_count"] ).to_f
-	  days = ( ( Time.parse( pline["created_at"] ).to_f - Time.parse( pline["user"]["created_at"] ).to_f ) / 60 / 60 / 24 ).to_f
-	  tweet_freq = pline["user"]["statuses_count"].to_f / days
+	  favourited_count = ( pline['user']['favourites_count'] ).to_f
+	  days = ( ( Time.parse( pline['created_at'] ).to_f - Time.parse( pline['user']['created_at'] ).to_f ) / 60 / 60 / 24 ).to_f
+	  tweet_freq = pline['user']['statuses_count'].to_f / days
 	  favourited_count_tweet_freq_ratio = favourited_count / tweet_freq
 	end
 	# retweeted
-        if pline["retweeted_status"]["user"]["screen_name"].include? acct
-          target = pline["user"]["screen_name"]
+        if pline['retweeted_status']['user']['screen_name'].include? acct
+          target = pline['user']['screen_name']
         # quoted
-        elsif pline["quoted_status"]["user"]["screen_name"].include? acct
-          target = pline["user"]["screen_name"]
+        elsif pline['quoted_status']['user']['screen_name'].include? acct
+          target = pline['user']['screen_name']
         end
       rescue
         next

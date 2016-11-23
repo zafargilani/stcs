@@ -23,12 +23,12 @@ acct_list.each do |acct|
     infile.each_line do |line|
       begin
         pline = JSON.parse(line)
-	if pline["user"]["screen_name"].include? acct # == acct
-          out = out + "#{pline["text"]}\n"
-	elsif pline["retweeted_status"]["user"]["screen_name"].include? acct
-          out = out + "#{pline["text"]}\n"
-	elsif pline["quoted_status"]["user"]["screen_name"].include? acct
-          out = out + "#{pline["text"]}\n"
+	if pline['user']['screen_name'].include? acct # == acct
+          out = out + "#{pline['text']}\n"
+	elsif pline['retweeted_status']['user']['screen_name'].include? acct
+          out = out + "#{pline['text']}\n"
+	elsif pline['quoted_status']['user']['screen_name'].include? acct
+          out = out + "#{pline['text']}\n"
 	end
       rescue
         next

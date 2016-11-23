@@ -25,23 +25,23 @@ acct_list.each do |acct|
     infile.each_line do |line|
       begin
         pline = JSON.parse(line)
-	if pline["user"]["screen_name"].include? acct # == acct
-	  if source_list.include? pline["source"] # match found
+	if pline['user']['screen_name'].include? acct # == acct
+	  if source_list.include? pline['source'] # match found
 	    # do nothing
 	  else
-            source_list.push(pline["source"])
+            source_list.push(pline['source'])
 	  end
-	elsif pline["retweeted_status"]["user"]["screen_name"].include? acct
-	  if source_list.include? pline["retweeted_status"]["source"] # match found
+	elsif pline['retweeted_status']['user']['screen_name'].include? acct
+	  if source_list.include? pline['retweeted_status']['source'] # match found
 	    # do nothing
 	  else
-            source_list.push(pline["retweeted_status"]["source"])
+            source_list.push(pline['retweeted_status']['source'])
 	  end
-	elsif pline["quoted_status"]["user"]["screen_name"].include? acct
-	  if source_list.include? pline["quoted_status"]["source"] # match found
+	elsif pline['quoted_status']['user']['screen_name'].include? acct
+	  if source_list.include? pline['quoted_status']['source'] # match found
 	    # do nothing
 	  else
-            source_list.push(pline["quoted_status"]["source"])
+            source_list.push(pline['quoted_status']['source'])
 	  end
 	end
       rescue
