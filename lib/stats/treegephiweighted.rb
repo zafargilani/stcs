@@ -15,12 +15,19 @@ acct_list.sort!
 
 pline = ""
 out = ""
-target = ""
-fo_fr_ratio = 0
-favourited_count = 0
+
 days = 0
 tweet_freq = 0
-favourited_count_tweet_freq_ratio = 0
+fo_fr_ratio = 0
+node_weight = 0 # fo_fr_ratio / tweet_freq
+
+target = ""
+in_reply_to_screen_name = ""
+replies = 0
+fo_fr_ratio_acct = 0
+fo_fr_ratio_target = 0
+edge_weight = 0 # replies * (fo_fr_ratio_acct / fo_fr_ratio_target)
+
 max_depth = 0
 
 acct_list.each do |acct|
@@ -31,28 +38,53 @@ acct_list.each do |acct|
     infile.each_line do |line|
       begin
         pline = JSON.parse(line)
-	# retweets/quotes graph of the acct
+	# calculate node weight: ratio of fo_fr_ratio (more indicative of human)
+	# and tweet_freq (more indicative of bot)
         # original tweet
         if pline['user']['screen_name'].include? acct # == acct
-	  # fo_fr_ratio
-	  fo_fr_ratio = pline['user']['followers_count'].to_f / pline['user']['friends_count'].to_f
-	  # favourited_count_tweet_freq_ratio
-	  favourited_count = ( pline['user']['favourites_count'] ).to_f
 	  days = ( ( Time.parse( pline['created_at'] ).to_f - Time.parse( pline['user']['created_at'] ).to_f ) / 60 / 60 / 24 ).to_f
 	  tweet_freq = pline['user']['statuses_count'].to_f / days
-	  favourited_count_tweet_freq_ratio = favourited_count / tweet_freq
+	  
+	  fo_fr_ratio = pline['user']['followers_count'].to_f / pline['user']['friends_count'].to_f
 	end
+	
+	node_weight =  fo_fr_ratio / tweet_freq
+
+	# calculate edge weight: product of no. of replies between two nodes
+	# and ratio of fo_fr_ratios of two nodes
+	in_reply_to_screen_name = pline["in_reply_to_screen_name"]
+
 	# retweeted
         if pline['retweeted_status']['user']['screen_name'].include? acct
           target = pline['user']['screen_name']
+	  
+	  if in_reply_to_screen_name == pline['retweeted_status']['user']['screen_name']
+	    replies = 1
+	  else
+	    replies = 0.1
+	  end
+
+	  fo_fr_ratio_acct = pline['retweeted_status']['user']['followers_count'].to_f / pline['retweeted_status']['user']['friends_count'].to_f
+	  fo_fr_ratio_target = pline['user']['followers_count'].to_f / pline['user']['friends_count'].to_f
         # quoted
         elsif pline['quoted_status']['user']['screen_name'].include? acct
           target = pline['user']['screen_name']
+	  
+	  if in_reply_to_screen_name == pline['quoted_status']['user']['screen_name']
+	    replies = 1
+	  else
+	    replies = 0.1
+	  end
+
+	  fo_fr_ratio_acct = pline['quoted_status']['user']['followers_count'].to_f / pline['quoted_status']['user']['friends_count'].to_f
+	  fo_fr_ratio_target = pline['user']['followers_count'].to_f / pline['user']['friends_count'].to_f
         end
+
+	edge_weight = replies * (fo_fr_ratio_acct / fo_fr_ratio_target)
       rescue
         next
       end
-      out = "#{acct},#{target},#{fo_fr_ratio},#{favourited_count},#{favourited_count_tweet_freq_ratio}"
+      out = "#{acct},#{target},#{node_weight},#{edge_weight}"
       File.open("#{ARGV[1]}", 'a') do |f|
         f.puts(out)
       end # auto file close
