@@ -69,4 +69,7 @@ file_list.each do |file|
     f.puts( "100K,#{accts_100K.uniq.count}" )
     f.puts( "1K,#{accts_1K.uniq.count}" )
   end # auto file close
+  # do not need to .clear these lists as .uniq makes sure these are always unique,
+  # so after each file the counts will be more robust :) no need to average
 end
+
