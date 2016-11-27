@@ -48,7 +48,14 @@ acct_list.each do |acct|
 	  fo_fr_ratio = pline['user']['followers_count'].to_f / pline['user']['friends_count'].to_f
 	end
 	
-	node_weight =  fo_fr_ratio / tweet_freq
+	node_weight = fo_fr_ratio / tweet_freq
+	# normalise: run with above, use the generated files to get Xmax and Xmin, re-run to normalise
+	# sort -s -t, -k3 -gr treegephiweighted.2016-4.bots.10M | less
+	# sort -s -t, -k3 -g treegephiweighted.2016-4.bots.10M | less
+	#node_weight = (node_weight - 0.0001) / (2801473 - 0.0001) # for bots.10M
+	#node_weight = (node_weight - 0.008) / (1781 - 0.008) # for bots.1M.old
+	#node_weight = (node_weight - 5.70e-06) / (301132 - 5.70e-06) # for humans.10M
+	#node_weight = (node_weight - 0.05) / (21350 - 0.05) # for humans.1M.old
 
 	# calculate edge weight: product of no. of replies between two nodes
 	# and ratio of fo_fr_ratios of two nodes
@@ -81,10 +88,17 @@ acct_list.each do |acct|
         end
 
 	edge_weight = replies * (fo_fr_ratio_acct / fo_fr_ratio_target)
+	# normalise: run with above, use the generated files to get Xmax and Xmin, re-run to normalise
+	# sort -s -t, -k4 -gr treegephiweighted.2016-4.bots.10M | less
+	# sort -s -t, -k4 -g treegephiweighted.2016-4.bots.10M | less
+	#edge_weight = (edge_weight - 4.07e-05) / (202486679 - 4.07e-05) # for bots.10M
+	#edge_weight = (edge_weight - 7.2e-06) / (9142013 - 7.2e-06) # for bots.1M.old
+	#edge_weight = (edge_weight - 0.0005) / (15633768 - 0.0005) # for humans.10M
+	#edge_weight = (edge_weight - 2.75e-05) / (1260866 - 2.75e-05) # for humans.1M.old
       rescue
         next
       end
-      out = "#{acct},#{target},#{node_weight},#{edge_weight}"
+      out = "#{acct},#{target},#{node_weight.abs},#{edge_weight.abs}"
       File.open("#{ARGV[1]}", 'a') do |f|
         f.puts(out)
       end # auto file close

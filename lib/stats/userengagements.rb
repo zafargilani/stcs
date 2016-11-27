@@ -70,7 +70,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline['favorite_count'].to_f / pline['user']['statuses_count'].to_f
           fav_tw_ratio_sum.push(fav_tw_ratio)
 
-          if pline['in_reply_to_status_id'] != nil
+          if pline['in_reply_to_status_id'] != nil # or: pline['text'].include? "@" .. but less stable (text may have "@" arbitrarily)
 	    replies_count_sum.push(1)
 	  end
 
