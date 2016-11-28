@@ -19,7 +19,7 @@ acct_list.sort!
 pline = ""
 out = ""
 source_list = []
-count, retweets = 0, 0
+count, retweets = 0, 0 # count = number of tweets
 favourited_count_sum = []
 replies_count_sum = []
 likes_count_sum = []
@@ -118,7 +118,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline['retweeted_status']['favorite_count'].to_f / pline['retweeted_status']['user']['statuses_count'].to_f # 9
           fav_tw_ratio_sum.push(fav_tw_ratio)
 
-          if pline['retweeted_status']['in_reply_to_status_id'] != nil
+          if pline['retweeted_status']['in_reply_to_status_id'] != nil # or: pline['text'].include? "@" .. but less stable (text may have "@" arbitrarily)
 	    replies_count_sum.push(1)
 	  end
           
@@ -127,7 +127,7 @@ acct_list.each do |acct|
 	    urls_count += 1
 	  end
 
-          if pline['text'].include? "RT"
+          if pline['retweeted_status']['text'].include? "RT"
 	    retweets += 1
 	  end
 
@@ -166,7 +166,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline['quoted_status']['favorite_count'].to_f / pline['quoted_status']['user']['statuses_count'].to_f
           fav_tw_ratio_sum.push(fav_tw_ratio)
 
-          if pline['quoted_status']['in_reply_to_status_id'] != nil
+          if pline['quoted_status']['in_reply_to_status_id'] != nil # or: pline['text'].include? "@" .. but less stable (text may have "@" arbitrarily)
 	    replies_count_sum.push(1)
 	  end
           
@@ -175,7 +175,7 @@ acct_list.each do |acct|
 	    urls_count += 1
 	  end
           
-          if pline['text'].include? "RT"
+          if pline['quoted_status']['text'].include? "RT"
 	    retweets += 1
 	  end
 
