@@ -1,4 +1,4 @@
-# usage: ruby gzsources.rb /fully/qualified/path/to/directory[.gz] /fully/qualified/path/to/file[.txt]
+# usage: ruby numberofaccts.rb /fully/qualified/path/to/directory[.gz] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 require 'time'

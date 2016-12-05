@@ -1,10 +1,11 @@
-# usage: ruby gzsources.rb /fully/qualified/path/to/directory[.gz] /fully/qualified/path/to/file[.txt]
+# usage: ruby numberofacctsinbands.rb /fully/qualified/path/to/directory[.gz] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 require 'time'
 
 # parse through all .gz json files and output number of unique accts
 # per popularity band (group)
+# after each file (.gz) the counts will be more robust (see below)
 
 accts_10M = []
 accts_1M = []
