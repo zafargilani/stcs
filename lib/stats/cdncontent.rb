@@ -45,7 +45,7 @@ acct_list.each do |acct|
         next
       end
     end
-    # if you don't like JSON
+    # note that cdn content size is normalised by n days of dataset
     out = "#{acct}: #{content_size.inject(0){ |sum, x| sum + x }} KB" # bytes to KB to MB
     File.open("#{ARGV[1]}", 'a') do |f|
       f.puts(out)

@@ -231,7 +231,7 @@ acct_list.each do |acct|
     # normalise, prep output, .fdiv is more stable than /
     # normalisation against statuses also ensures no repetitive sum
     # the ones not normalised are normalised by n days of dataset,
-    # such as statuses, tweets, retweets, replies, urls
+    # such as statuses, tweets, retweets, replies, urls, sources
     favourites_count_avgd = favourites_count_sumd.fdiv(statuses)
     likes_count_avgd = likes_count_sumd.fdiv(statuses)
     retweet_count_avgd = retweet_count_sumd.fdiv(statuses)
