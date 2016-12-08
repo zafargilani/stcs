@@ -213,7 +213,7 @@ acct_list.each do |acct|
         next
       end
     end
-    # statuses, tweets, retweets
+    # statuses, tweets, retweets - all normalised by n days of dataset
     tweets = statuses - retweets
     # sum all arrays
     favourites_count_sumd = favourites_count_sum.inject(:+)
@@ -228,22 +228,21 @@ acct_list.each do |acct|
     fo_fr_ratio_sumd = fo_fr_ratio_sum.inject(:+)
     tweet_freq_sumd = tweet_freq_sum.inject(:+)
     fav_tw_ratio_sumd = fav_tw_ratio_sum.inject(:+)
-    # normalise and prep output, .fdiv is more stable than /
-    tw_stat_ratio_avgd = tweets.fdiv(statuses)
-    retw_stat_ratio_avgd = retweets.fdiv(statuses)
+    # normalise, prep output, .fdiv is more stable than /
+    # normalisation against statuses also ensures no repetitive sum
+    # the ones not normalised are normalised by n days of dataset,
+    # such as statuses, tweets, retweets, replies, urls
     favourites_count_avgd = favourites_count_sumd.fdiv(statuses)
-    replies_mentions_count_avgd = replies_mentions_count_sumd.fdiv(statuses)
     likes_count_avgd = likes_count_sumd.fdiv(statuses)
     retweet_count_avgd = retweet_count_sumd.fdiv(statuses)
-    lists_count_avgd = lists_count_sumd.fdiv(statuses) # lists_count / statuses ensures no repetitive sum
+    lists_count_avgd = lists_count_sumd.fdiv(statuses)
     fo_fr_ratio_avgd = fo_fr_ratio_sumd.fdiv(statuses)
     tweet_freq_avgd = tweet_freq_sumd.fdiv(statuses)
     fav_tw_ratio_avgd = fav_tw_ratio_sumd.fdiv(statuses)
-    urls_count_avgd = urls_count.fdiv(statuses)
-    out = "#{acct}, #{statuses}, #{tw_stat_ratio_avgd}, #{retw_stat_ratio_avgd}, #{favourites_count_avgd}, "
-    out = out + "#{replies_mentions_count_avgd}, #{likes_count_avgd}, #{retweet_count_avgd}, "
+    out = "#{acct}, #{statuses}, #{tweets}, #{retweets}, #{favourites_count_avgd}, "
+    out = out + "#{replies_mentions_count_sumd}, #{likes_count_avgd}, #{retweet_count_avgd}, "
     out = out + "#{lists_count_avgd}, #{fo_fr_ratio_avgd}, #{tweet_freq_avgd}, #{fav_tw_ratio_avgd}, #{days}, "
-    out = out + "#{source_list.size}, #{urls_count_avgd}" # can do source_list.uniq but no need due to if else above
+    out = out + "#{source_list.size}, #{urls_count}" # can do source_list.uniq but no need due to 'if else' above
     #out = out + ", #{k/statuses}"
     File.open("#{ARGV[1]}", 'a') do |f|
       f.puts(out)
