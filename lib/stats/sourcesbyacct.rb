@@ -1,4 +1,4 @@
-# usage: ruby source.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby sourcesbyacct.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 
@@ -9,7 +9,7 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# get user source from raw tweets/json
+# get user sources from raw tweets/json
 # dump this in an output file from time to time
 
 pline = ""
