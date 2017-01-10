@@ -21,14 +21,14 @@ out = ""
 source_list = []
 statuses = 0 			# statuses (tweets + retweets)
 tweets = 0 			# tweets = statuses - retweets
-retweets = 0 			# retweets = 'RT' in text in retweeted_status or quoted_status
+retweets_quotes = 0 		# retweets + quotes = 'RT' is in text in retweeted_status or quoted_status
 				# (a quote is a retweet but also includes user's comment)
 favourites_count_sum = [] 	# number of favourites/likes marked by this user
 #replies_count_sum = [] 	# replies only
 replies_mentions_count_sum = [] # replies + mentions (a mention is '@user')
 				# both are direct communications or interactions
 likes_count_sum = [] 		# number of favourites/likes received by this tweet
-retweet_count_sum = []		# summed retweets
+retweet_count_sum = []		# summed count of number of times a tweet is retweeted
 lists_count_sum = [] 		# lists followed by this user / account age ratio
 fo_fr_ratio_sum = [] 		# followers / friends ratio of this user
 tweet_freq_sum = [] 		# statuses / days ratio of this user
@@ -79,9 +79,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline['favorite_count'].to_f / pline['user']['statuses_count'].to_f
           fav_tw_ratio_sum.push(fav_tw_ratio)
 
-          #if pline['in_reply_to_status_id'] != nil # or: pline['text'].include? "@" .. but less stable (text may have "@" for mentions)
-	  #  replies_count_sum.push(1)
-	  #end
+	  # can do ['entities']['user_mentions'] too but will skew
 	  if pline['in_reply_to_status_id'] != nil or pline['text'].include? "@"
 	    replies_mentions_count_sum.push(1)
 	  end
@@ -92,7 +90,7 @@ acct_list.each do |acct|
 	  end
 
           if pline['text'].include? "RT"
-	    retweets += 1
+	    retweets_quotes += 1
 	  end
 
           #k = k + (likes_count + retweet_count + lists_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
@@ -134,9 +132,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline['retweeted_status']['favorite_count'].to_f / pline['retweeted_status']['user']['statuses_count'].to_f # 9
           fav_tw_ratio_sum.push(fav_tw_ratio)
 
-          #if pline['retweeted_status']['in_reply_to_status_id'] != nil # or: pline['text'].include? "@" .. but less stable (text may have "@" for mentions)
-	  #  replies_count_sum.push(1)
-	  #end
+	  # can do ['entities']['user_mentions'] too but will skew
 	  if pline['retweeted_status']['in_reply_to_status_id'] != nil or pline['retweeted_status']['text'].include? "@"
 	    replies_mentions_count_sum.push(1)
 	  end
@@ -147,7 +143,7 @@ acct_list.each do |acct|
 	  end
 
           if pline['retweeted_status']['text'].include? "RT"
-	    retweets += 1
+	    retweets_quotes += 1
 	  end
 
 	  #k = k + (likes_count + retweet_count + lists_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
@@ -189,9 +185,7 @@ acct_list.each do |acct|
           fav_tw_ratio = pline['quoted_status']['favorite_count'].to_f / pline['quoted_status']['user']['statuses_count'].to_f
           fav_tw_ratio_sum.push(fav_tw_ratio)
 
-          #if pline['quoted_status']['in_reply_to_status_id'] != nil # or: pline['text'].include? "@" .. but less stable (text may have "@" for mentions)
-	  #  replies_count_sum.push(1)
-	  #end
+	  # can do ['entities']['user_mentions'] too but will skew
 	  if pline['quoted_status']['in_reply_to_status_id'] != nil or pline['quoted_status']['text'].include? "@"
 	    replies_mentions_count_sum.push(1)
 	  end
@@ -202,7 +196,7 @@ acct_list.each do |acct|
 	  end
           
           if pline['quoted_status']['text'].include? "RT"
-	    retweets += 1
+	    retweets_quotes += 1
 	  end
 
 	  #k = k + (likes_count + retweet_count + lists_count + fo_fr_ratio + tweet_freq + fav_tw_ratio).to_f
@@ -213,8 +207,8 @@ acct_list.each do |acct|
         next
       end
     end
-    # statuses, tweets, retweets - all normalised by n days of dataset
-    tweets = statuses - retweets
+    # statuses, tweets, retweets_quotes - all normalised by n days of dataset
+    tweets = statuses - retweets_quotes
     # sum all arrays
     favourites_count_sumd = favourites_count_sum.inject(:+)
     replies_mentions_count_sumd = replies_mentions_count_sum.inject(:+)
@@ -231,7 +225,7 @@ acct_list.each do |acct|
     # normalise, prep output, .fdiv is more stable than /
     # normalisation against statuses also ensures no repetitive sum
     # the ones not normalised are normalised by n days of dataset,
-    # such as statuses, tweets, retweets, replies, urls, sources
+    # such as statuses, tweets, retweets_quotes, replies, urls, sources
     favourites_count_avgd = favourites_count_sumd.fdiv(statuses)
     likes_count_avgd = likes_count_sumd.fdiv(statuses)
     retweet_count_avgd = retweet_count_sumd.fdiv(statuses)
@@ -239,7 +233,7 @@ acct_list.each do |acct|
     fo_fr_ratio_avgd = fo_fr_ratio_sumd.fdiv(statuses)
     tweet_freq_avgd = tweet_freq_sumd.fdiv(statuses)
     fav_tw_ratio_avgd = fav_tw_ratio_sumd.fdiv(statuses)
-    out = "#{acct}, #{statuses}, #{tweets}, #{retweets}, #{favourites_count_avgd}, "
+    out = "#{acct}, #{statuses}, #{tweets}, #{retweets_quotes}, #{favourites_count_avgd}, "
     out = out + "#{replies_mentions_count_sumd}, #{likes_count_avgd}, #{retweet_count_avgd}, "
     out = out + "#{lists_count_avgd}, #{fo_fr_ratio_avgd}, #{tweet_freq_avgd}, #{fav_tw_ratio_avgd}, #{days}, "
     out = out + "#{source_list.size}, #{urls_count}" # can do source_list.uniq but no need due to 'if else' above
@@ -252,7 +246,7 @@ acct_list.each do |acct|
     #  "screen_name" => "#{acct}",
     #  "statuses" => statuses,
     #  "tweets" => tweets,
-    #  "retweets" => retweets,
+    #  "retweets_quotes" => retweets_quotes,
     #  "favourites_count" => favourites_count_sum / statuses,
     #  "replies_count_sum" => replies_count_sum,
     #  "likes_count" => likes_count_sum / statuses,
@@ -273,7 +267,7 @@ acct_list.each do |acct|
     source_list.clear
     statuses = 0
     tweets = 0
-    retweets = 0
+    retweets_quotes = 0
     favourites_count_sum.clear
     replies_mentions_count_sum.clear
     likes_count_sum.clear
