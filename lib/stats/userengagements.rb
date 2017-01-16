@@ -33,6 +33,7 @@ lists_count_sum = [] 		# lists followed by this user / account age ratio
 fo_fr_ratio_sum = [] 		# followers / friends ratio of this user
 tweet_freq_sum = [] 		# statuses / days ratio of this user
 fav_tw_ratio_sum = [] 		# favourites/likes of a tweet / statuses ratio of this user
+daily_fav_freq = 0		# favourites / days
 days, urls_count, k = 0, 0, 0
 
 acct_list.each do |acct|
@@ -233,10 +234,11 @@ acct_list.each do |acct|
     fo_fr_ratio_avgd = fo_fr_ratio_sumd.fdiv(statuses)
     tweet_freq_avgd = tweet_freq_sumd.fdiv(statuses)
     fav_tw_ratio_avgd = fav_tw_ratio_sumd.fdiv(statuses)
+    daily_fav_freq = favourites_count_avgd.fdiv(days)
     out = "#{acct}, #{statuses}, #{tweets}, #{retweets_quotes}, #{favourites_count_avgd}, "
     out = out + "#{replies_mentions_count_sumd}, #{likes_count_avgd}, #{retweet_count_avgd}, "
     out = out + "#{lists_count_avgd}, #{fo_fr_ratio_avgd}, #{tweet_freq_avgd}, #{fav_tw_ratio_avgd}, #{days}, "
-    out = out + "#{source_list.size}, #{urls_count}" # can do source_list.uniq but no need due to 'if else' above
+    out = out + "#{source_list.size}, #{urls_count}, #{daily_fav_freq}" # can do source_list.uniq but no need due to 'if else' above
     #out = out + ", #{k/statuses}"
     File.open("#{ARGV[1]}", 'a') do |f|
       f.puts(out)
