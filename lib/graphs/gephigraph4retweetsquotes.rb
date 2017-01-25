@@ -1,4 +1,4 @@
-# usage: ruby treegephi4retweetsNquotes.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby gephigraph4retweetsquotes.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 require 'time'
@@ -10,7 +10,7 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# get user tree from raw tweets/json
+# get user graph from raw tweets/json
 # dump this in an output file from time to time
 
 pline = ""
