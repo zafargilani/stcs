@@ -1,4 +1,4 @@
-# usage: ruby treegephidirected.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby gephigraph2weighteddirected.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
 require 'zlib'
 require 'json'
 require 'time'
@@ -10,7 +10,7 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# using the raw/json file build a tree network for each user
+# using the raw/json file build a graph network for each user
 # and the user's influence group (follower, retweet/quote, reply/mention)
 # with node and edge weights,
 # note that each tuple {acct,target} could have multiple rows
@@ -150,8 +150,8 @@ acct_list.each do |acct|
 	node_weight = fo_fr_ratio_acct / days_acct
 	# node_weight is normalised, but for manual normalisation see below
 	# normalise: run with above, use the generated files to get Xmax and Xmin, re-run to normalise
-	# sort -s -t, -k3 -gr treegephiweighted.2016-4.bots.10M | less
-	# sort -s -t, -k3 -g treegephiweighted.2016-4.bots.10M | less
+	# sort -s -t, -k3 -gr gephigraph2weighteddirected.2016-4.bots.10M | less
+	# sort -s -t, -k3 -g gephigraph2weighteddirected.2016-4.bots.10M | less
 	#node_weight = (node_weight - 0.0001) / (2801473 - 0.0001) # for bots.10M
 	#node_weight = (node_weight - 0.008) / (1781 - 0.008) # for bots.1M.old
 	#node_weight = (node_weight - 5.70e-06) / (301132 - 5.70e-06) # for humans.10M
@@ -160,8 +160,8 @@ acct_list.each do |acct|
 	edge_weight = replies_mentions * (fo_fr_ratio_acct / fo_fr_ratio_target) / days_target
 	# edge_weight is normalised, but for manual normalisation see below
 	# normalise: run with above, use the generated files to get Xmax and Xmin, re-run to normalise
-	# sort -s -t, -k4 -gr treegephiweighted.2016-4.bots.10M | less
-	# sort -s -t, -k4 -g treegephiweighted.2016-4.bots.10M | less
+	# sort -s -t, -k4 -gr gephigraph2weighteddirected.2016-4.bots.10M | less
+	# sort -s -t, -k4 -g gephigraph2weighteddirected.2016-4.bots.10M | less
 	#edge_weight = (edge_weight - 4.07e-05) / (202486679 - 4.07e-05) # for bots.10M
 	#edge_weight = (edge_weight - 7.2e-06) / (9142013 - 7.2e-06) # for bots.1M.old
 	#edge_weight = (edge_weight - 0.0005) / (15633768 - 0.0005) # for humans.10M
