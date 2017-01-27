@@ -4,7 +4,7 @@ require 'json'
 
 # known sources used by humans, others probably by automated accounts / bots
 # not including TweetDeck and SnappyTV because used mostly by automated accounts with human intervention
-KNOWN_SOURCES = ["Twitter Web Client", "Twitter for iPhone", "Twitter for Android",
+KNOWN_SOURCES = ["Twitter Web Client", "Twitter for iPhone", "Twitter for Android", "Twitter for Windows Phone",
 		 "Twitter for iPad", "UberSocial", "Instagram", "Facebook", "Mobile Web (M2)", "Mobile Web (M5)"]
 
 # popularity ranges
