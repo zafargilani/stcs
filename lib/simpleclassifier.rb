@@ -67,7 +67,8 @@ while (!tweet.empty?) do
 
     out = "#{group}, #{kind}, #{screen_name}, #{source}, #{followers_count}"
     #puts out
-    File.open("#{ARGV[0]}/simpleclassifier.#{ptime.year}-#{ptime.month}-#{ptime.day}.#{group}.csv", 'a') do |f|
+    #File.open("#{ARGV[0]}/simpleclassifier.#{ptime.year}-#{ptime.month}-#{ptime.day}.#{group}.csv", 'a') do |f|
+    File.open("#{ARGV[0]}/simpleclassifier.#{group}.csv", 'a') do |f|
       f.puts(out)
     end # auto file close
 
