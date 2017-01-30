@@ -13,7 +13,9 @@ require 'time'
 
 # or, pre-process (automated) simpleclassifier lists:
 # awk -F',' '{ if( $2 == " bot" ) { print $2" "$3 } }' simpleclassifier.1k.csv | less
+# awk -F',' '{ if( $2 == " bot" ) { print $0 } }' simpleclassifier.1k.csv | less
 # awk -F',' '{ if( $2 == " bot" ) { print $2" "$3 } }' simpleclassifier.1k.csv | wc -l
+# awk -F',' '{ if( $2 == " bot" ) { print $0 } }' simpleclassifier.1k.csv | wc -l
 
 acct_list = []
 File.open(ARGV[0], 'r') do |f|
