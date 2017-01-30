@@ -79,6 +79,7 @@ while (!tweet.empty?) do
     puts e
   end
   sleep 2
+  ptime = Time.now
   tweet = `tail -n2 /data/reserve/twitter/#{ptime.year}-#{ptime.month}-#{ptime.day}.uk.txt | head -n1`
 end
 
