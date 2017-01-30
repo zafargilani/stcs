@@ -4,11 +4,16 @@ require 'json'
 require 'time'
 
 # filter out tweets for list of users in their respective files
+
 # but first, pre-process the annotated lists:
 # crude: grep -w --ignore-case 'bot' 1k.csv | grep -vw --ignore-case 'human.*human' | awk -F"," '{print $1}' > bots.1k
 # crude: grep -w --ignore-case 'human' 1k.csv | grep -vw --ignore-case 'bot.*bot' | awk -F"," '{print $1}' > humans.1k
 # clean: awk -F',' '$10 ~ /Bot/ { print $1 }' 1k.all | awk -F'"' '{print $2}' > 1k.bots
 # clean: awk -F',' '$10 ~ /Human/ { print $1 }' 1k.all | awk -F'"' '{print $2}' > 1k.humans
+
+# or, pre-process (automated) simpleclassifier lists:
+# awk -F',' '{ if( $2 == " bot" ) { print $2" "$3 } }' simpleclassifier.1k.csv | less
+# awk -F',' '{ if( $2 == " bot" ) { print $2" "$3 } }' simpleclassifier.1k.csv | wc -l
 
 acct_list = []
 File.open(ARGV[0], 'r') do |f|
@@ -22,6 +27,7 @@ acct_list.sort!
 
 pline = ""
 out = ""
+screen_name = ""
 
 file_list = Dir.entries(ARGV[1])
 file_list.delete(".") # remove . from the list
@@ -40,8 +46,18 @@ file_list.each do |file|
         pline = JSON.parse(line)
         # check each line against the complete acct_list, instead of traversing over the whole .gz repeatedly
         if acct_list.include? pline['user']['screen_name']
-	  #puts "found .. #{pline['user']['screen_name']} .. writing to file .."
-          File.open("#{ARGV[2]}/#{pline['user']['screen_name']}", 'a') do |f|
+          screen_name = "#{pline['user']['screen_name']}"
+        elsif acct_list.include? pline['retweeted_status']['user']['screen_name']
+          screen_name = "#{pline['retweeted_status']['user']['screen_name']}"
+	elsif acct_list.include? pline['quoted_status']['user']['screen_name']
+	  screen_name = "#{pline['quoted_status']['user']['screen_name']}"
+	else
+	  screen_name = ""
+	end
+	
+	if screen_name != "" # write if not empty
+	  #puts "found .. #{screen_name} .. writing to file .."
+          File.open("#{ARGV[2]}/#{screen_name}", 'a') do |f|
 	    f.puts(JSON.generate(pline))
 	  end # auto file close
 	end
