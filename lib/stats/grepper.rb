@@ -12,10 +12,9 @@ require 'time'
 # clean: awk -F',' '$10 ~ /Human/ { print $1 }' 1k.all | awk -F'"' '{print $2}' > 1k.humans
 
 # or, pre-process (automated) simpleclassifier lists:
-# awk -F',' '{ if( $2 == " bot" ) { print $2" "$3 } }' simpleclassifier.1k.csv | less
-# awk -F',' '{ if( $2 == " bot" ) { print $0 } }' simpleclassifier.1k.csv | less
-# awk -F',' '{ if( $2 == " bot" ) { print $2" "$3 } }' simpleclassifier.1k.csv | wc -l
-# awk -F',' '{ if( $2 == " bot" ) { print $0 } }' simpleclassifier.1k.csv | wc -l
+# awk -F',' '{ if( $2 == " bot" ) { print $3 } }' simpleclassifier.1k.csv > 1k.bots.raw
+# sort -u 1k.bots.raw > 1k.bots
+# remove leading whitespaces (added for readability) via vim: %s/ //g
 
 acct_list = []
 File.open(ARGV[0], 'r') do |f|
