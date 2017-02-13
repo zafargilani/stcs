@@ -13,8 +13,8 @@ require 'time'
 
 # or, pre-process (automated) simpleclassifier lists:
 # awk -F',' '{ if( $2 == " bot" ) { print $3 } }' simpleclassifier.1k.csv > 1k.bots.raw
-# sort -u 1k.bots.raw > 1k.bots
 # remove leading whitespaces (added for readability) via vim: %s/ //g
+# sort -u 1k.bots.raw > 1k.bots
 # to only process a subset next time: awk 'FNR==NR {a[$0]++; next} !a[$0]' 1k.bots 1k.bots.new > 1k.bots.distinct
 # after processing 1k.bots.distinct, cat the two files and sort -u, for next iteration
 
