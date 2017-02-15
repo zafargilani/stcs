@@ -1,11 +1,11 @@
-# usage: ruby simpleclassifier.rb /fully/qualified/path/to/output/directory/
+# usage: ruby simpleclassifier.rb /fully/qualified/path/to/sourcelist[file] /fully/qualified/path/to/output/directory/
 require 'time'
 require 'json'
 
-# known sources used by humans, others probably by automated accounts / bots
-# not including TweetDeck and SnappyTV because used mostly by automated accounts with human intervention
-KNOWN_SOURCES = ["Twitter Web Client", "Twitter for iPhone", "Twitter for Android", "Twitter for Windows Phone",
-		 "Twitter for iPad", "UberSocial", "Instagram", "Facebook", "Mobile Web (M2)", "Mobile Web (M5)"]
+# read known sources used by humans from a file (simpleclassifier/sources.nonautomated)
+# others probably by automated accounts / bots (simpleclassifier/sources.automated)
+known_sources = []
+known_sources = File.readlines(ARGV[0])
 
 # popularity ranges
 LOWER_10M = 9000000
@@ -45,7 +45,7 @@ while (!tweet.empty?) do
     #puts source_sl
 
     # determine: kind (later include daily tweet frequency?)
-    if KNOWN_SOURCES.include? source_sl # then definitely a human
+    if known_sources.include? source_sl # then definitely a human
       kind = "human"
     else # otherwise likely a bot
       kind = "bot"
@@ -67,8 +67,8 @@ while (!tweet.empty?) do
 
     out = "#{group}, #{kind}, #{screen_name}, #{source}, #{followers_count}"
     #puts out
-    #File.open("#{ARGV[0]}/simpleclassifier.#{ptime.year}-#{ptime.month}-#{ptime.day}.#{group}.csv", 'a') do |f|
-    File.open("#{ARGV[0]}/simpleclassifier.#{group}.csv", 'a') do |f|
+    #File.open("#{ARGV[1]}/simpleclassifier.#{ptime.year}-#{ptime.month}-#{ptime.day}.#{group}.csv", 'a') do |f|
+    File.open("#{ARGV[1]}/simpleclassifier.#{group}.csv", 'a') do |f|
       f.puts(out)
     end # auto file close
 
