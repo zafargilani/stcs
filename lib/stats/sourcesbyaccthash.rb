@@ -1,4 +1,4 @@
-# usage: ruby sourcesbyaccthash.rb /fully/qualified/path/to/sourcelist[.csv] /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby sourcesbyaccthash.rb /fully/qualified/path/to/sources[.csv] /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
 require 'csv'
 require 'zlib'
 require 'json'
