@@ -1,27 +1,15 @@
-#!/usr/bin/env/ python -W ignore::DeprecationWarning
+#!/usr/bin/env/ python
 # -*- coding: utf-8 -*-
-# input:      train and test splits
-# output:     training Random Forest classifier with subsets of given features (e.g. 14 here),
-#             each iteration represents an ablation test (remove a feature, train and test),
-#             GLOBAL represents globally optimum set of features
-# to execute: python classify.py
-
-# dependencies:
-# python -m pip install --upgrade pip
-# (sudo) pip install --user numpy scipy
-# (sudo) apt-get install python python-tk
-# (sudo) pip install -U scikit-learn
 
 #
 from __future__ import print_function, division
 
-import sys
 import os
 import scipy
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+    
 #import plotly
 #from plotly.graph_objs import *
 #from plotly.offline import download_plotlyjs, init_notebook_mode, iplot
@@ -39,9 +27,14 @@ from sklearn import svm
 from sklearn.grid_search import GridSearchCV, RandomizedSearchCV
 from scipy.stats.distributions import randint
 
+
+###############################################
+
 global_max = 0.0
 global_feats = []
 global_report = ""
+
+###############################################
 
 
 def initialise_all_data(in_file, fts):
@@ -81,16 +74,17 @@ def initialise_all_data(in_file, fts):
     y = le.fit_transform(y)
     yFreq = scipy.stats.itemfreq(y)
     #print(yFreq)
-    corr_class = float(yFreq[0,1])
-    err_class = float(yFreq[1,1])
-    baseline = (corr_class/(corr_class + err_class))
+    #corr_class = float(yFreq[0,1])
+    #err_class = float(yFreq[1,1])
+    #baseline = (corr_class/(corr_class + err_class))
     #print("Baseline (correct instances) = " + str(round(baseline, 4)))
          
     # Auto-scale the data
     #X = preprocessing.scale(X)
-    #X = preprocessing.normalize(X)
-    
+    #X = preprocessing.normalize(X)    
     return X, y, header, c
+
+
     
 def plot(X):
     # Create a boxplot of the raw data
@@ -174,25 +168,24 @@ def rf_class(XTrain, XTest, yTrain, yTest):
     rf = RandomForestClassifier(n_estimators=100, random_state=0)
     rf.fit(XTrain, yTrain)
     predRF = rf.predict(XTest)
-    #print (yTest)
-    #print (predRF)
-    #mat = metrics.confusion_matrix(yTest, predRF)
+    print (yTest)
+    print (predRF)
+    mat = metrics.confusion_matrix(yTest, predRF)
     #print(mat)
     #print(metrics.classification_report(yTest, predRF))
     #print("Overall Accuracy:", round(metrics.accuracy_score(yTest, predRF),4))
-    #report = metrics.classification_report(yTest, predRF)
-    #voc = report.split("\n")
-    #out = str(round(metrics.accuracy_score(yTest, predRF),4)) + "\t"
-    #for item in voc:
-    #    if item.strip().startswith("0"):
-    #        voc1 = item.split("      ")
-    #        out += voc1[2].strip() + "\t" + voc1[3].strip() + "\t" + voc1[4].strip() + "\t"
-    #    if item.strip().startswith("1"):
-    #        voc1 = item.split("      ")
-    #        out += voc1[2].strip() + "\t" + voc1[3].strip() + "\t" + voc1[4].strip()
+    report = metrics.classification_report(yTest, predRF)
+    voc = report.split("\n")
+    out = str(round(metrics.accuracy_score(yTest, predRF),4)) + "\t"
+    for item in voc:
+        if item.strip().startswith("0"):
+            voc1 = item.split("      ")
+            out += voc1[2].strip() + "\t" + voc1[3].strip() + "\t" + voc1[4].strip() + "\t"
+        if item.strip().startswith("1"):
+            voc1 = item.split("      ")
+            out += voc1[2].strip() + "\t" + voc1[3].strip() + "\t" + voc1[4].strip()
     #print(out)
-    #return out
-    return predRF
+    return out
 
     # Conduct a grid search with 10-fold cross-validation using the dictionary of parameters
     ##n_estimators = np.arange(1, 30, 5)
@@ -269,8 +262,11 @@ def grid_search(rng, to_exclude, metric):
                 if not feat == odd_one:
                     feats1.append(feat)
             print(str(odd_one) + ": Training with " + str(len(features)) + " features....")
-            XTrain, yTrain, header, cTrain = initialise_all_data("splits1/train5.csv", feats1) 
-            XTest, yTest, header, cTest = initialise_all_data("splits2/test5_1k.csv", feats1)
+            #XTrain, yTrain, header, cTrain = initialise_all_data("splits1/train5.csv", feats1) 
+            #XTest, yTest, header, cTest = initialise_all_data("splits1/test5.csv", feats1)
+            #XTest, yTest, header, cTest = initialise_all_data("splits2/test5_10M.csv", feats1)
+            XTrain, yTrain, header, cTrain = initialise_all_data("splits3/train_1k.csv", feats1) 
+            XTest, yTest, header, cTest = initialise_all_data("splits3/test_1k.csv", feats1)
             report = rf_class(XTrain, XTest, yTrain, yTest)
             voc = report.split("\t")
             #acc pc rc fc pe re fe
@@ -284,8 +280,11 @@ def grid_search(rng, to_exclude, metric):
         new_features = populate_feature_list(rng, to_exclude)
         print(new_features)
         print(a_max)
-        XTrain, yTrain, header, cTrain = initialise_all_data("splits1/train5.csv", new_features) 
-        XTest, yTest, header, cTest = initialise_all_data("splits2/test5_1k.csv", new_features)
+        #XTrain, yTrain, header, cTrain = initialise_all_data("splits1/train5.csv", new_features) 
+        #XTest, yTest, header, cTest = initialise_all_data("splits1/test5.csv", new_features)        
+        #XTest, yTest, header, cTest = initialise_all_data("splits2/test5_10M.csv", new_features)
+        XTrain, yTrain, header, cTrain = initialise_all_data("splits3/train_1k.csv", feats1) 
+        XTest, yTest, header, cTest = initialise_all_data("splits3/test_1k.csv", feats1)
         report = rf_class(XTrain, XTest, yTrain, yTest)
         print(report)
         #############################
@@ -322,34 +321,45 @@ def analyse_outputs(path, files, output):
     out.close()
 
 
+###############################################
+'''
+The method to classify a particular instance:
+INSTANCE should be represented as a string
+with the feature values corresponding to
+the training set feature indices and
+separated by comma
+FEATURES is a list of feature indices
+'''
+def classify_instance(instance, features):
+    #XTrain, yTrain, header, cTrain = initialise_all_data("/local/scratch/szuhg2/stcs/data/training/train_1k.csv", features) 
+    XTrain, yTrain, header, cTrain = initialise_all_data("../data/training/train_1k.csv", features) 
+    fts = []
+    voc = instance.split(",")
+    #index starts off from 1 if the account name is included
+    # 0 otherwise
+    for index in range(1,len(voc)):
+        if index in features:
+            fts.append(voc[index].strip())
+    XTest = np.empty([1, len(fts)])
+    for item in range(0, len(fts)):
+        XTest[0, item] = fts[item]
+    rf = RandomForestClassifier(n_estimators=100, random_state=0)
+    rf.fit(XTrain, yTrain)
+    predRF = rf.predict(XTest)
+    print(predRF)
+    if predRF[0]==0: 
+        print("bot")
+    elif predRF[0]==1:
+        print("human")
+    
 
-
+###############################################
+        
 if __name__ == "__main__":
-	# feature sets for each popularity bands
-	feats10M = [5, 6, 7, 10, 11, 12]
-	feats1M = [1, 2, 7, 9, 12]
-	feats100K = [1, 2, 3, 7, 9, 12, 13, 14]
-	feats1K = [1, 2, 7, 8, 9, 10, 11, 12, 13, 14]
-
-	feats = []
-	if str(sys.argv[1]) == "10M":
-		feats = feats10M
-	elif str(sys.argv[1]) == "1M":
-		feats = feats1M
-	elif str(sys.argv[1]) == "100K":
-		feats = feats100K
-	elif str(sys.argv[1]) == "1K":
-		feats = feats1K
-	else:
-		feats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-
-	test_acct_path = str(sys.argv[2])
-
-	XTrain, yTrain, header, cTrain = initialise_all_data("/local/scratch/szuhg2/stcs/data/training/train_all.csv", feats) 
-	XTest, yTest, header, cTest = initialise_all_data(test_acct_path, feats)
-	predRF = rf_class(XTrain, XTest, yTrain, yTest)
-	print(predRF)
-
-# preprocess userengagements (test subjects)
-# awk -F',' '{print $1","$3","$4","$5","$6","$7","$8","$9","$10","$11","$12","$13","$14","$15","$16}' userengagements.2016-12.bots.10M.csv > userengagements.2016-12.bots.10M.csv.new
+    #grid_search(22, [], 0)
+    
+    classify_instance("BridgetteWest,4,1,2193.25,0,0,0,84.25,670.1724788,2.750925315,0.362052495,2188.81963,2,3,88.58789063,0,0,1,0,0,0,0", [4,6,7,9,10,11,13,16,17,18])
+    classify_instance("CardiffBiz,6,1,0,0,0,0,660.5,1.052280296,6.00344363,0,2290.981181,2,5,0,0,1,0,0,0,0,0", [4,6,7,9,10,11,13,16,17,18])
+    classify_instance("04LS_nagoya,2,2,202,0,0,0,1850,30.89231307,5.207585203,0.02506832,1550.77037,1,1,53.85449219,0,0,1,0,0,0,0", [4,6,7,9,10,11,13,16,17,18])
+    classify_instance("caperucitazorra,11,1,1,0,0,0,72.18181818,1460.107632,20.85708145,3.25E-05,1473.912963,2,10,655.8378906,0,0,0,1,0,0,0,0", [4,6,7,9,10,11,13,16,17,18])
 
