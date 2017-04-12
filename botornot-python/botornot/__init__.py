@@ -1,10 +1,16 @@
 from __future__ import print_function
-import json
 import time
 import tweepy
 import requests
 from functools import wraps
-from tweepy import RateLimitError
+from tweepy import RateLimitError, TweepError
+from requests import ConnectionError, Timeout
+
+
+class NoTimelineError(ValueError):
+    def __init__(self, sn, *args, **kwargs):
+        msg = "user '%s' has no tweets in timeline" % sn
+        return super(NoTimelineError, self).__init__(msg, *args, **kwargs)
 
 
 class BotOrNot(object):
@@ -15,7 +21,7 @@ class BotOrNot(object):
             access_token, access_token_secret, **kwargs):
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
-        self.access_token_key = access_token
+        self.access_token_key = self.access_token = access_token
         self.access_token_secret = access_token_secret
         self.wait_on_ratelimit = kwargs.get('wait_on_ratelimit', False)
 
@@ -54,6 +60,13 @@ class BotOrNot(object):
         self._bon_post = _rate_limited(requests.post)
 
 
+    @classmethod
+    def create_from(cls, instance, **kwargs):
+        my_kwargs = vars(instance)
+        my_kwargs.update(kwargs)
+        return cls(**my_kwargs)
+
+
     @property
     def bon_api_path(self, method=''):
         return  '%s/%s' % (self.botornot_api.rstrip('/'), self.api_version)
@@ -88,21 +101,53 @@ class BotOrNot(object):
 
 
     def _check_account(self, user_data, tweets):
-        post_body = json.dumps({
-                'content': tweets,
-                    'meta': {
-                        'user_id': user_data['id_str'],
-                        'screen_name': user_data['screen_name'],
-                    },
-                })
+        post_body = {'content': tweets,
+                     'meta': {'user_id': user_data['id_str'],
+                              'screen_name': user_data['screen_name']}
+                     }
 
-        bon_resp = self._bon_post(self._bon_api_method('check_account'),
-                data=post_body)
+        _url = self._bon_api_method('check_account')
+        bon_resp = self._bon_post(_url, json=post_body)
         return bon_resp.json()
+
+
+    ####################
+    ## Public methods ##
+    ####################
 
 
     def check_account(self, user):
         user_data, tweets = self._get_user_and_tweets(user)
+        if not tweets:
+            raise NoTimelineError(user)
         classification = self._check_account(user_data, tweets)
 
         return classification
+
+
+    def check_accounts_in(self, accounts, **kwargs):
+        sub_instance = self.create_from(self, wait_on_ratelimit=True)
+
+        max_retries = kwargs.get('retries', 3)
+        num_retries = 0
+
+        for account in accounts:
+            for num_retries in range(max_retries + 1):
+                result = None
+                try:
+                    result = sub_instance.check_account(account)
+                except (TweepError, NoTimelineError) as e:
+                    err_msg = '{}: {}'.format(
+                            type(e).__name__,
+                            getattr(e, 'msg', '') or getattr(e, 'reason', ''),
+                    )
+                    result = {'error': err_msg}
+                except (Timeout, ConnectionError) as e:
+                    if num_retries >= max_retries:
+                        raise
+                    else:
+                        time.sleep(2 ** num_retries)
+
+                if result is not None:
+                    yield account, result
+                    break

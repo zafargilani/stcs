@@ -309,35 +309,44 @@ If you see a "Over capacity error / ServiceUnavailable error" then simply retry 
 
 ## Add-Ons
 
-### BotOrNot (experimental / working)
+### Stats and Graphs package
+
+The Stweeler project provides a number of scripts to produce statistics and graphs from raw Twitter data. These are listed under lib/stats and lib/graphs. Each script provides a method by which it can be used to produce statistics and graphs.
+
+### Stweeler classifier
+
+The Stweeler classifier uses a number of features (22 as of lately) to classify an account as either 'bot' or 'human'. It utilises the Random Forests ensemble classification package from the [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit.
+
+The classifier can be used in two ways. For executing examples:
+``` bash
+python classify.py examples
+```
+
+The second execution method can take an input file (same format as example) and produce an output file (same format as example):
+``` bash
+python classify.py /input/file /output/file
+```
+
+### BotOrNot
 
 To install BotOrNot visit [BotOrNot GitHub page](https://github.com/truthy/botornot-python).
 
+To run BotOrNot from within Stweeler, use the following commands. The Ruby script interfaces with a local copy of BotOrNot's Python API and uses a threshold score of 0.50 (as can be inferred from [BotOrNot webpage](http://truthy.indiana.edu/botornot/)).
+
 Running BotOrNot:
 ``` bash
-$ ruby lib/classifier.rb
+$ ruby lib/botornot.rb /input/file[accts] /output/file[classifications]
 ```
 
-Running selector (classification of criteria-based selected accounts):
+The Ruby script accepts an input file with Twitter handles in the following format:
 ``` bash
-$ ruby lib/selector.rb
+katyperry
+BarackObama
 ```
 
-### Ruby-FANN (experimental / example)
-
-To install Ruby-FANN visit [Ruby-FANN GitHub page](https://github.com/tangledpath/ruby-fann)
-
-Running example program:
+And produces the following as output file:
 ``` bash
-$ ruby lib/fann.rb
-```
-
-### kmeans-clusterer (experimental / example)
-
-To install kmeans-clusterer visit [kmeans-clusterer GitHub page](https://github.com/gbuesing/kmeans-clusterer)
-
-Running example program:
-``` bash
-$ ruby lib/kmeans.rb
+"katyperry","human"
+"BarackObama","bot"
 ```
 

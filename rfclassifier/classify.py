@@ -1,7 +1,7 @@
 #!/usr/bin/env/ python -W ignore
 # -*- coding: utf-8 -*-
 # input:      train and test splits
-# output:     training Random Forest classifier with subsets of given features (e.g. 14 here),
+# output:     training Random Forest classifier with subsets of given features (e.g. 22 here),
 #             each iteration represents an ablation test (remove a feature, train and test),
 #             GLOBAL represents globally optimum set of features
 # to execute: python classify.py /input/userengagements[.csv] /output/rfclassifier[.csv]
