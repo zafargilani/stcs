@@ -1,6 +1,9 @@
 # stcs - Super Truly Cunning Stweeler!
 
-STCS is a tweeter bot platform for analysis on Twitter. Find research work using this platform [here](http://dl.acm.org/citation.cfm?id=2889360). Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
+Stweeler (STCS) is a Twitter bot platform for analysis on Twitter. Research work using Stweeler:
+[WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf),
+[WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/pp051-gilani.pdf),
+Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
 
 The bot is able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%).
 
