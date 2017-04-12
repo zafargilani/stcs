@@ -1,11 +1,20 @@
 # BotOrNot Python API
 A Python API for [Truthy BotOrNot](http://truthy.indiana.edu/botornot/).
 
-Behind the scenes, this uses the BotOrNot's REST endpoint as illustrated in
-[this notebook](http://truthy.indiana.edu/botornot/rest-api.html).
+Behind the scenes, this uses the BotOrNot's HTTP endpoint as illustrated in
+[this notebook](http://truthy.indiana.edu/botornot/http-api.html).
+
+## Help
+You probably want to have a look at [Troubleshooting & FAQ](/truthy/botornot-python/wiki/Troubleshooting-&-FAQ) in the wiki. Please feel free to suggest and/or contribute improvements to that page.
 
 ## Quickstart
+From your command shell, run 
 
+```
+pip install botornot
+```
+
+then in a Python shell or script, enter something like this:
 ```python
 import botornot
 
@@ -17,7 +26,12 @@ twitter_app_auth = {
   }
 bon = botornot.BotOrNot(**twitter_app_auth)
 
-bon.check_account('@clayadavis')
+# Check a single account
+result = bon.check_account('@clayadavis')
+
+# Check a sequence of accounts
+accounts = ['@clayadavis', '@onurvarol', '@jabawack']
+results = list(bon.check_accounts_in(accounts))
 ```
 
 Result:

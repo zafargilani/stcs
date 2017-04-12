@@ -1,4 +1,4 @@
-# usage: ruby botornot.rb /full/path/input/list.txt /full/path/output/file.txt
+# usage: ruby botornot.rb /full/path/input/accts[list] /full/path/output/file[.txt]
 require 'zlib'
 require 'json'
 
@@ -11,7 +11,7 @@ end
 
 acct_list.each do |acct|
   begin
-    response = %x(/usr/bin/python /local/scratch/szuhg2/stcs/botornot-python/botornot.py #{acct})
+    response = %x(/usr/bin/python ../botornot-python/botornot.py #{acct})
     parsed_response = JSON.parse(response)
     if parsed_response["score"].to_f >= 0.50 # observation shows >45% of OSN traffic comes from bots
       out = "\"#{acct}\",\"bot\""
