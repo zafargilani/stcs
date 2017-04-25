@@ -47,9 +47,9 @@ acct_list.each do |acct|
 
 	  utc_time = Time.parse( pline['created_at'] ).to_i 
 
-	  if pline.key?('retweeted_status')
+	  if pline.key?('retweeted_status') and !pline['retweeted_status']['user']['screen_name'].include? acct
 	    target = pline['retweeted_status']['user']['screen_name']
-	  elsif pline.key?('quoted_status')
+	  elsif pline.key?('quoted_status') and !pline['quoted_status']['user']['screen_name'].include? acct
 	    target = pline['quoted_status']['user']['screen_name']
 	  end
 	# retweet: if this acct is retweeting then some other acct tweeted
@@ -58,9 +58,9 @@ acct_list.each do |acct|
 	  
 	  utc_time = Time.parse( pline['retweeted_status']['created_at'] ).to_i
 
-	  if pline.key?('user')
+	  if pline.key?('user') and !pline['user']['screen_name'].include? acct
 	    target = pline['user']['screen_name']
-	  elsif pline.key?('quoted_status')
+	  elsif pline.key?('quoted_status') and !pline['quoted_status']['user']['screen_name'].include? acct
 	    target = pline['quoted_status']['user']['screen_name']
 	  end
 	# quoted: if this acct is quoting then some other acct tweeted
@@ -69,9 +69,9 @@ acct_list.each do |acct|
 	  
 	  utc_time = Time.parse( pline['quoted_status']['created_at'] ).to_i
 	  
-	  if pline.key?('user')
+	  if pline.key?('user') and !pline['user']['screen_name'].include? acct
 	    target = pline['user']['screen_name']
-	  elsif pline.key?('retweeted_status')
+	  elsif pline.key?('retweeted_status') and !pline['retweeted_status']['user']['screen_name'].include? acct
 	    target = pline['retweeted_status']['user']['screen_name']
 	  end
 	end

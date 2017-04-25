@@ -15,6 +15,7 @@ Functionalities:
  * Bot Functionality - the automated program or [bot](https://github.com/mispy/twitter_ebooks) manages a twitter account, following, retweeting, etc.
  * URL analyzer - provides algorithms to retrieve urls and detect malware. It can be extended to work as a proxy, in order to inject functionality into linked pages.
  * URL shortener - [shortener](https://github.com/jpmcgrath/shortener) rails project to generate shortened urls and interact with the bot.
+ * Stweeler classifier (rfclassifier) - a python project that uses [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit to classify Twitter accounts as 'bot' or 'human'. It utilises Random Forests ensemble classification method and only the most meaningful 22 features (discerned from our detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to produce an accurate output.
  * BotOrNot - [botornot](https://github.com/truthy/botornot-python) is a python project to find if a Twitter account is an automated program (bot) or human.
 
 ## Getting started
@@ -315,7 +316,7 @@ The Stweeler project provides a number of scripts to produce statistics and grap
 
 ### Stweeler classifier
 
-The Stweeler classifier uses a number of features (22 as of lately) to classify an account as either 'bot' or 'human'. It utilises the Random Forests ensemble classification package from the [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit.
+The Stweeler classifier uses a number of features (22, most recently, discerned from out detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to classify an account as either 'bot' or 'human'. It utilises the Random Forests ensemble classification package from the [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit.
 
 The classifier can be used in two ways. For executing examples:
 ``` bash
@@ -348,5 +349,29 @@ And produces the following as output file:
 ``` bash
 "katyperry","human"
 "BarackObama","bot"
+```
+
+You may also run BotOrNot in its purest form, to collect statistics instead of labels:
+``` bash
+$ ruby bon.rb @oliviataters
+```
+
+This produces the following pure output:
+``` bash
+{
+    "categories": {
+        "content_classification": 0.34,
+        "friend_classification": 0.42,
+        "network_classification": 0.3,
+        "sentiment_classification": 0.4,
+        "temporal_classification": 0.55,
+        "user_classification": 0.49
+    },
+    "meta": {
+        "screen_name": "oliviataters",
+        "user_id": "2216299843"
+    },
+    "score": 0.51
+}
 ```
 
