@@ -1,24 +1,22 @@
 # stcs - Super Truly Cunning Stweeler!
 
-Stweeler (STCS) is a Twitter bot platform for analysis on Twitter. Research work using Stweeler:
-[WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf),
-[WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/pp051-gilani.pdf),
+Stweeler (STCS) is a Twitter platform for (1) bot mastering (creating honeypots), and (2) independent bot analysis. Stweeler is developed in Ruby, Python, and Java, and aims to study automation on social networks, particularly Twitter. Research work using Stweeler:
+1. [WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf),
+2. [WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/pp051-gilani.pdf).
+
 Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
 
-The bot is able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%).
+The bot is able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%). It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags. URL redirection is useful to retrieve http header information, such as user agents, as well as to manage cookies.
 
-It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags.
-
-Url redirection is useful to retrieve http header information, such as user agents, as well as to manage cookies.
-
-It can potentially be extended to work as a proxy, in order to inject functionality into linked pages.
+Stweeler also has a raw tweet collection system and a bunch of other useful tools. See below for packages and functionalities.
 
 Functionalities:
- * Streaming Tweet Collection System - uses the [twitter ruby gem](https://github.com/sferik/twitter) and Twitter's Streaming API to collect and dump user tweets
- * Bot Functionality - the automated program or [bot](https://github.com/mispy/twitter_ebooks) manages a twitter account, following, retweeting, etc
- * URL analyzer - provides algorithms to retrieve urls and currently some pocs of malware detection
- * URL shortener - [shortener](https://github.com/jpmcgrath/shortener) rails project to generate shortened urls and interact with the bot
- * BotOrNot - [botornot](https://github.com/truthy/botornot-python) is a python project to find if a twitter account is an automated program (bot) or human
+ * Streaming Tweet Collection System - uses the [twitter ruby gem](https://github.com/sferik/twitter) and Twitter's Streaming API to collect and dump user tweets. This module is independent of the bot tool. [Stats and Graphs package](https://github.com/zafargilani/stcs#stats-and-graphs-package) explains how to use raw Twitter data for useful stats that enable peeking inside bot activity on Twitter.
+ * Bot Functionality - the automated program or [bot](https://github.com/mispy/twitter_ebooks) manages a twitter account, following, retweeting, etc.
+ * URL analyzer - provides algorithms to retrieve urls and detect malware. It can be extended to work as a proxy, in order to inject functionality into linked pages.
+ * URL shortener - [shortener](https://github.com/jpmcgrath/shortener) rails project to generate shortened urls and interact with the bot.
+ * Stweeler classifier (rfclassifier) - a python project that uses [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit to classify Twitter accounts as 'bot' or 'human'. It utilises Random Forests ensemble classification method and only the most meaningful 22 features (discerned from our detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to produce an accurate output.
+ * BotOrNot - [botornot](https://github.com/truthy/botornot-python) is a python project to find if a Twitter account is an automated program (bot) or human.
 
 ## Getting started
 
@@ -318,7 +316,7 @@ The Stweeler project provides a number of scripts to produce statistics and grap
 
 ### Stweeler classifier
 
-The Stweeler classifier uses a number of features (22 as of lately) to classify an account as either 'bot' or 'human'. It utilises the Random Forests ensemble classification package from the [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit.
+The Stweeler classifier uses a number of features (22, most recently, discerned from out detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to classify an account as either 'bot' or 'human'. It utilises the Random Forests ensemble classification package from the [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit.
 
 The classifier can be used in two ways. For executing examples:
 ``` bash
@@ -351,5 +349,29 @@ And produces the following as output file:
 ``` bash
 "katyperry","human"
 "BarackObama","bot"
+```
+
+You may also run BotOrNot in its purest form, to collect statistics instead of labels:
+``` bash
+$ ruby bon.rb @oliviataters
+```
+
+This produces the following pure output:
+``` bash
+{
+    "categories": {
+        "content_classification": 0.34,
+        "friend_classification": 0.42,
+        "network_classification": 0.3,
+        "sentiment_classification": 0.4,
+        "temporal_classification": 0.55,
+        "user_classification": 0.49
+    },
+    "meta": {
+        "screen_name": "oliviataters",
+        "user_id": "2216299843"
+    },
+    "score": 0.51
+}
 ```
 
