@@ -15,14 +15,12 @@ acct_list.sort!
 # where the arc is directed from A to B
 # showing influence propagation from A to B
 
-prev_acct = ""
-
 pline = ""
-out = ""
-
 target = ""
 utc_time = 0
+list_rtqs = []
 
+# write out entire propagations, acct by acct
 acct_list.each do |acct|
   begin
     infile = open("#{ARGV[0]}/#{acct}")
@@ -43,19 +41,15 @@ acct_list.each do |acct|
       rescue
         next
       end
-      if prev_acct != acct 
-        out = "\tomega\t0"
-      else
-        out = "omega\t#{target}\t#{utc_time}"
-      end
-      if !out.empty?
-        File.open("#{ARGV[1]}", 'a') do |f|
-          f.puts(out)
-        end # auto file close
-      end
-      out = ""
-      prev_acct = acct
+      list_rtqs.push("omega\t#{target}\t#{utc_time}")
     end
+    if !list_rtqs.empty?
+      list_rtqs.unshift("\tomega\t0") # prepend each propagation!
+      File.open("#{ARGV[1]}", 'a') do |f|
+        f.puts(list_rtqs.uniq) # each link appears only once!
+      end # auto file close
+    end
+    list_rtqs.clear
   rescue => e
     puts e
   end

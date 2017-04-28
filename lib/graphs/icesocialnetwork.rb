@@ -16,13 +16,10 @@ acct_list.sort!
 # showing influence propagation from A to B
 
 pline = ""
-out = ""
-
 target = ""
-
 list_rtqs = []
 
-# write out social network structure
+# write out entire social network structure, acct by acct
 acct_list.each do |acct|
   begin
     infile = open("#{ARGV[0]}/#{acct}")
@@ -38,22 +35,22 @@ acct_list.each do |acct|
 	  elsif pline.key?('quoted_status')
 	    target = pline['quoted_status']['user']['screen_name']
 	  end
-	  list_rtqs.push("#{target}\t#{acct}")
+	  list_rtqs.push("#{target}\t#{acct}") unless target == acct # ensure target != acct
 	# if acct "influenced" target
         elsif pline.key?('retweeted_status') and pline['retweeted_status']['user']['screen_name'].include? acct
 	  target = pline['user']['screen_name']
-	  list_rtqs.push("#{acct}\t#{target}")
+	  list_rtqs.push("#{acct}\t#{target}") unless acct == target # ensure acct != target
 	# if acct "influenced" target
 	elsif pline.key?('quoted_status') and pline['quoted_status']['user']['screen_name'].include? acct
 	  target = pline['user']['screen_name']
-	  list_rtqs.push("#{acct}\t#{target}")
+	  list_rtqs.push("#{acct}\t#{target}") unless acct == target # ensure acct != target
 	end
       rescue
         next
       end
     end
     File.open("#{ARGV[1]}", 'a') do |f|
-      f.puts(list_rtqs)
+      f.puts(list_rtqs.uniq) # each link appears once only!
     end # auto file close
     list_rtqs.clear
   rescue => e
