@@ -41,12 +41,13 @@ acct_list.each do |acct|
       rescue
         next
       end
-      list_rtqs.push("omega\t#{target}\t#{utc_time}")
+      # each link in each propagation should only appear once!
+      list_rtqs.push("omega\t#{target}\t#{utc_time}") unless list_rtqs.index{|s| s.include?("omega\t#{target}")}
     end
     if !list_rtqs.empty?
       list_rtqs.unshift("\tomega\t0") # prepend each propagation!
       File.open("#{ARGV[1]}", 'a') do |f|
-        f.puts(list_rtqs.uniq) # each link appears only once!
+        f.puts(list_rtqs.uniq.sort_by {|s| s.split("\t")[2]}) # sort by utc timestamp
       end # auto file close
     end
     list_rtqs.clear
