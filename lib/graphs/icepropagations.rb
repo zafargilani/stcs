@@ -10,10 +10,10 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# build a graph network as:
-# NodeA  NodeB
-# where the arc is directed from A to B
-# showing influence propagation from A to B
+# build a propagation network as:
+# omega   node   T
+# where the arc is directed from omega to node
+# showing influence propagation from omega to node
 
 pline = ""
 target = ""
