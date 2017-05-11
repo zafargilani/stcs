@@ -25,19 +25,21 @@ acct_list.each do |acct|
     infile.each_line do |line|
       begin
         pline = JSON.parse(line)
-	if pline['user']['screen_name'].include? acct # == acct
-	  if pline['entities']['media'][0]['media_url'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
-	    size = `wget #{pline['entities']['media'][0]['media_url']} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+	if pline['user']['screen_name'].include? acct
+	  if pline['entities']['media'][0]['media_url_https'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
+	    size = `curl -sI #{pline['entities']['media'][0]['media_url_https']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'` # media_url or media_url_https
 	    content_size.push( size.to_f / 1024 )
 	  end
+
 	elsif pline['retweeted_status']['user']['screen_name'].include? acct
-	  if pline['retweeted_status']['entities']['media'][0]['media_url'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
-	    size = `wget #{pline['retweeted_status']['entities']['media'][0]['media_url']} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+	  if pline['retweeted_status']['entities']['media'][0]['media_url_https'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
+	    size = `curl -sI #{pline['retweeted_status']['entities']['media'][0]['media_url_https']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size.push( size.to_f / 1024 )
 	  end
+
 	elsif pline['quoted_status']['user']['screen_name'].include? acct
-	  if pline['quoted_status']['entities']['media'][0]['media_url'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
-	    size = `wget #{pline['quoted_status']['entities']['media'][0]['media_url']} --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+	  if pline['quoted_status']['entities']['media'][0]['media_url_https'].include? "twimg" # /[a-z]*.twimg.[a-z]*/
+	    size = `curl -sI #{pline['quoted_status']['entities']['media'][0]['media_url_https']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size.push( size.to_f / 1024 )
 	  end
 	end
@@ -49,7 +51,7 @@ acct_list.each do |acct|
     out = "#{acct}: #{content_size.inject(0){ |sum, x| sum + x }} KB" # bytes to KB to MB
     File.open("#{ARGV[1]}", 'a') do |f|
       f.puts(out)
-    end # auto file file
+    end # auto file close 
     #out_json = {
     #  "screen_name" => "#{acct}",
     #  "total_content_size" => "#{content_size}"
