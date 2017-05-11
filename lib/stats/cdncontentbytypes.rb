@@ -34,8 +34,8 @@ acct_list.each do |acct|
 	  if pline['entities']['media'][0]['type'].include? "photo" and ARGV[0] == "photo" # photo:large
 	    size = `curl -sI #{pline['entities']['media'][0]['media_url_https']}:large | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size_photo.push(size.to_i)
-	  elsif pline['extended_tweet']['entities']['media'][0]['type'].include? "animated_gif" and ARGV[0] == "animated_gif" # animated gif saved as mp4 with bitrate 0 on Twitter
-	    size = `curl -sI #{pline['extended_tweet']['entities']['media'][0]['video_info']['variants'][0]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
+	  elsif pline['extended_entities']['media'][0]['type'].include? "animated_gif" and ARGV[0] == "animated_gif" # animated gif saved as mp4 with bitrate 0 on Twitter
+	    size = `curl -sI #{pline['extended_entities']['media'][0]['video_info']['variants'][0]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size_animated_gif.push(size.to_i)
 	  elsif pline['extended_entities']['media'][0]['type'].include? "video" and ARGV[0] == "video" # video [1] with higher bitrate
 	    size = `curl -sI #{pline['extended_entities']['media'][0]['video_info']['variants'][1]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
@@ -46,8 +46,8 @@ acct_list.each do |acct|
 	  if pline['retweeted_status']['entities']['media'][0]['type'].include? "photo" and ARGV[0] == "photo" # photo:large
 	    size = `curl -sI #{pline['retweeted_status']['entities']['media'][0]['media_url_https']}:large | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size_photo.push(size.to_i)
-	  elsif pline['retweeted_status']['extended_tweet']['entities']['media'][0]['type'].include? "animated_gif" and ARGV[0] == "animated_gif" # animated gif saved as mp4 with bitrate 0 on Twitter
-	    size = `curl -sI #{pline['retweeted_status']['extended_tweet']['entities']['media'][0]['video_info']['variants'][0]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
+	  elsif pline['retweeted_status']['extended_entities']['media'][0]['type'].include? "animated_gif" and ARGV[0] == "animated_gif" # animated gif saved as mp4 with bitrate 0 on Twitter
+	    size = `curl -sI #{pline['retweeted_status']['extended_entities']['media'][0]['video_info']['variants'][0]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size_animated_gif.push(size.to_i)
 	  elsif pline['retweeted_status']['extended_entities']['media'][0]['type'].include? "video" and ARGV[0] == "video" # video [1] with higher bitrate
 	    size = `curl -sI #{pline['retweeted_status']['extended_entities']['media'][0]['video_info']['variants'][1]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
@@ -58,8 +58,8 @@ acct_list.each do |acct|
 	  if pline['quoted_status']['entities']['media'][0]['type'].include? "photo" and ARGV[0] == "photo" # photo:large
 	    size = `curl -sI #{pline['quoted_status']['entities']['media'][0]['media_url_https']}:large | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size_photo.push(size.to_i)
-	  elsif pline['quoted_status']['extended_tweet']['entities']['media'][0]['type'].include? "animated_gif" and ARGV[0] == "animated_gif" # animated gif saved as mp4 with bitrate 0 on Twitter
-	    size = `curl -sI #{pline['quoted_status']['extended_tweet']['entities']['media'][0]['video_info']['variants'][0]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
+	  elsif pline['quoted_status']['extended_entities']['media'][0]['type'].include? "animated_gif" and ARGV[0] == "animated_gif" # animated gif saved as mp4 with bitrate 0 on Twitter
+	    size = `curl -sI #{pline['quoted_status']['extended_entities']['media'][0]['video_info']['variants'][0]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
 	    content_size_animated_gif.push(size.to_i)
 	  elsif pline['quoted_status']['extended_entities']['media'][0]['type'].include? "video" and ARGV[0] == "video" # video [1] with higher bitrate
 	    size = `curl -sI #{pline['quoted_status']['extended_entities']['media'][0]['video_info']['variants'][1]['url']} | grep -i 'Content-Length' | awk '{print}' ORS='" ' | awk -F'\"' '{print $2}' | awk -F': ' '{print $2}'`
@@ -72,11 +72,11 @@ acct_list.each do |acct|
     end
     # write output, all values in KB
     if ARGV[0] == "photo"
-      out = "photo, #{acct}, #{content_size_photo.inject(0){ |sum, x| sum + x }.fdiv(1024)}"
+      out = "#{acct}, #{content_size_photo.inject(0){ |sum, x| sum + x }.fdiv(1024)}"
     elsif ARGV[0] == "animated_gif"
-      out = "animated_gif, #{acct}, #{content_size_animated_gif.inject(0){ |sum, x| sum + x }.fdiv(1024)}"
+      out = "#{acct}, #{content_size_animated_gif.inject(0){ |sum, x| sum + x }.fdiv(1024)}"
     elsif ARGV[0] == "video"
-      out = "video, #{acct}, #{content_size_video.inject(0){ |sum, x| sum + x }.fdiv(1024)}"
+      out = "#{acct}, #{content_size_video.inject(0){ |sum, x| sum + x }.fdiv(1024)}"
     end
     File.open("#{ARGV[2]}", 'a') do |f|
       f.puts(out)
