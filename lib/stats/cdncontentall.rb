@@ -1,4 +1,4 @@
-# usage: ruby cdncontentall.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby cdncontentall.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.csv]
 require 'zlib'
 require 'json'
 
