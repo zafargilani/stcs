@@ -1,4 +1,4 @@
-# usage: ruby cdncontenttw.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby cdncontenttw.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.csv]
 require 'zlib'
 require 'json'
 
@@ -62,6 +62,5 @@ acct_list.each do |acct|
   rescue => e
     puts e
   end
-  sleep(2)
 end
 
