@@ -29,7 +29,7 @@ acct_list.each do |acct|
       begin
         pline = JSON.parse(line)
 	text = pline['text']
-	if pline['text'].include? "http" or pline['text'].match(/.[a-z]*\//) # captures all URLs
+	if pline['text'].include? "http" or pline['text'].match(/[a-z]*:\/\//) # captures all URLs
 	  text = text[text.index("http"), text.length] # captures http or https
 	end
 	uri = URI.parse(text)
