@@ -1,4 +1,4 @@
-# usage: ruby urischeme.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.csv]
+# usage: ruby urischemeredirected.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.csv]
 require 'zlib'
 require 'json'
 require 'uri'
@@ -10,10 +10,13 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# measure different URL schemes
+# measure different redirected URL schemes 
 
 pline = ""
 text = ""
+textp1 = ""
+textp2 = ""
+ctext = ""
 uri = ""
 out = ""
 
@@ -30,9 +33,15 @@ acct_list.each do |acct|
         pline = JSON.parse(line)
 	text = pline['text']
 	if pline['text'].include? "http" or pline['text'].match(/[a-z]*:\/\//) # captures all URLs
-	  text = text[text.index("http"), text.length] # captures http or https
+	  textp1 = text[text.index("http"), text.length] # captures http or https
+	  if textp1.include? ")"
+	    textp2 = textp1[textp1.index("http"), textp1.index(")")]
+	  else
+	    textp2 = textp1[textp1.index("http"), textp1.index(" ")]
+	  end
 	end
-	uri = URI.parse(text)
+	ctext = `curl -sI #{textp2} 2> /dev/null | grep location | awk -F": " '{print $2}'`
+	uri = URI.parse(ctext)
 	if uri.scheme.downcase == "http"
 	  http += 1
 	elsif uri.scheme.downcase == "https"
@@ -49,6 +58,9 @@ acct_list.each do |acct|
     # reser vars
     out = ""
     text = ""
+    textp1 = ""
+    textp2 = ""
+    ctext = ""
     uri = ""
     http = 0
     https = 0
@@ -56,5 +68,4 @@ acct_list.each do |acct|
     puts e
   end
 end
-
 
