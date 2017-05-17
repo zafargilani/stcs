@@ -87,7 +87,7 @@ FEATURES is a list of feature indices
 '''
 def classify_instance(instance, features):
     #XTrain, yTrain, header, cTrain = initialise_all_data("/local/scratch/szuhg2/stcs/data/training/train_1k.csv", features) 
-    XTrain, yTrain, header, cTrain = initialise_all_data("../data/training/train_all.csv", features) 
+    XTrain, yTrain, header, cTrain = initialise_all_data("../../data/training/train_all.csv", features) 
     fts = []
     voc = instance.split(",")
     #index starts off from 1 if the account name is included
