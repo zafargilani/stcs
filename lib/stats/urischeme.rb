@@ -10,7 +10,7 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# measure different URL types
+# measure different URL schemes
 
 pline = ""
 text = ""
