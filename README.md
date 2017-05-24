@@ -20,7 +20,19 @@ Functionalities:
 
 ## Getting started
 
-You should be using ruby >= 2.2 and run bundle install. This will deploy the bot, not the shortener or the rails web server, for that see [Deploying Rails on Apache2](https://github.com/zafargilani/stcs#deploying-rails-on-apache2) below:
+You should be using ruby >= 2.2. You can install ruby (only short instructions here, please see [here](https://rvm.io/rvm/install) and [here](http://railsapps.github.io/installrubyonrails-ubuntu.html) for details):
+
+``` bash
+sudo apt-get update
+sudo apt-get install curl
+\curl -L https://get.rvm.io | bash -s stable --ruby
+rvm get stable --autolibs=enable
+rvm install ruby
+source ~/.rvm/scripts/rvm
+rvm --default use ruby-<version>
+```
+
+Run bundle install (to install all dependencies/gems in project Gemfile). This will deploy the bot, not the shortener or the rails web server, for that see [Deploying Rails on Apache2](https://github.com/zafargilani/stcs#deploying-rails-on-apache2) below:
 
 ``` bash  
 cd ~
