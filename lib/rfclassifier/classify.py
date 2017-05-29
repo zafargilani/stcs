@@ -131,7 +131,7 @@ if __name__ == "__main__":
 	examples.append("BridgetteWest,4,1,2193.25,0,0,0,84.25,670.1724788,2.750925315,0.362052495,2188.81963,2,3,88.58789063,0,0,1,0,0,0,0")
 	examples.append("CardiffBiz,6,1,0,0,0,0,660.5,1.052280296,6.00344363,0,2290.981181,2,5,0,0,1,0,0,0,0,0")
 	examples.append("04LS_nagoya,2,2,202,0,0,0,1850,30.89231307,5.207585203,0.02506832,1550.77037,1,1,53.85449219,0,0,1,0,0,0,0")
-	examples.append("caperucitazorra,11,1,1,0,0,0,72.18181818,1460.107632,20.85708145,3.25E-05,1473.912963,2,10,655.8378906,0,0,0,1,0,0,0,0")
+	examples.append("caperucitazorra,11,1,1,0,0,0,72.18181818,1460.107632,20.85708145,3.25E-05,1473.912963,2,10,655.8378906,0,0,0,1,0,0,0")
         name[0], category[0], pred[0] = classify_instance(examples[0], feats_all)
         name[1], category[1], pred[1] = classify_instance(examples[1], feats_all)
         name[2], category[2], pred[2] = classify_instance(examples[2], feats_all)
