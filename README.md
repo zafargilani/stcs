@@ -330,6 +330,11 @@ The Stweeler project provides a number of scripts to produce statistics and grap
 
 The Stweeler classifier uses a number of features (22, most recently, discerned from out detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to classify an account as either 'bot' or 'human'. It utilises the Random Forests ensemble classification package from the [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit.
 
+[Install the scikit-learn](http://scikit-learn.org/stable/install.html) python library:
+``` bash
+pip install -U scikit-learn
+```
+
 The classifier can be used in two ways. For executing examples:
 ``` bash
 python classify.py examples
