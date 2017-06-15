@@ -25,7 +25,7 @@ regularization properties of the inference algorithm.
 refr: http://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html
 code: https://github.com/scikit-learn/scikit-learn/blob/master/examples/mixture/plot_gmm.py
 
-exec: python plot_gmm_pdf.py /path/to/data.csv
+exec: python plot_gmm.py /path/to/data.csv
 """
 
 import itertools
