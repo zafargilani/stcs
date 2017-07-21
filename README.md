@@ -337,12 +337,12 @@ pip install -U scikit-learn
 
 The classifier can be used in two ways. For executing examples:
 ``` bash
-python classify.py examples
+python rfclassifier.py examples
 ```
 
 The second execution method can take an input file (same format as example) and produce an output file (same format as example):
 ``` bash
-python classify.py /input/file /output/file
+python rfclassifier.py /input/file /output/file
 ```
 
 ### BotOrNot
