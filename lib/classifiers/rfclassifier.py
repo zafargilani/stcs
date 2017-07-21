@@ -4,7 +4,7 @@
 # output:     training Random Forest classifier with subsets of given features (e.g. 22 here),
 #             each iteration represents an ablation test (remove a feature, train and test),
 #             GLOBAL represents globally optimum set of features
-# to execute: python classify.py /input/userengagements[.csv] /output/rfclassifier[.csv]
+# to execute: python rfclassifier.py /input/userengagements[.csv] /output/rfclassifier[.csv]
 
 # dependencies:
 # python -m pip install --upgrade pip
@@ -125,8 +125,8 @@ if __name__ == "__main__":
     pred = [None]*4
 
     if len(sys.argv) == 1:
-	print("to execute examples: python classify.py examples")
-	print("to execute program with data: python classify.py /path/input[.csv] /path/output[.csv]")
+	print("to execute examples: python rfclassifier.py examples")
+	print("to execute program with data: python rfclassifier.py /path/input[.csv] /path/output[.csv]")
     elif len(sys.argv) == 2 and sys.argv[1] == "examples":
 	examples.append("BridgetteWest,4,1,2193.25,0,0,0,84.25,670.1724788,2.750925315,0.362052495,2188.81963,2,3,88.58789063,0,0,1,0,0,0,0")
 	examples.append("CardiffBiz,6,1,0,0,0,0,660.5,1.052280296,6.00344363,0,2290.981181,2,5,0,0,1,0,0,0,0,0")
@@ -151,6 +151,6 @@ if __name__ == "__main__":
 	            fw.write(st)
 		#time.sleep(1)
     else:
-	print("to execute examples: python classify.py examples")
-	print("to execute program with data: python classify.py /path/input[.csv] /path/output[.csv]")
+	print("to execute examples: python rfclassifier.py examples")
+	print("to execute program with data: python rfclassifier.py /path/input[.csv] /path/output[.csv]")
 

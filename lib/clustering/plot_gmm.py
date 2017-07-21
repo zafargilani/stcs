@@ -22,10 +22,14 @@ full covariance matrices effectively even when there are less examples
 per cluster than there are dimensions in the data, due to
 regularization properties of the inference algorithm.
 
+(gmm)
 refr: http://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html
 code: https://github.com/scikit-learn/scikit-learn/blob/master/examples/mixture/plot_gmm.py
 
-exec: python plot_gmm.py /path/to/data.csv
+(preprocessing)
+refr: http://scikit-learn.org/stable/modules/preprocessing.html#normalization
+
+exec: python plot_gmm.py K /path/to/data.csv
 """
 
 import itertools
@@ -37,6 +41,7 @@ from scipy import linalg
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
+from sklearn import preprocessing
 from sklearn import mixture
 
 import sys
@@ -91,9 +96,17 @@ def plot_results(X, Y_, means, covariances, index, title):
 #	[11,1,1,0,0,0,72.18181818,1460.107632,20.85708145,3.25E-05,1473.912963,2,10,655.8378906,0,0,0,1,0,0,0]])
 #print(X)
 
-K = 2
-X = np.genfromtxt(sys.argv[1], delimiter=',')
-print(len(X), len(X[0]))
+K = int(sys.argv[1])
+X = np.genfromtxt(sys.argv[2], delimiter=',', skip_header=1,
+	usecols=range(1,23)) # range(start,stop) - stop not inclusive, 1-16 or 1-23, 0 is screen_name
+	#usecols=range(1,16)) # range(start,stop) - stop not inclusive, 1-16 or 1-23, 0 is screen_name
+
+# Tranpose (to normalise per col), Normalise, Tranpose (back to correct matrix arrangement)
+X_tran = X.transpose()
+X_norm = preprocessing.normalize(X_tran, norm='l1') # L1 for least absolute deviations
+X = X_norm.transpose()
+
+print("K: {}, data shape: [{}][{}]".format(K, len(X), len(X[0])))
 
 # Fit a Gaussian mixture with EM using five components
 gmm = mixture.GaussianMixture(n_components=K, covariance_type='full', 
