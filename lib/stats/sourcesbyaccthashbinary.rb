@@ -101,7 +101,7 @@ acct_list.each do |acct|
   end
 end
 
-# post-process:
+# post-process (to create concantenated file for classification):
 # vim :%s/, /;/g to replace list , with ;
 # awk -F"," 'FNR==NR{a[$1]=$2;next}{ print $1","$2","$3","$4","$5","$6","$7","$8","$9","$10","$11","$12","$13","$14","$15","a[$1]}' sourcesbyaccthash.2016-4.bots.1k bots.1k.csv > bots.1k.csv.new
 # add 'source_identity' to header

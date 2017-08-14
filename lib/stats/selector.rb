@@ -1,4 +1,4 @@
-# usage: ruby selector.rb /full/path/input/file.txt.gz LOWER_LIMIT UPPER_LIMIT > selected.txt
+# usage: ruby selector.rb /full/path/input/data.txt.gz LOWER_LIMIT UPPER_LIMIT /full/path/output/accts.txt
 require 'zlib'
 require 'json'
 
@@ -19,7 +19,10 @@ begin
       if parsed_line['user']['followers_count'].to_i >= LOWER_LIMIT and parsed_line['user']['followers_count'] <= UPPER_LIMIT
         out = out + "@#{parsed_line['user']['screen_name']}, #{parsed_line['user']['followers_count']}, #{parsed_line['user']['friends_count']}, "
         out = out + "#{parsed_line['user']['favourites_count']}, #{parsed_line['user']['statuses_count']}\n"
-	puts out
+	#puts out
+	File.open("#{ARGV[3]}", 'a') do |f|
+	  f.puts(out)
+	end # auto file close
       end
       ## output: screen_name, followers_count, friends_count, favourites_count, statuses_count
       ## perspective 1: user following and friends
@@ -41,7 +44,7 @@ begin
       ##open('/data2/zf-twitter-data/2016-4-1.selected', 'a') { |outfile|
       ##  outfile.puts out
       ##}
-      out = "" #reset out
+      out = "" # reset out
     rescue
       next
     end
