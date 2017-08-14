@@ -11,6 +11,11 @@ require 'time'
 # clean: awk -F',' '$10 ~ /Bot/ { print $1 }' 1k.all | awk -F'"' '{print $2}' > 1k.bots
 # clean: awk -F',' '$10 ~ /Human/ { print $1 }' 1k.all | awk -F'"' '{print $2}' > 1k.humans
 
+# or, pre-process the lists produced by selector.rb:
+# remove leading @ via vim: %s/@//g
+# awk -F, '{print $1}' all.250k > all.250k.a
+# sort -u all.250k.a > all.250k.s
+
 # or, pre-process (automated) simpleclassifier lists:
 # awk -F',' '{ if( $2 == " bot" ) { print $3 } }' simpleclassifier.1k.csv > 1k.bots.raw
 # remove leading whitespaces (added for readability) via vim: %s/ //g
