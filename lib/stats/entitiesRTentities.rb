@@ -1,4 +1,4 @@
-# usage: ruby entitiesRTentities.rb /fully/qualified/path/to/directory[bot|human] /fully/qualified/path/to/list[bot|human]
+# usage: ruby entitiesRTentities.rb /fully/qualified/path/to/directory[bot|human] /fully/qualified/path/to/list[bot|human] /fully/qualified/path/to/output
 require 'json'
 require 'time'
 
@@ -44,5 +44,10 @@ file_list.each do |file|
     puts e
   end
 end
-puts( "tweets: #{count}, retweets (RT): #{list_out.count}" )
+
+#puts( "tweets: #{count}, retweets (RT): #{list_out.count}" ) # old output
+# tweets, retweets (RT)
+File.open("#{ARGV[2]}", 'a') do |f|
+  f.puts("#{count}, #{list_out.count}")
+end
 
