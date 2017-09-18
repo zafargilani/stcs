@@ -1,24 +1,31 @@
 #!/usr/bin/env/ python -W ignore
 # -*- coding: utf-8 -*-
-# input:      train and test splits
-# output:     training Random Forest classifier with subsets of given features (e.g. 22 here),
-#             each iteration represents an ablation test (remove a feature, train and test),
-#             GLOBAL represents globally optimum set of features
-# to execute: python rfclassifier.py /input/userengagements[.csv] /output/rfclassifier[.csv]
+"""
+Random Forests ensemble method for a binary classification task
+that labels Twitter accts as 'bot' or 'human'. The model uses
+up to 22 features and Python scikit-learn (sklearn) RandomForestClassifier
+class.
 
-# dependencies:
-# python -m pip install --upgrade pip
-# (sudo) pip install --user numpy scipy
-# (sudo) apt-get install python python-tk
-# (sudo) pip install -U scikit-learn
+(random forest)
+refr: https://en.wikipedia.org/wiki/Random_forest
+libr: http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+code: https://github.com/scikit-learn/scikit-learn/blob/master/examples/ensemble/plot_ensemble_oob.py
+code: https://github.com/scikit-learn/scikit-learn/blob/master/examples/ensemble/plot_random_forest_regression_multioutput.py
 
-#
+(execute)
+python rfclassifier.py /input/userengagements[.csv] /output/rfclassifier[.csv]
+
+(dependencies)
+python -m pip install --upgrade pip
+(sudo) pip install --user numpy scipy
+(sudo) apt-get install python python-tk
+(sudo) pip install -U scikit-learn
+"""
 
 import os
 import scipy
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 import sys
 
@@ -113,11 +120,11 @@ def classify_instance(instance, features):
 ###############################################
         
 if __name__ == "__main__":
-    feats_10M = [6,7,12,13,18,20]
-    feats_1M = [3,8,10,13,16,18,19,20]
-    feats_100k = [2,3,4,10,13,14,15,16,18,20,21]
-    feats_1k = [2,3,8,9,10,11,12,13,14,15,16,18,20,21]
-    feats_all = [4,6,7,9,10,11,13,16,17,18] #best-fit
+    feats_10M = [6,7,12,13,18,20] # best-fit
+    feats_1M = [3,8,10,13,16,18,19,20] # best-fit
+    feats_100k = [2,3,4,10,13,14,15,16,18,20,21] # best-fit
+    feats_1k = [2,3,8,9,10,11,12,13,14,15,16,18,20,21] # best-fit
+    feats_all = [4,6,7,9,10,11,13,16,17,18] # globally optimum set of features
 
     examples = []
     name = [None]*4

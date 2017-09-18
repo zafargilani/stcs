@@ -1,6 +1,8 @@
+#!/usr/bin/env/ python -W ignore
+# -*- coding: utf-8 -*-
 """
 Gaussian Mixture Model for clustering types of Twitter accts by
-using python scikit-learn (sklearn) GaussianMixture class
+using python scikit-learn (sklearn) GaussianMixture class.
 
 (gmm)
 refr: https://brilliant.org/wiki/gaussian-mixture-model/
@@ -10,7 +12,8 @@ code: https://github.com/scikit-learn/scikit-learn/blob/master/examples/mixture
 (preprocessing)
 libr: http://scikit-learn.org/stable/modules/preprocessing.html#normalization
 
-exec: python gmm.py K /path/to/data.csv
+(execute)
+python gmm.py K /path/to/data.csv
 """
 
 import sys
@@ -60,7 +63,7 @@ f.write("=== dataset details ===\n")
 f.write("input dataset: {}\n".format(sys.argv[2]))
 f.write("K: {}, data shape: [{}][{}]\n".format(K, len(X), len(X[0])))
 f.write("=== component stats ===\n")
-f.write("weights: {}i\n".format(gmm.weights_))
+f.write("weights: {}\n".format(gmm.weights_))
 f.write("means: {}\n".format(gmm.means_))
 f.write("covariances: {}\n".format(gmm.covariances_))
 f.write("precisions: {}\n".format(gmm.precisions_))

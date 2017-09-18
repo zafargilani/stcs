@@ -1,3 +1,7 @@
+##################### DEPRECATED #####################
+### use instead: cdncontentbytypes.rb              ###
+### aggregate photo + animated_gif + video for sum ###
+######################################################
 # usage: ruby cdncontentall.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.csv]
 require 'zlib'
 require 'json'
