@@ -2,6 +2,8 @@
 require 'zlib'
 require 'json'
 
+# get user tweet text from raw tweets, dump in user file
+
 # read accounts from a file
 # read accts/files from a directory
 acct_list = Dir.entries(ARGV[0])
@@ -18,9 +20,6 @@ end # auto file close
 file_list.uniq!
 file_list.sort!
 #puts file_list
-
-# get user tweet text from raw tweets/json
-# dump user text in user file
 
 pline = ""
 out = ""
