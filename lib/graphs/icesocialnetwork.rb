@@ -1,4 +1,4 @@
-# usage: ruby icesocialnetwork.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby icesocialnetwork.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.tsv]
 require 'zlib'
 require 'json'
 require 'time'
@@ -10,7 +10,7 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# build a graph network as:
+# build a retweet graph network as:
 # NodeA  NodeB
 # where the arc is directed from A to B
 # showing influence propagation from A to B
