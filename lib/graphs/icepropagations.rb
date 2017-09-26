@@ -1,4 +1,4 @@
-# usage: ruby icepropagations.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby icepropagations.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.tsv]
 require 'zlib'
 require 'json'
 require 'time'
@@ -10,7 +10,7 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# build a propagation network as:
+# build a retweet propagation network as:
 # omega   node   T
 # where the arc is directed from omega to node
 # showing influence propagation from omega to node
