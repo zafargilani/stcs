@@ -2,7 +2,9 @@
 Principal Component Analysis for finding principle components
 from a given feature-set of Twitter accts using eigen vectors
 
+(pca)
 refr: https://brilliant.org/wiki/principal-component-analysis/
+libr: http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
 
 exec: python pca.py /path/to/data.csv
 """
@@ -11,7 +13,7 @@ import sys
 
 import numpy as np
 import pandas as pd
-from sklearn.decomposition import PCA
+from sklearn import decomposition
 
 import matplotlib.pylab as plt
 import seaborn as sns
@@ -31,7 +33,7 @@ continuous_features = ['user_statuses', 'user_tweets',
 #customers = customers[continuous_features]
 #customers.head()
 
-pca = PCA()
+pca = decomposition.PCA()
 ind = ['PC'+str(i+1) for i in range(customers.shape[1])]
 
 # Create the PCA scores matrix and check the dimensionality
