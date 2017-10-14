@@ -9,7 +9,7 @@ libr: http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.Lat
 code: http://scikit-learn.org/stable/auto_examples/applications/plot_topics_extraction_with_nmf_lda.html
 
 (execute)
-python lda.py /path/to/tweets.txt
+python lda.py /input/to/tweets.txt /output/to/
 """
 import sys
 import codecs
@@ -27,8 +27,9 @@ Pretty print top words
 def print_top_words(model, feature_names, n_top_words):
 	messages = []
 	for topic_idx, topic in enumerate(model.components_):
-		message = "Topic #{}: ".format(topic_idx)
-		message += " ".join([feature_names[i]
+		#message = "Topic #{}: ".format(topic_idx)
+		#message += " ".join([feature_names[i]
+		message = " ".join([feature_names[i]
 			for i in topic.argsort()[:-n_top_words - 1:-1]])
 		#print(message)
 		messages.append(message)
@@ -69,21 +70,21 @@ def process_lda():
 			random_state=0, verbose=1).fit(tf)
 
 	# outputs
-	with open("data/lda."+sys.argv[1].split("/")[-1:].pop()+".out", "w") as f:
-		f.write("=== DATASET DETAILS ===\n")
-		f.write("Input dataset: {}\n".format(sys.argv[1]))
-		f.write("Fitting LDA with term freq (tf): n_samples {}, n_features {}\n"
-				.format(len(lines), n_feats))
-		f.write("=== INPUT PARAMS ===\n")
-		f.write("Estimator parameters: {}\n".format(lda.get_params()))
-		f.write("=== TOPIC STATS ===\n")
-		f.write("Number of iterations of the EM step: {}\n".format(lda.n_batch_iter_))
-		f.write("Number of passes over the dataset: {}\n".format(lda.n_iter_))
-		f.write("Log-likelihood of best-fit of EM: {}\n".format(lda.score(tf)))
-		f.write("=== TOP WORDS ===\n")
+	with open(sys.argv[2]+"/lda."+sys.argv[1].split("/")[-1:].pop()+".out", "w") as f:
+		#f.write("=== DATASET DETAILS ===\n")
+		#f.write("Input dataset: {}\n".format(sys.argv[1]))
+		#f.write("Fitting LDA with term freq (tf): n_samples {}, n_features {}\n"
+		#		.format(len(lines), n_feats))
+		#f.write("=== INPUT PARAMS ===\n")
+		#f.write("Estimator parameters: {}\n".format(lda.get_params()))
+		#f.write("=== TOPIC STATS ===\n")
+		#f.write("Number of iterations of the EM step: {}\n".format(lda.n_batch_iter_))
+		#f.write("Number of passes over the dataset: {}\n".format(lda.n_iter_))
+		#f.write("Log-likelihood of best-fit of EM: {}\n".format(lda.score(tf)))
+		#f.write("=== TOP WORDS ===\n")
 		messages = print_top_words(lda, tf_feature_names, n_top_words)
 		for m in messages:
-			f.write("{}\n".format(m))
+			f.write("{}\n".format(m.encode('utf-8')))
 
 
 ###############################################
