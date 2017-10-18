@@ -1,0 +1,72 @@
+<div id="bottypes">
+  <!--style="height: 400px; min-width: 310px"-->
+</div>
+
+<script>
+  $(function () {
+
+    Highcharts.setOptions({
+      global: {
+        useUTC: false
+      }
+    });
+
+    $.getJSON("bottypesjson", function (data) {
+      $('#bottypes').highcharts({
+
+        chart: {
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
+          type: 'pie'
+        },
+
+        title: {
+          text: 'Stweeler identified bot types'
+        },
+
+	subtitle: {
+	  text: 'Source: Stweeler data'
+	},
+
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              style: {
+                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+		fontSize: 16
+              }
+            }
+          }
+        },
+
+        series: [{
+          name: 'Percentage',
+          colorByPoint: true,
+          data: [{
+            name: 'Twitterbots',
+            y: data.bottype0
+          }, {
+            name: 'Applebots',
+            y: data.bottype1
+          }, {
+	    name: 'Mediatoolkitbots',
+	    y: data.bottype2
+	  }, {
+	    name: 'Other bots',
+	    y: data.otherbots
+	  }]
+        }]
+      });
+    });
+  });
+
+</script>
