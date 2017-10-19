@@ -7,6 +7,9 @@ class UrlgencontrollerController < ApplicationController
   @@bots = 0
   @@total = 0
 
+  @@bottype = [0, 0, 0]
+  @@bottype_total = 0
+
   class Click
 
     attr_accessor :timestamp
@@ -169,6 +172,19 @@ class UrlgencontrollerController < ApplicationController
 		@@total = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | wc -l).to_i
 	end
   	render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
+  end
+
+  def bottypesJson
+	#if @@bottype[0] == 0 || @@bottype[1] == 0 || @@bottype[2] == 0 || @@bottype_total == 0
+	@@bottype[0] = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "Twitterbot" | wc -l).to_i
+	@@bottype[1] = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "Applebot" | wc -l).to_i
+	@@bottype[2] = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "Mediatoolkitbot" | wc -l).to_i
+	@@bottype_total = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
+	#end
+	render :json => "{\"Twitterbots\" : #{@@bottype[0]},
+			\"Applebots\" : #{@@bottype[1]},
+			\"Mediatoolkitbots\" : #{@@bottype[2]},
+			\"Other bots\" : #{@@bottype_total - @@bottype[0] - @@bottype[1] - @@bottype[2]}}"
   end
 
   def urlJson
