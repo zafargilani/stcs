@@ -1,6 +1,7 @@
 require 'user_agent_parser'
 require 'shortener'
 require 'time'
+require 'csv'
 
 class UrlgencontrollerController < ApplicationController
 
@@ -95,8 +96,8 @@ class UrlgencontrollerController < ApplicationController
       @@bots += 1
 
       if @@bots == 0 || @@total == 0
-        @@bots = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
-	@@total = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | wc -l).to_i
+        @@bots = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
+	@@total = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | wc -l).to_i
       end
 
     #detect bots via inter-click delay (later: try to update to Entropy Component?)
@@ -118,8 +119,8 @@ class UrlgencontrollerController < ApplicationController
 
     r = /^([^,]*),([^,]*),([^,]*),([^,]*),(.*)$/
     rr = /([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+):([\d]+)/
-    #lines = %x(tail -n #{numberclicks} /home/szuhg2/clicks/clicks.txt)
     lines = Caches.get('clicks')
+    #lines += %x(tail -n 100 /home/szuhg2/clicks/clicks.txt)
     out = "{\"data\" : ["
     #out = "?(["
 
@@ -165,38 +166,38 @@ class UrlgencontrollerController < ApplicationController
 
   def botsJson
     if @@bots == 0 || @@total == 0
-      @@bots = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
-      @@total = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | wc -l).to_i
+      @@bots = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
+      @@total = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | wc -l).to_i
     end
 
     render :json => "{\"bots\" : #{@@bots}, \"notbots\" : #{@@total - @@bots}}"
   end
 
   def bottypesJson
-    bottype = [0, 0, 0]
-    bottype_total = 0
+    bottypes = [0, 0, 0]
+    bottypes_total = 0
 
-    bottype[0] = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "Twitterbot" | wc -l).to_i
-    bottype[1] = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "Applebot" | wc -l).to_i
-    bottype[2] = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "Mediatoolkitbot" | wc -l).to_i
-    bottype_total = %x(tail -n 1000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
+    bottypes[0] = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | grep "Twitterbot" | wc -l).to_i
+    bottypes[1] = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | grep "Applebot" | wc -l).to_i
+    bottypes[2] = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | grep "Mediatoolkitbot" | wc -l).to_i
+    bottypes_total = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt | grep "bot\\|http" | wc -l).to_i
 
-    render :json => "{\"Twitterbots\" : #{bottype[0]},
-      \"Applebots\" : #{bottype[1]},
-      \"Mediatoolkitbots\" : #{bottype[2]},
-      \"Other bots\" : #{bottype_total - bottype[0] - bottype[1] - bottype[2]}}"
+    render :json => "{\"Twitterbots\" : #{bottypes[0]},
+      \"Applebots\" : #{bottypes[1]},
+      \"Mediabots\" : #{bottypes[2]},
+      \"Otherbots\" : #{bottypes_total - bottypes[0] - bottypes[1] - bottypes[2]}}"
   end
 
   def urlJson
-    # key = url, tokens = clicks
-    lines = Caches.get('clicks')
     tokens = Hash.new
 
-    lines.each do |click|
-      if tokens.key? click.token
-        tokens[click.token] += 1
+    clicks = %x(tail -n 10000 /home/szuhg2/clicks/clicks.txt)
+    CSV.parse(clicks) do |row|
+      timestamp, url, ip, thing, uastring = row
+      if tokens.key? url
+        tokens[url] += 1
       else
-        tokens[click.token] = 0
+        tokens[url] = 0
       end
     end
 
