@@ -1,8 +1,8 @@
 # stcs - Super Truly Cunning Stweeler!
 
-Stweeler (STCS) is a Twitter platform for (1) bot mastering (creating honeypots), and (2) independent bot analysis. Stweeler is developed in Ruby, Python, and Java, and aims to study automation on social networks, particularly Twitter. Research work using Stweeler:
-1. [WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf),
-2. [WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/pp051-gilani.pdf).
+Stweeler (STCS) is a Twitter platform for (1) bot mastering (creating honeypots), and (2) independent bot analysis. Stweeler is developed in Ruby, Python, and Java, and aims to study automation on social networks, particularly Twitter.
+
+Research work around Stweeler: [WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf), [WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p781-gilani.pdf), [ASONAM'17 (1)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_65_1.pdf), [ASONAM'17 (2)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_66_1.pdf), [SIGCOMM'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p51-Gilani.pdf).
 
 Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
 
@@ -328,7 +328,7 @@ The Stweeler project provides a number of scripts to produce statistics and grap
 
 ### Stweeler classifier
 
-The Stweeler classifier uses a number of features (22, most recently, discerned from out detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to classify an account as either 'bot' or 'human'. It utilises the Random Forests ensemble classification package from the [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit.
+The Stweeler classifier uses a number of features (22, most recently, discerned from out detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to classify an account as either 'bot' or 'human'. It utilises the [Random Forests](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) ensemble classification package from the scikit-learn toolkit.
 
 [Install the scikit-learn](http://scikit-learn.org/stable/install.html) python library:
 ``` bash
@@ -343,6 +343,21 @@ python rfclassifier.py examples
 The second execution method can take an input file (same format as example) and produce an output file (same format as example):
 ``` bash
 python rfclassifier.py /input/file /output/file
+```
+### Stweeler clusterer and topic modeller
+
+The Stweeler clusterer and topic modeller is a work in progress. It utilises the [Gaussian Mixture Models](http://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html) and [Latent Dirichlet Allocation](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html) packages from the scikit-learn toolkit.
+
+Install the dependencies:
+``` bash
+pip install -U scikit-learn
+pip install -U langdetect
+```
+
+Execute the tools:
+``` bash
+python gmm.py /input/features.csv /output/
+python lda.py /input/text.txt /output/
 ```
 
 ### BotOrNot
