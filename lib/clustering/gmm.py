@@ -10,7 +10,11 @@ libr: http://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianM
 code: https://github.com/scikit-learn/scikit-learn/blob/master/examples/mixture
 
 (preprocessing)
+libr: http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.normalize.html
 libr: http://scikit-learn.org/stable/modules/preprocessing.html#normalization
+
+(dependencies)
+numpy sklearn
 
 (execute)
 python gmm.py K /input/to/userengagements.csv /output/to/
@@ -81,31 +85,13 @@ def process_gmm():
 		for c in clusters[cluster]:
 			f.write("{}\n".format(c))
 		f.close()
-	#with open("data/gmm."+sys.argv[2].split("/")[-1:].pop()+".K"+sys.argv[1]+".out", "w") as f:
-		#f.write("=== DATASET DETAILS ===\n")
-		#f.write("Input dataset: {}\n".format(sys.argv[2]))
-		#f.write("K: {}, data shape: [{}][{}]\n".format(K, len(X), len(X[0])))
-		#f.write("=== INPUT PARAMS ===\n")
-		#f.write("Estimator parameters: {}\n".format(gmm.get_params()))
-		#f.write("=== PROCESS STATS ===\n")
-		#f.write("Converged? {}\n".format(gmm.converged_))
-		#f.write("Iterations to converge: {}\n".format(gmm.n_iter_))
-		#f.write("Log-likelihood of best-fit of EM: {}\n".format(gmm.lower_bound_))
-		#f.write("Avg. log-likelihood of given data X: {}\n".format(gmm.score(X)))
-		#f.write("Bayesian information criterion (bic): {}\n".format(gmm.bic(X)))
-		#f.write("Akaike information criterion (aic): {}\n".format(gmm.aic(X)))
-		#f.write("=== COMPONENT STATS ===\n")
-		#f.write("Weights: {}\n".format(gmm.weights_))
-		#f.write("Means: {}\n".format(gmm.means_))
-		#f.write("Covariances: {}\n".format(gmm.covariances_))
-		#f.write("Precisions: {}\n".format(gmm.precisions_))
-		#f.write("Weighted log-likelihoods: {}\n".format(gmm.score_samples(X)))
-		#f.write("Component labels: {}\n".format(gmm.predict(X)))
-		#f.write("Posterior prob. of each Gaussian (component): {}\n".format(gmm.predict_proba(X)))
 
 
 ###############################################
 
 if __name__ == "__main__":
-	process_gmm()
+	try:
+		process_gmm()
+	except:
+		raise
 
