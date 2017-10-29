@@ -13,7 +13,7 @@ libr: http://scikit-learn.org/stable/modules/generated/sklearn.feature_extractio
 code: https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/feature_extraction/stop_words.py
 
 (dependencies)
-textblob numpy sklearn
+langdetect textblob numpy sklearn
 
 (execute)
 python lda.py /input/to/tweets.txt /output/to/
