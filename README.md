@@ -332,7 +332,7 @@ The Stweeler classifier uses a number of features (22, most recently, discerned 
 
 [Install the scikit-learn](http://scikit-learn.org/stable/install.html) python library:
 ``` bash
-pip install -U scikit-learn
+pip install --user -U scikit-learn
 ```
 
 The classifier can be used in two ways. For executing examples:
@@ -350,8 +350,9 @@ The Stweeler clusterer and topic modeller is a work in progress. It utilises the
 
 Install the dependencies:
 ``` bash
-pip install -U scikit-learn
-pip install -U langdetect
+pip install --user -U scikit-learn
+pip install --user -U langdetect
+pip install --user -U textblob
 ```
 
 Execute the tools:

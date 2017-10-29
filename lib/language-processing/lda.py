@@ -13,7 +13,7 @@ libr: http://scikit-learn.org/stable/modules/generated/sklearn.feature_extractio
 code: https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/feature_extraction/stop_words.py
 
 (dependencies)
-langdetect numpy sklearn
+textblob numpy sklearn
 
 (execute)
 python lda.py /input/to/tweets.txt /output/to/
@@ -21,6 +21,7 @@ python lda.py /input/to/tweets.txt /output/to/
 import sys
 import codecs
 from langdetect import detect
+from textblob import TextBlob
 
 import numpy as np
 from sklearn.feature_extraction import text
@@ -60,9 +61,14 @@ def cleanup(lines):
 		try:
 			if detect(l) == 'en':
 				newlines.append(l)
+			else:
+				blob = TextBlob(l)
+				en_blob = blob.translate(to='en')
+				newlines.append(str(en_blob))
 		except:
 			pass
-	
+
+	#print newlines
 	return newlines
 
 ###############################################
@@ -90,11 +96,12 @@ of tweet text corpus
 '''
 def process_lda():
 	# inputs
+	file_lines = []
 	lines = []
 	with codecs.open(sys.argv[1], encoding='UTF-8') as f:
-		lines = f.read().splitlines()
+		file_lines = f.read().splitlines()
 	
-	lines = cleanup(lines)
+	lines = cleanup(file_lines)
 
 	# params for LDA
 	n_feats = 1000
@@ -119,17 +126,6 @@ def process_lda():
 
 	# outputs
 	with open(sys.argv[2]+"/lda."+sys.argv[1].split("/")[-1:].pop()+".out", "w") as f:
-		#f.write("=== DATASET DETAILS ===\n")
-		#f.write("Input dataset: {}\n".format(sys.argv[1]))
-		#f.write("Fitting LDA with term freq (tf): n_samples {}, n_features {}\n"
-		#		.format(len(lines), n_feats))
-		#f.write("=== INPUT PARAMS ===\n")
-		#f.write("Estimator parameters: {}\n".format(lda.get_params()))
-		#f.write("=== TOPIC STATS ===\n")
-		#f.write("Number of iterations of the EM step: {}\n".format(lda.n_batch_iter_))
-		#f.write("Number of passes over the dataset: {}\n".format(lda.n_iter_))
-		#f.write("Log-likelihood of best-fit of EM: {}\n".format(lda.score(tf)))
-		#f.write("=== TOP WORDS ===\n")
 		messages = print_top_words(lda, tf_feature_names, n_top_words)
 		for m in messages:
 			f.write("{}\n".format(m.encode('utf-8')))
