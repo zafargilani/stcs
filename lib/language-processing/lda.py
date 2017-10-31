@@ -82,10 +82,12 @@ def stop_words():
 	for w in ENGLISH_STOP_WORDS: # frozenset, so append
 		en_stop_words.append(w)
 	# custom stop-words
-	en_stop_words.append("rt")
+	en_stop_words.append(sys.argv[1].split("/")[-1:].pop().lower())
 	en_stop_words.append("http")
 	en_stop_words.append("https")
-
+	en_stop_words.append("rt")
+	en_stop_words.append("says")
+	
 	return en_stop_words
 
 ###############################################

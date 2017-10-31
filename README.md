@@ -6,16 +6,17 @@ Research work around **_Stweeler_**: [WWW'16](http://www.cl.cam.ac.uk/~szuhg2/do
 
 Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
 
-The bot is able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%). It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags. URL redirection is useful to retrieve http header information, such as user agents, as well as to manage cookies.
+The bot is able to automatically follow users from the Twitter stream and maintain a predefined ratio of followers/friends (default: 30%). It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags. URL redirection is useful to retrieve http header information, such as user agents, as well as to manage cookies.
 
 **_Stweeler_** also has a raw tweet collection system and a bunch of other useful tools. See below for packages and functionalities.
 
 Functionalities:
  * Streaming Tweet Collection System - uses the [twitter ruby gem](https://github.com/sferik/twitter) and Twitter's Streaming API to collect and dump user tweets. This module is independent of the bot tool. [Stats and Graphs package](https://github.com/zafargilani/stcs#stats-and-graphs-package) explains how to use raw Twitter data for useful stats that enable peeking inside bot activity on Twitter.
- * Bot Functionality - the automated program or [bot](https://github.com/mispy/twitter_ebooks) manages a twitter account, following, retweeting, etc.
+ * Bot Functionality - the automated program or [bot](https://github.com/mispy/twitter_ebooks) manages a Twitter account, following, retweeting, etc.
  * URL analyzer - provides algorithms to retrieve urls and detect malware. It can be extended to work as a proxy, in order to inject functionality into linked pages.
  * URL shortener - [shortener](https://github.com/jpmcgrath/shortener) rails project to generate shortened urls and interact with the bot.
- * **_Stweeler_** classifier (rfclassifier) - a python project that uses [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit to classify Twitter accounts as 'bot' or 'human'. It utilises Random Forests ensemble classification method and only the most meaningful 22 features (discerned from our detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to produce an accurate output.
+ * **_Stweeler_** classifier (rfclassifier) - a python project that uses scikit-learn toolkit to classify Twitter accounts as 'bot' or 'human'. It utilises [Random Forests ensemble classification method](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) and only the most meaningful 22 features (discerned from our detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to produce an accurate output.
+ * **_Stweeler_** clusterer and topic modeller - a python project that uses scikit-learn toolkit to categorise bot types. It utilises the [Gaussian Mixture Models](http://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html) for [soft-clustering](https://en.wikipedia.org/wiki/Fuzzy_clustering) and [Latent Dirichlet Allocation](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html) for associating labels to categories.
  * BotOrNot - [botornot](https://github.com/truthy/botornot-python) is a python project to find if a Twitter account is an automated program (bot) or human.
 
 ## Getting started
