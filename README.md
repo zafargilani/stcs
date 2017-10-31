@@ -1,21 +1,21 @@
-# stcs - Super Truly Cunning Stweeler!
+# STCS - Streaming Twitter Computation System
 
-Stweeler (STCS) is a Twitter platform for (1) bot mastering (creating honeypots), and (2) independent bot analysis. Stweeler is developed in Ruby, Python, and Java, and aims to study automation on social networks, particularly Twitter.
+Dubbed **_Stweeler_**, STCS is a Twitter platform for (1) bot mastering (creating honeypots), and (2) independent bot analysis. **_Stweeler_** is developed in Ruby, Python, and Java, and aims to study automation on social networks, particularly Twitter.
 
-Research work around Stweeler: [WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf), [WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p781-gilani.pdf), [ASONAM'17 (1)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_65_1.pdf), [ASONAM'17 (2)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_66_1.pdf), [SIGCOMM'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p51-Gilani.pdf).
+Research work around **_Stweeler_**: [WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf), [WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p781-gilani.pdf), [ASONAM'17 (1)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_65_1.pdf), [ASONAM'17 (2)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_66_1.pdf), [SIGCOMM'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p51-Gilani.pdf).
 
 Find more [here](http://www.cl.cam.ac.uk/~szuhg2/).
 
 The bot is able to automatically follow users from the twitter stream and maintain a predefined ratio of followers/friends (default: 30%). It is also able to retweet relevant tweets and/or copy them, replacing urls with redirections and placing tweet tags. URL redirection is useful to retrieve http header information, such as user agents, as well as to manage cookies.
 
-Stweeler also has a raw tweet collection system and a bunch of other useful tools. See below for packages and functionalities.
+**_Stweeler_** also has a raw tweet collection system and a bunch of other useful tools. See below for packages and functionalities.
 
 Functionalities:
  * Streaming Tweet Collection System - uses the [twitter ruby gem](https://github.com/sferik/twitter) and Twitter's Streaming API to collect and dump user tweets. This module is independent of the bot tool. [Stats and Graphs package](https://github.com/zafargilani/stcs#stats-and-graphs-package) explains how to use raw Twitter data for useful stats that enable peeking inside bot activity on Twitter.
  * Bot Functionality - the automated program or [bot](https://github.com/mispy/twitter_ebooks) manages a twitter account, following, retweeting, etc.
  * URL analyzer - provides algorithms to retrieve urls and detect malware. It can be extended to work as a proxy, in order to inject functionality into linked pages.
  * URL shortener - [shortener](https://github.com/jpmcgrath/shortener) rails project to generate shortened urls and interact with the bot.
- * Stweeler classifier (rfclassifier) - a python project that uses [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit to classify Twitter accounts as 'bot' or 'human'. It utilises Random Forests ensemble classification method and only the most meaningful 22 features (discerned from our detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to produce an accurate output.
+ * **_Stweeler_** classifier (rfclassifier) - a python project that uses [scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) toolkit to classify Twitter accounts as 'bot' or 'human'. It utilises Random Forests ensemble classification method and only the most meaningful 22 features (discerned from our detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to produce an accurate output.
  * BotOrNot - [botornot](https://github.com/truthy/botornot-python) is a python project to find if a Twitter account is an automated program (bot) or human.
 
 ## Getting started
@@ -324,11 +324,11 @@ If you see a "Over capacity error / ServiceUnavailable error" then simply retry 
 
 ### Stats and Graphs package
 
-The Stweeler project provides a number of scripts to produce statistics and graphs from raw Twitter data. These are listed under lib/stats and lib/graphs. Each script provides a method by which it can be used to produce statistics and graphs.
+The **_Stweeler_** project provides a number of scripts to produce statistics and graphs from raw Twitter data. These are listed under lib/stats and lib/graphs. Each script provides a method by which it can be used to produce statistics and graphs.
 
-### Stweeler classifier
+### **_Stweeler_** classifier
 
-The Stweeler classifier uses a number of features (22, most recently, discerned from out detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to classify an account as either 'bot' or 'human'. It utilises the [Random Forests](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) ensemble classification package from the scikit-learn toolkit.
+The **_Stweeler_** classifier uses a number of features (22, most recently, discerned from out detailed [characterisation study](https://arxiv.org/abs/1704.01508)) to classify an account as either 'bot' or 'human'. It utilises the [Random Forests](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) ensemble classification package from the scikit-learn toolkit.
 
 [Install the scikit-learn](http://scikit-learn.org/stable/install.html) python library:
 ``` bash
@@ -344,9 +344,9 @@ The second execution method can take an input file (same format as example) and 
 ``` bash
 python rfclassifier.py /input/file /output/file
 ```
-### Stweeler clusterer and topic modeller
+### **_Stweeler_** clusterer and topic modeller
 
-The Stweeler clusterer and topic modeller is a work in progress. It utilises the [Gaussian Mixture Models](http://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html) and [Latent Dirichlet Allocation](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html) packages from the scikit-learn toolkit.
+The **_Stweeler_** clusterer and topic modeller is a work in progress. It utilises the [Gaussian Mixture Models](http://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html) and [Latent Dirichlet Allocation](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html) packages from the scikit-learn toolkit.
 
 Install the dependencies:
 ``` bash
@@ -365,7 +365,7 @@ python lda.py /input/text.txt /output/
 
 To install BotOrNot visit [BotOrNot GitHub page](https://github.com/truthy/botornot-python).
 
-To run BotOrNot from within Stweeler, use the following commands. The Ruby script interfaces with a local copy of BotOrNot's Python API and uses a threshold score of 0.50 (as can be inferred from [BotOrNot webpage](http://truthy.indiana.edu/botornot/)).
+To run BotOrNot from within **_Stweeler_**, use the following commands. The Ruby script interfaces with a local copy of BotOrNot's Python API and uses a threshold score of 0.50 (as can be inferred from [BotOrNot webpage](http://truthy.indiana.edu/botornot/)).
 
 Running BotOrNot:
 ``` bash
