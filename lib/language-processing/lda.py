@@ -12,6 +12,18 @@ code: http://scikit-learn.org/stable/auto_examples/applications/plot_topics_extr
 libr: http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html
 code: https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/feature_extraction/stop_words.py
 
+(langdetect)
+https://pypi.python.org/pypi/langdetect
+
+(textblob)
+https://textblob.readthedocs.io/en/dev/quickstart.html
+
+(language iso codes)
+https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+
+(most popular languages on Twitter)
+https://thenextweb.com/shareables/2013/12/10/61-languages-found-twitter-heres-rank-popularity/
+
 (dependencies)
 langdetect textblob numpy sklearn
 
@@ -20,6 +32,8 @@ python lda.py /input/to/tweets.txt /output/to/
 """
 import sys
 import codecs
+from multiprocessing import Pool
+
 from langdetect import detect
 from textblob import TextBlob
 
@@ -59,9 +73,14 @@ def cleanup(lines):
 	newlines = []
 	for l in lines:
 		try:
-			if detect(l) == 'en':
+			if detect(l) == 'en': # English 34%
 				newlines.append(l)
-			else:
+			elif (detect(l) == 'ja' # Japanese 16%
+				or detect(l) == 'es' # Spanish 12%
+			  	or detect(l) == 'pt' # Portuguese 6%
+				or detect(l) == 'ar' # Arabic 6%
+				or detect(l) == 'fr' # French 2%
+				or detect(l) == 'tr'): # Turkish 2%
 				blob = TextBlob(l)
 				en_blob = blob.translate(to='en')
 				newlines.append(str(en_blob))
@@ -106,9 +125,9 @@ def process_lda():
 	lines = cleanup(file_lines)
 
 	# params for LDA
-	n_feats = 1000
+	n_feats = 250 #1000
 	n_topics = 10
-	n_top_words = 10
+	n_top_words = 20
 
 	# getting a custom stop-words list
 	en_stop_words = []
