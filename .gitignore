@@ -1,0 +1,15 @@
+config.dh
+config.yml
+data/*
+lib/annotations/*
+lib/classifiers/__*
+lib/classifiers/data/*
+lib/clustering/__*
+lib/clustering/data/*
+lib/decomposition/__*
+lib/decomposition/data/*
+lib/graphs/__*
+lib/language-processing/__*
+lib/language-processing/data/*
+lib/stats/__*
+lib/stream-collectors/*
