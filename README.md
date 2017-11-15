@@ -1,5 +1,7 @@
 # STCS - Streaming Twitter Computation System
 
+License: GPL 3.0
+
 Dubbed **_Stweeler_**, STCS is a Twitter platform for (1) bot mastering (creating honeypots), and (2) independent bot analysis. **_Stweeler_** is developed in Ruby, Python, and Java, and aims to study automation on social networks, particularly Twitter.
 
 Research work around **_Stweeler_**: [WWW'16](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p37-gilani.pdf), [WWW'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p781-gilani.pdf), [ASONAM'17 (1)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_65_1.pdf), [ASONAM'17 (2)](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/ASONAM17_8501_66_1.pdf), [SIGCOMM'17](http://www.cl.cam.ac.uk/~szuhg2/docs/papers/p51-Gilani.pdf).
