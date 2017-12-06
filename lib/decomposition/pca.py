@@ -22,12 +22,14 @@ customers = pd.read_csv(sys.argv[1],
 	index_col = "screen_name")
 customers.head()
 
-continuous_features = ['user_statuses', 'user_tweets',
-	'user_retweets', 'user_favourites', 'user_replies_and_mentions',
-	'likes_per_tweet', 'retweets_per_tweet', 'lists_account_age_ratio',
-	'follower_friend_ratio', 'lifetime_statuses_freq',
-	'favourite_tweet_ratio', 'age_of_account_in_days',
-	'sources_count', 'urls_count', 'daily_favouriting_frequency']
+#continuous_features = ['user_statuses', 'user_tweets',
+#	'user_retweets', 'user_favourites', 'user_replies_and_mentions',
+#	'likes_per_tweet', 'retweets_per_tweet', 'lists_account_age_ratio',
+#	'follower_friend_ratio', 'lifetime_statuses_freq',
+#	'favourite_tweet_ratio', 'age_of_account_in_days',
+#	'sources_count', 'urls_count', 'daily_favouriting_frequency',
+#	'source0', 'source1', 'source2', 'source3', 'source4', 'source5',
+#	'source6']
 
 #daily_favouriting_frequency = customers['daily_favouriting_frequency']
 #customers = customers[continuous_features]
@@ -88,5 +90,6 @@ print(pca_var)
 # Show all the plots
 #sns.plt.show()
 
-scores.to_csv('data/pca.out')
+#scores.to_csv('data/pca.out')
+scores.to_csv("data/pca."+sys.argv[1].split("/")[-1:].pop()+".out")
 
