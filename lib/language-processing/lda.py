@@ -30,6 +30,7 @@ langdetect textblob numpy sklearn
 (execute)
 python lda.py /input/to/tweets.txt /output/to/
 """
+
 import sys
 import codecs
 from multiprocessing import Pool
