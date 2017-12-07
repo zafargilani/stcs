@@ -3,21 +3,18 @@ require 'zlib'
 require 'json'
 require 'time'
 
+# graph is formed from influencer and influenced, i.e.
+# retweeted statuses, quoted statuses, replies and mentions
+
+# from raw/json tweets get graph network of each user,
+# retweets and quotes only (very high activity), directed
+
 # read accounts from a file
 # read accts/files from a directory
 acct_list = Dir.entries(ARGV[0])
 acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
-
-# using the raw/json file build a graph network for each user
-# and the user's influence group (follower, retweet/quote, reply/mention)
-# with node and edge weights,
-# note that each tuple {acct,target} could have multiple rows
-# with different values for edge weights (and slightly different
-# for node weights) because each row is built using a single tweet,
-# where each tweet has slightly different numbers as these numbers
-# might have been updated from when the previous tweet was posted
 
 pline = ""
 out = ""
@@ -35,12 +32,6 @@ acct_list.each do |acct|
     infile.each_line do |line|
       begin
         pline = JSON.parse(line)
-	# calculate node weight: ratio of fo_fr_ratio (more indicative of human)
-	# and tweet_freq (more indicative of bot)
-        
-	# calculate edge weight: product of no. of replies or mentions between two nodes
-	# and ratio of fo_fr_ratios of two nodes
-	
 	# original tweet: if this acct is tweeting, then some other acct might have retweeted or quoted
         if pline['user']['screen_name'].include? acct
 	  directed = 1 # acct is retweeting, quoting, replying or mentioning other accts, therefore acct is target, target is acct

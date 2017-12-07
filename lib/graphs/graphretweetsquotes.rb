@@ -1,7 +1,13 @@
-# usage: ruby graph.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.txt]
+# usage: ruby graphretweetsquotes.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/file[.csv]
 require 'zlib'
 require 'json'
 require 'time'
+
+# graph is formed from influencer and influenced, i.e.
+# retweeted statuses, quoted statuses, replies and mentions
+
+# from raw/json tweets get graph network of each user,
+# here -- retweets and quotes (very high activity)
 
 # read accounts from a file
 # read accts/files from a directory
@@ -10,13 +16,9 @@ acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
 
-# get user graph from raw tweets/json
-# dump this in an output file from time to time
-
 pline = ""
 out = ""
-list_rtqs = [] # rtqs = retweeted (RT) status, quoted status
-max_depth = 0
+target = ""
 
 acct_list.each do |acct|
   begin
@@ -31,27 +33,19 @@ acct_list.each do |acct|
           # do nothing
         # retweeted
         elsif pline['retweeted_status']['user']['screen_name'].include? acct
-          list_rtqs.push(pline['user']['screen_name'])
+          target = pline['user']['screen_name']
         # quoted
         elsif pline['quoted_status']['user']['screen_name'].include? acct
-          list_rtqs.push(pline['user']['screen_name'])
+          target = pline['user']['screen_name']
         end
       rescue
         next
       end
+      out = "#{acct},#{target}"
+      File.open("#{ARGV[1]}", 'a') do |f|
+        f.puts(out)
+      end # auto file close
     end
-    # if you don't like JSON
-    out = "#{acct}: #{list_rtqs}"
-    File.open("#{ARGV[1]}", 'a') do |f|
-      f.puts(out)
-    end # auto file close
-    #out_json = {
-    #  "screen_name" => "#{acct}",
-    #  "graph" => "#{list_rtqs}"
-    #}
-    #puts out_json
-    # reset vars
-    list_rtqs.clear
   rescue => e
     puts e
   end

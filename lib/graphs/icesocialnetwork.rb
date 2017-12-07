@@ -3,17 +3,17 @@ require 'zlib'
 require 'json'
 require 'time'
 
+# build a retweet graph network as:
+# NodeA  NodeB
+# where the arc is directed from A to B
+# showing influence propagation from A to B
+
 # read accounts from a file
 # read accts/files from a directory
 acct_list = Dir.entries(ARGV[0])
 acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
-
-# build a retweet graph network as:
-# NodeA  NodeB
-# where the arc is directed from A to B
-# showing influence propagation from A to B
 
 pline = ""
 target = ""

@@ -3,17 +3,17 @@ require 'zlib'
 require 'json'
 require 'time'
 
+# build a retweet propagation network as:
+# omega   node   T
+# where the arc is directed from omega to node
+# showing influence propagation from omega to node
+
 # read accounts from a file
 # read accts/files from a directory
 acct_list = Dir.entries(ARGV[0])
 acct_list.delete(".") # remove . from the list
 acct_list.delete("..") # remove .. from the list
 acct_list.sort!
-
-# build a retweet propagation network as:
-# omega   node   T
-# where the arc is directed from omega to node
-# showing influence propagation from omega to node
 
 pline = ""
 target = ""
