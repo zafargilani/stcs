@@ -6,6 +6,7 @@ python scikit-learn (sklearn) SpectralClustering class.
 
 (spectral clustering)
 refr: https://en.wikipedia.org/wiki/Spectral_clustering
+refr: http://scikit-learn.org/stable/modules/clustering.html
 libr: http://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html
 
 (preprocessing)
@@ -44,7 +45,8 @@ def process_spectral():
 	#X = X_norm.transpose()
 
 	# Fit Spectral clustering and predict cluster lables
-	labels = SpectralClustering(n_neighbors=1000, assign_labels='discretize',
+	#labels = SpectralClustering(n_neighbors=1000, assign_labels='discretize',
+	labels = SpectralClustering(n_neighbors=1000, assign_labels='kmeans',
 			n_jobs=-1).fit_predict(X)
 
 	# load screen_names

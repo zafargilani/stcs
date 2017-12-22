@@ -3,7 +3,7 @@ require 'zlib'
 require 'json'
 require 'time'
 
-# filter out tweets (per topic) in their respective topic files
+# filter out tweets (per topic or screenname) in their respective topic files
 
 topic_list = []
 File.open(ARGV[0], 'r') do |f|
@@ -36,11 +36,17 @@ file_list.each do |file|
 	topic_list.each do |topic|
 	  begin
             # check each line against the complete topic_list, instead of traversing over the whole .gz repeatedly
-            if pline['text'].include? topic
+            if pline['user']['screen_name'].downcase.include? topic.downcase
               tweet = "#{pline['text']}"
-            elsif pline['retweeted_status']['text'].include? topic
+            elsif pline['retweeted_status']['user']['screen_name'].downcase.include? topic.downcase
               tweet = "#{pline['retweeted_status']['text']}"
-            elsif pline['quoted_status']['text'].include? topic
+            elsif pline['quoted_status']['user']['screen_name'].downcase.include? topic.downcase
+              tweet = "#{pline['quoted_status']['text']}"
+	    elsif pline['text'].downcase.include? topic.downcase
+              tweet = "#{pline['text']}"
+            elsif pline['retweeted_status']['text'].downcase.include? topic.downcase
+              tweet = "#{pline['retweeted_status']['text']}"
+            elsif pline['quoted_status']['text'].downcase.include? topic.downcase
               tweet = "#{pline['quoted_status']['text']}"
 	    else
 	      tweet = ""
