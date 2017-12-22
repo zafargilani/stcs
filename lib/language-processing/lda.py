@@ -123,12 +123,13 @@ def process_lda():
 	with codecs.open(sys.argv[1], encoding='UTF-8') as f:
 		file_lines = f.read().splitlines()
 	
-	lines = cleanup(file_lines)
+	#lines = cleanup(file_lines)
+	lines = file_lines
 
 	# params for LDA
 	n_feats = 250 #1000
-	n_topics = 10
-	n_top_words = 20
+	n_topics = 20
+	n_top_words = 50
 
 	# getting a custom stop-words list
 	en_stop_words = []
