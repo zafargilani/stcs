@@ -1,9 +1,9 @@
-# usage: ruby grepper.rb /fully/qualified/path/to/listfile[accts] /fully/qualified/path/to/.gz[sources] /fully/qualified/path/to/output/directory
+# usage: ruby gettweets.rb /fully/qualified/path/to/listfile[accts] /fully/qualified/path/to/.gz[sources] /fully/qualified/path/to/output/directory
 require 'zlib'
 require 'json'
 require 'time'
 
-# filter out tweets for list of users in their respective files
+# filter out tweets in JSON for list of users in their respective files
 
 acct_list = []
 File.open(ARGV[0], 'r') do |f|

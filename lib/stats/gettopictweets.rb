@@ -1,9 +1,9 @@
-# usage: ruby greptopic.rb /fully/qualified/path/to/topiclist[.txt] /fully/qualified/path/to/.gz[sources] /fully/qualified/path/to/output/directory
+# usage: ruby gettopictweets.rb /fully/qualified/path/to/topiclist[.txt] /fully/qualified/path/to/.gz[sources] /fully/qualified/path/to/output/directory
 require 'zlib'
 require 'json'
 require 'time'
 
-# filter out tweets (per topic or screenname) in their respective topic files
+# filter out tweets in JSON (per topic or screenname) in their respective topic files
 
 topic_list = []
 File.open(ARGV[0], 'r') do |f|

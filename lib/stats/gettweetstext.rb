@@ -1,4 +1,4 @@
-# usage: ruby text.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/filelist[accts] /fully/qualified/path/to/output/directory
+# usage: ruby gettweetstext.rb /fully/qualified/path/to/directory[accts] /fully/qualified/path/to/filelist[accts] /fully/qualified/path/to/output/directory
 require 'zlib'
 require 'json'
 
