@@ -29,16 +29,19 @@ for fl in files:
 	with codecs.open(sys.argv[1]+fl, encoding='UTF-8') as f:
 		lines += f.read()
 
+	tweets = 0
 	polarity = 0
 	subjectivity = 0
 
-	if len(sys.argv) == 4: # sys.argv[0] is script name
+	if len(sys.argv) == 4: # 4 because sys.argv[0] is script name
 		topic_lines = ""
 		lines_array = lines.split('\n') # remember lines isn't an array
 		for line in lines_array:
 			if sys.argv[3].lower() in line.lower():
-				topic_lines += line
+				topic_lines += line + '\n'
 		lines = topic_lines
+	
+	tweets = len(lines.split('\n'))
 
 	try:
 		blob = TextBlob(lines)
@@ -48,5 +51,5 @@ for fl in files:
 		pass
 
 	with open(sys.argv[2]+"sentiments."+sys.argv[1].split("/")[-2]+".csv", "a") as f:
-		f.write("{}, {}, {}\n".format(fl, polarity, subjectivity))
+		f.write("{}, {}, {}, {}\n".format(fl, tweets, polarity, subjectivity))
 
