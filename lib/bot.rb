@@ -173,7 +173,7 @@ class BobTheBot < Ebooks::Bot
         key= json["unique_key"]
         p key
         keys << key
-        replacements << [url, "http://tnyurl.uk/#{key}"]
+        replacements << [url, "http://tnyurl.co.uk/#{key}"]
       end
 
       txt = tw.text.dup
