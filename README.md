@@ -50,10 +50,10 @@ To get started you should create a config.yml file. You can do it by copying our
 cp config.yml.template config.yml
 ``` 
 
-You should modify the config.yml to include your tweeter account and storage details:
+You should modify the config.yml to include your Twitter account and storage details:
 
 ``` yaml  
-#tweeter credentials
+#Twitter credentials
 consumer_key: 'ABC'
 consumer_secret: 'DEF'
 oauth_token: 'GHI'
