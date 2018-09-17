@@ -1,0 +1,8 @@
+README.md
+setup.py
+debot/__init__.py
+debot.egg-info/PKG-INFO
+debot.egg-info/SOURCES.txt
+debot.egg-info/dependency_links.txt
+debot.egg-info/requires.txt
+debot.egg-info/top_level.txt

@@ -120,16 +120,20 @@ def classify_instance(instance, features):
 ###############################################
         
 if __name__ == "__main__":
+    feats_old = [2,3,4,5,6,7,8,9,10,11,12,13,14,15] # all userengagements without sources
     feats_10M = [6,7,12,13,18,20] # best-fit
     feats_1M = [3,8,10,13,16,18,19,20] # best-fit
     feats_100k = [2,3,4,10,13,14,15,16,18,20,21] # best-fit
     feats_1k = [2,3,8,9,10,11,12,13,14,15,16,18,20,21] # best-fit
-    feats_all = [4,6,7,9,10,11,13,16,17,18] # globally optimum set of features
+    feats_global = [4,6,7,9,10,11,13,16,17,18] # globally optimum set of features
+    feats_all = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21] # all userengagements with sources
 
     examples = []
     name = [None]*4
     category = [None]*4
     pred = [None]*4
+
+    feats = feats_all
 
     if len(sys.argv) == 1:
 	print("to execute examples: python rfclassifier.py examples")
@@ -139,10 +143,10 @@ if __name__ == "__main__":
 	examples.append("CardiffBiz,6,1,0,0,0,0,660.5,1.052280296,6.00344363,0,2290.981181,2,5,0,0,1,0,0,0,0,0")
 	examples.append("04LS_nagoya,2,2,202,0,0,0,1850,30.89231307,5.207585203,0.02506832,1550.77037,1,1,53.85449219,0,0,1,0,0,0,0")
 	examples.append("caperucitazorra,11,1,1,0,0,0,72.18181818,1460.107632,20.85708145,3.25E-05,1473.912963,2,10,655.8378906,0,0,0,1,0,0,0")
-        name[0], category[0], pred[0] = classify_instance(examples[0], feats_all)
-        name[1], category[1], pred[1] = classify_instance(examples[1], feats_all)
-        name[2], category[2], pred[2] = classify_instance(examples[2], feats_all)
-        name[3], category[3], pred[3] = classify_instance(examples[3], feats_all)
+        name[0], category[0], pred[0] = classify_instance(examples[0], feats)
+        name[1], category[1], pred[1] = classify_instance(examples[1], feats)
+        name[2], category[2], pred[2] = classify_instance(examples[2], feats)
+        name[3], category[3], pred[3] = classify_instance(examples[3], feats)
 	for i in range(len(examples)):
 	    print(name[i] + ", " + category[i] + ", " + str(pred[i]))
     elif len(sys.argv) == 3:
@@ -151,7 +155,7 @@ if __name__ == "__main__":
     	    flines = [x.strip() for x in fcontent]
     	    #flines = f.readlines()
     	    for fline in flines:
-                name, category, pred = classify_instance(fline, feats_all)
+                name, category, pred = classify_instance(fline, feats)
 	        st = name + ", " + category + ", " + str(pred) + "\n"
 	        #print(name, category, pred)
 	        with open(sys.argv[2], 'a') as fw:
